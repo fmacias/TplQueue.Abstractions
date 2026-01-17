@@ -43,6 +43,13 @@
 		<None Remove="NuGet.config" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
 	<!-- Default logging abstraction -->
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />

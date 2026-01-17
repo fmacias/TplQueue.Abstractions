@@ -28,3 +28,46 @@ Check `Project.Target.Exec` element
 of [Directory.Build.targets](./Directory.Build.targets). Notice that
 the `Powershell` command file [pack-local.ps1](./pack-local.ps1) is being
 invoked
+
+## Switch between local and nuget.org sources
+
+The [NuGet.config](./NuGet.config) file defines both the local feed and
+nuget.org. To switch which one is used for restores, either enable/disable
+the source or edit the file.
+
+Option A: enable/disable sources
+```powershell
+dotnet nuget list source
+dotnet nuget disable source LocalPackages
+dotnet nuget enable source nuget.org
+```
+
+To switch back to the local folder:
+```powershell
+dotnet nuget enable source LocalPackages
+dotnet nuget disable source nuget.org
+```
+
+Option B: edit `NuGet.config`
+```xml
+<packageSources>
+  <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
+  <add key="LocalPackages" value="..\\TplQueue.NugetLocal" />
+</packageSources>
+```
+Remove or comment the source you do not want active.
+
+## Publish a new version to NuGet.org
+
+1) Update the version in `src/Fmacias.TplQueue.Abstractions.csproj`
+   (for example, set `<PackageVersion>1.2.3</PackageVersion>`).
+2) Pack the release build:
+```powershell
+dotnet pack .\Fmacias.TplQueue.Abstractions.sln -c Release -o ..\TplQueue.NugetLocal -p:SkipPackLocal=true
+```
+3) Push the package to NuGet.org:
+```powershell
+dotnet nuget push ..\TplQueue.NugetLocal\Fmacias.TplQueue.Abstractions.1.2.3.nupkg `
+  --source https://api.nuget.org/v3/index.json `
+  --api-key <YOUR_NUGET_API_KEY>
+```

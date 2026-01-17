@@ -14,7 +14,15 @@ function Invoke-Dotnet {
 # Return the folder that contains this script.
 # Example: if this script is in C:\repo\TplQueue.Abstractions\pack-local.ps1, returns C:\repo\TplQueue.Abstractions.
 function Get-RepoRoot {
-  return Split-Path -Parent $MyInvocation.MyCommand.Path
+  if ($PSScriptRoot) {
+    return $PSScriptRoot
+  }
+
+  if ($PSCommandPath) {
+    return Split-Path -Parent $PSCommandPath
+  }
+
+  throw 'Unable to resolve the script directory.'
 }
 
 # Ensure the local NuGet folder exists and return its absolute path.

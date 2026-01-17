@@ -1,5 +1,5 @@
 <Project>
-  <Target Name="PackLocalAfterSolutionBuild" AfterTargets="Build" Condition="'$(BuildingSolutionFile)' == 'true' and '$(SkipPackLocal)' != 'true' and '$(SolutionFileName)' == 'Fmacias.TplQueue.Abstractions.sln' and '$(MSBuildProjectName)' == 'Fmacias.TplQueue.Abstractions'">
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(SolutionDir)pack-local.ps1&quot;" WorkingDirectory="$(SolutionDir)" />
+  <Target Name="PackLocalAfterSolutionBuild" AfterTargets="Build" Condition="'$(SkipPackLocal)' != 'true' and '$(SolutionFileName)' == 'Fmacias.TplQueue.Abstractions.sln' and '$(MSBuildProjectName)' == 'Fmacias.TplQueue.Abstractions'">
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildThisFileDirectory)pack-local.ps1&quot;" WorkingDirectory="$(MSBuildThisFileDirectory)" />
   </Target>
 </Project>
