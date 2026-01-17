@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!-- Target: contracts should be usable from old and new runtimes -->
+		<TargetFramework>netstandard2.0</TargetFramework>
+
+		<!-- NuGet identity -->
+		<PackageId>Fmacias.TplQueue.Abstractions</PackageId>
+		<Version>1.0.0</Version>
+		<AssemblyName>Fmacias.TplQueue.Abstractions</AssemblyName>
+		<RootNamespace>Fmacias.TplQueue</RootNamespace>
+
+		<!-- Package metadata -->
+		<Authors>Fernando Macías Ruano</Authors>
+		<Company></Company>
+		<Product>TplQueue.Abstractions</Product>
+		<Description><![CDATA[Contracts and data structures for the TplQueue 
+		orchestration ecosystem: task runners, dispatchers, observers, retry policies, 
+		cache abstractions and related models.]]>
+		</Description>
+		<PackageTags>tplqueue;task;queue;orchestration;abstractions;</PackageTags>
+		<RepositoryUrl>https://github.com/fmacias/TplQueue.Abstractions</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+
+		<!-- License: MIT for abstractions -->
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+		<!-- Optional: link the project README as NuGet readme -->
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+
+		<!-- Optional: don't pack on every build; we pack explicitly -->
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+
+		<!-- Include symbols / SourceLink if you want better debugging experience -->
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+		<!-- Optional: mark as packable explicitly (default true, but explicit is clear) -->
+		<IsPackable>true</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="NuGet.config" />
+	</ItemGroup>
+
+	<!-- Default logging abstraction -->
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
+	</ItemGroup>
+
+	<!-- Ensure README is included in the package if you use PackageReadmeFile -->
+
+</Project>
