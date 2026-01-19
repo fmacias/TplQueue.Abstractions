@@ -1,4 +1,15 @@
 ﻿# TplQueue.Abstractions
+
+## Sumario
+- Operaciones: el build de la solucion ejecuta `pack-local.ps1` y deja paquetes en `..\TplQueue.NugetLocal`.
+- Operaciones: `NuGet.config` controla el feed local frente a nuget.org segun el entorno.
+
+## Empaquetado local (DevOps)
+El empaquetado local se dispara desde `Directory.Build.targets`, que llama a `pack-local.ps1` despues del build.
+Salida esperada: `.nupkg` y `.snupkg` en `..\TplQueue.NugetLocal`.
+Para ejecucion manual: `powershell -NoProfile -ExecutionPolicy Bypass -File .\pack-local.ps1`.
+Para omitir: `SkipPackLocal=true`.
+
 Public contracts and interfaces used across [TplQueue.Core](../TplQueue.Core) and 
 [TplQueue.Adapters](../TplQueue.Adapter) related components. 
 
@@ -71,3 +82,8 @@ dotnet nuget push ..\TplQueue.NugetLocal\Fmacias.TplQueue.Abstractions.1.2.3.nup
   --source https://api.nuget.org/v3/index.json `
   --api-key <YOUR_NUGET_API_KEY>
 ```
+
+## Visual Studio session note
+Avoid opening `WorkspaceTplQueue.sln` and any `TplQueue.*.sln` in separate VS sessions at the same time. The workspace swaps to project references, while standalone solutions stay package-based, and running both can lead to confusing dependency views or build output conflicts.
+
+
