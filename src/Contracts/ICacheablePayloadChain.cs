@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    internal interface IRootCacheLeaseEntry: ICacheLeaseEntry
+    public interface ICacheablePayloadChain: IJobsChain, IQueueablePayloadChain
     {
+        int LeasingPulseMs { get; set; }
     }
 }

@@ -2,25 +2,25 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
-    /// Controls a background dispatcher that polls and executes enqueued <see cref="ITaskRunner"/> items
+    /// Controls a background dispatcher that polls and executes enqueued <see cref="IJob"/> items
     /// and publishes lifecycle events via <see cref="IObservable{T}"/>.
     /// </summary>
-    public interface ITaskDispatcher : IObservable<ITaskRunnerEvent>, IDisposable
+    public interface IJobsChain : IObservable<IJobEvent>, IDisposable
     {
         /// <summary>
         /// Starts polling for work using the configured cadence and parallelism.
         /// Safe to call multiple times; subsequent calls are no-ops if already running.
         /// </summary>
-        void StartPolling();
+        void Start();
 
         /// <summary>
         /// Requests the dispatcher to stop polling and finish outstanding callbacks gracefully.
         /// Safe to call multiple times; subsequent calls are no-ops if already stopped.
         /// </summary>
-        void StopPolling();
+        void Pause();
 
         /// <summary>
         /// True once <see cref="IDisposable.Dispose"/> has been called.
@@ -36,16 +36,16 @@ namespace Fmaciasruano.TplQueue.Abstractions.Contracts
         /// Keep this fast and allocation-free. Implementations should capture a local copy
         /// before invocation to avoid races with concurrent setters.
         /// </remarks>
-        Func<ITaskRunnerEvent, Task> InternalEventDelegator { get; set; }
-        ITaskDispatcher AddToQueue(ITaskRunnerRoot taskRunnerRoot, bool isFifo, CancellationToken cancellationToken);
-        ITaskDispatcher Enqueue(ITaskRunnerRoot taskRunnerRoot, CancellationToken ct);
-        ITaskDispatcher EnqueueFifo(ITaskRunnerRoot taskRunnerRoot, CancellationToken ct);
+        Func<IJobEvent, Task> InternalEventDelegator { get; set; }
+        IJobsChain AddToQueue(IJobRoot jobRoot, bool isFifo, CancellationToken cancellationToken);
+        IJobsChain Enqueue(IJobRoot jobRoot, CancellationToken ct);
+        IJobsChain EnqueueFifo(IJobRoot jobRoot, CancellationToken ct);
 
         string Name { get; }
         int MaxParallelism { get; }
         Func<IRetryPolicy> RetryPolicyFactory { get; }
         int PulseMs { get; }
         SemaphoreSlim Semaphore { get; }
-        Task WaitRunnerUntilFinishedAsync(Guid taskRunnerId);
+        Task WaitRunnerUntilFinishedAsync(Guid jobId);
     }
 }

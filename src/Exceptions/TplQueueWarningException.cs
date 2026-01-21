@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Exceptions
+namespace Fmacias.TplQueue.Exceptions
 {
     /// <summary>
     /// Exception indicating an inconsistency or recoverable business/workflow error.

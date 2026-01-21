@@ -1,12 +1,12 @@
-﻿using Fmaciasruano.TplQueue.Abstractions.Contracts;
+﻿using Fmacias.TplQueue.Contracts;
 
-namespace Fmaciasruano.TplQueue.Abstractions
+namespace Fmacias.TplQueue
 {
     /// <summary>
-    /// Options used by <see cref="ITaskDispatcherFactory"/> to create configured dispatchers.
+    /// Options used by <see cref="IChainFactory"/> to create configured dispatchers.
     /// Immutable-after-construction; validates invariants based on <see cref="Kind"/>.
     /// </summary>
-    public class DispatcherOptions : IDispatcherOptions
+    public class DispatcherOptions : IChainOptions
     {
         public DispatcherKind Kind { get; private set; }
         public int MaxParallelism { get; private set; }

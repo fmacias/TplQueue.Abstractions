@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Marca para payloads serializables que se encolan.

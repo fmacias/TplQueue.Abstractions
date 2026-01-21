@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Exceptions
+namespace Fmacias.TplQueue.Exceptions
 {
     /// <summary>
     /// Exception that is expected as part of a normal workflow.

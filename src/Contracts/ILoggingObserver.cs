@@ -2,7 +2,7 @@
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface ILinearBackoffRetryPolicy : IBackoffRetryPolicy
+    public interface ILoggingObserver : IObserver<IJobEvent>
     {
     }
 }

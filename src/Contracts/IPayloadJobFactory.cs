@@ -1,20 +1,20 @@
 ﻿using System;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Factory used to create and rehydrate payload-aware task runners.
     /// </summary>
-    public interface IPayloadRunnerFactory
+    public interface IPayloadJobFactory
     {
-        IPayloadTaskRunner<T> Create<T>(
+        IPayloadJob<T> Create<T>(
             T payload,
             IUniversalPayloadSerializer serializer,
             string name = "")
             where T : IPayloadCommand;
 
-        IPayloadTaskRunner<T> Create<T>(
-            Guid taskRunnerId,
+        IPayloadJob<T> Create<T>(
+            Guid JobId,
             T payload,
             IUniversalPayloadSerializer serializer,
             string name = "")
@@ -23,19 +23,19 @@ namespace Fmaciasruano.TplQueue.Abstractions.Contracts
         /// <summary>
         /// Rehydrates a payload-carrying runner from a cache lease entry.
         /// </summary>
-        IPayloadCarrier Load(
+        IPayloadCarrierJob Load(
             ICacheLeaseEntry lease,
             IUniversalPayloadSerializer serializer);
 
-        IPayloadTaskRunnerRoot<T> CreateRoot<T>(
-            Guid taskRunnerId,
+        IPayloadJobRoot<T> CreateRoot<T>(
+            Guid JobId,
             T payload,
             IUniversalPayloadSerializer serializer,
             Func<IRetryPolicy>? retryPolicyFactory = null,
             string name = "")
             where T : IPayloadCommand;
 
-        IPayloadTaskRunnerRoot<T> CreateRoot<T>(
+        IPayloadJobRoot<T> CreateRoot<T>(
             T payload,
             IUniversalPayloadSerializer serializer,
             Func<IRetryPolicy>? retryPolicyFactory = null,
@@ -45,7 +45,7 @@ namespace Fmaciasruano.TplQueue.Abstractions.Contracts
         /// <summary>
         /// Rehydrates a payload-carrying root runner from a cache lease entry.
         /// </summary>
-        IPayloadCarrierRoot LoadRoot(
+        IPayloadJobRoot LoadRoot(
             ICacheLeaseEntry lease,
             IUniversalPayloadSerializer serializer);
     }

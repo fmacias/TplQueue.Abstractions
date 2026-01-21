@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Fmaciasruano.TplQueue.Abstractions
+namespace Fmacias.TplQueue
 {
     public enum NodeExecStatus { Pending, Runnable, Running, Succeeded, Failed, Canceled }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     public interface ITaskBufferStore
     {
@@ -12,7 +12,7 @@ namespace Fmaciasruano.TplQueue.Abstractions.Contracts
             string handlerId,
             string payloadType,
             string payloadJson,
-            TaskRunnerEventStatus lastStatus,
+            JobEventStatus lastStatus,
             DateTime timestamp);
 
         // Devuelve items pendientes por ejecutar (ordenable por timestamp/dep)

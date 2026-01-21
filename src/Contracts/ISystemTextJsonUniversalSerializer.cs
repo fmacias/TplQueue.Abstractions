@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     public interface ISystemTextJsonUniversalSerializer: IUniversalPayloadSerializer
     {

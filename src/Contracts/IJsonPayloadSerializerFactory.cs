@@ -1,7 +1,7 @@
 ﻿// Abstractions/Contracts/IJsonPayloadSerializerFactory.cs
 using System;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Factory that produces a typed IJsonPayloadSerializer&lt;T&gt; instance for a given payload Type.

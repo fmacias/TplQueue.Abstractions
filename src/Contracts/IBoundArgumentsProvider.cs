@@ -1,4 +1,4 @@
-﻿namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+﻿namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Internal, optional hook to expose immutable snapshots of the

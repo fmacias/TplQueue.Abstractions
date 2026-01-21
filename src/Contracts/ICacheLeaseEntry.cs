@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// A leased cache entry (read-only + lease token for ack/fail/cancel).
@@ -8,10 +8,10 @@ namespace Fmaciasruano.TplQueue.Abstractions.Contracts
     public interface ICacheLeaseEntry
     {
         Guid LeaseId { get; }
-        Guid TaskRunnerRootId { get; }
-        Guid TaskRunnerId { get; }
-        Guid ParentTaskRunnerId { get; }
-        ITaskRunnerNodeDto TaskRunnerNodeDto { get; }
+        Guid JobRootId { get; }
+        Guid JobId { get; }
+        Guid ParentJobId { get; }
+        IJobNodeDto JobNodeDto { get; }
         DateTime CacheUtc { get; }
         bool IsFifo { get; }
         EntryStatus Status { get; }

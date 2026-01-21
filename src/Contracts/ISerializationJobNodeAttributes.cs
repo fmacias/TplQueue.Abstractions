@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
-    public interface ISerializationRunnerNodeAttributes
+    public interface ISerializationJobNodeAttributes
     {
         string HandlerId { get; set; }
         string? PayloadJson { get; set; }

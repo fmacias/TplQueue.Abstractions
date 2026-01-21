@@ -1,6 +1,6 @@
-﻿namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+﻿namespace Fmacias.TplQueue.Contracts
 {
-    public interface IDispatcherOptions
+    public interface IChainOptions
     {
         int MaxParallelism { get; }
         int PulseMs { get; }

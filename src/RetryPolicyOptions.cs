@@ -1,4 +1,4 @@
-﻿namespace Fmaciasruano.TplQueue.Abstractions
+﻿namespace Fmacias.TplQueue
 {
     /// <summary>
     /// Value object describing how to build a retry policy.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Abstraction to dispatch observer callbacks on a UI or synchronization context,

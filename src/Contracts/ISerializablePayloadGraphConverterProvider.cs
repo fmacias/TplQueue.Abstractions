@@ -1,7 +1,6 @@
 ﻿using System.Threading;
-using Fmaciasruano.TplQueue.Abstractions.Contracts;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Provides serialization helpers for payload graphs without requiring a generic class.
@@ -16,7 +15,7 @@ namespace Fmaciasruano.TplQueue.Abstractions.Contracts
         /// <param name="root">Root node of the payload graph.</param>
         /// 
         /// <returns>A non-generic DTO representing the graph for persistence/rehydration.</returns>
-        ITaskGraphDto ToDto<TPayload>(IPayloadTaskRunnerRoot<TPayload> root)
+        ITaskGraphDto ToDto<TPayload>(IPayloadJobRoot<TPayload> root)
             where TPayload : IPayloadCommand;
     }
 }

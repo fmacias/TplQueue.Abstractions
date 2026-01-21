@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     public interface IObserverFactory
     {
         IObserverDispatcher CreateObserverDispatcher();
-        ITaskQueueLoggingObserver CreateLoggingObserver(ILogger<ITaskQueueLoggingObserver> logger);
-        ITaskRunnerConsoleObserver CreateConsoleObserver();
+        ILoggingObserver CreateLoggingObserver(ILogger<ILoggingObserver> logger);
+        IConsoleObserver CreateConsoleObserver();
         IProfilingObserver CreateProfilingObserver(ILogger<IProfilingObserver> logger);
-        ITaskRunnerViewModelObserver CreateViewModeObserver(IObserverDispatcher observerDispatcher);
+        IViewModelObserver CreateViewModeObserver(IObserverDispatcher observerDispatcher);
     }
 }

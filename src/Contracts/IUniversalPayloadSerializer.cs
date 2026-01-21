@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     public interface IUniversalPayloadSerializer
     {
@@ -11,6 +11,6 @@ namespace Fmaciasruano.TplQueue.Abstractions.Contracts
         // Fast, strongly-typed (new)
         string Serialize<T>(T value) where T : IPayloadCommand;
         T Deserialize<T>(string json) where T : IPayloadCommand;
-        string Serialize(IPayloadCarrier carrier);
+        string Serialize(IPayloadCarrierJob carrier);
     }
 }

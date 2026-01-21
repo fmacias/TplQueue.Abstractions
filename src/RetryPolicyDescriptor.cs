@@ -1,7 +1,7 @@
-﻿using Fmaciasruano.TplQueue.Abstractions.Contracts;
+﻿using Fmacias.TplQueue.Contracts;
 using System;
 
-namespace Fmaciasruano.TplQueue.Abstractions
+namespace Fmacias.TplQueue
 {
     /// <summary>
     /// <![CDATA[

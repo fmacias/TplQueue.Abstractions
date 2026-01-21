@@ -1,4 +1,4 @@
-﻿namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+﻿namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Payload serializable que contiene su propio handler (command pattern).

@@ -1,14 +1,13 @@
-﻿using Fmaciasruano.TplQueue.Abstractions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     public interface IApi: ICoreApi
     {
         IObserverFactory GetObserverFactory();
         ICacheFactory GetCacheFactory();
-        IPayloadRunnerFactory GetPayloadRunnerFactory();
-        ISerializableDispatcherFactory GetSerializableDispatcherFactory();
+        IPayloadJobFactory GetPayloadJobFactory();
+        ICacheableChainFactory GetSerializableDispatcherFactory();
         IRetryPolicyFactory GetRetryPolicyFactory(IReadOnlyDictionary<string, RetryPolicyOptions> options);
         ICoreApi GetCoreApi();
     }

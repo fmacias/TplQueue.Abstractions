@@ -1,31 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Non-generic carrier to allow heterogeneous queues to enforce “serializable-only”.
     /// </summary>
-    public interface IPayloadCarrier: ITaskRunner
+    public interface IPayloadCarrierJob: IJob
     {
         object GetPayload();
         Type PayloadType { get; }
-        IReadOnlyList<IPayloadCarrier> GetPayloadDependencies();
+        IReadOnlyList<IPayloadCarrierJob> GetPayloadDependencies();
     }
 
-    public interface IPayloadCarrierRoot : IPayloadCarrier, ITaskRunnerRoot
+    public interface IPayloadJobRoot : IPayloadCarrierJob, IJobRoot
     {
     }
     /// <summary>
     /// Nodo que porta un payload serializable. Es opcional:
     /// si un runner no lo implementa, se serializa solo la topología.
     /// </summary>
-    public interface IPayloadCarrier<T> : IPayloadCarrier
+    public interface IPayloadCarrier<T> : IPayloadCarrierJob
     {
         T Payload { get; }
     }
 
-    public interface IPayloadCarrierRoot<T> : IPayloadCarrierRoot
+    public interface IPayloadCarrierRoot<T> : IPayloadJobRoot
     {
     }
 
@@ -33,7 +33,7 @@ namespace Fmaciasruano.TplQueue.Abstractions.Contracts
     /// Strongly-typed root payload task runner.
     /// Extends the payload-carrying root and the base runner root contract.
     /// </summary>
-    public interface IPayloadTaskRunnerRoot<T> : IPayloadTaskRunner<T>, IPayloadCarrierRoot<T>, ITaskRunnerRoot
+    public interface IPayloadJobRoot<T> : IPayloadJob<T>, IPayloadCarrierRoot<T>, IJobRoot
         where T : IPayloadCommand
     {
     }
