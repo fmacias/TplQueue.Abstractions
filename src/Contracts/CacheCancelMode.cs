@@ -1,5 +1,4 @@
-﻿// Abstractions/Contracts/CacheCancelMode.cs
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+﻿namespace Fmacias.TplQueue.Contracts
 {
     public enum CacheCancelMode
     {

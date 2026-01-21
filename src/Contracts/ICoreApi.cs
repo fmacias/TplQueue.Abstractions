@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// High-level API (facade) to construct dispatchers, retry policies and task runners

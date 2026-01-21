@@ -1,7 +1,6 @@
-﻿using Fmaciasruano.TplQueue.Abstractions.Contracts;
-using System;
+﻿using System;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     public interface ICacheEntry
     {

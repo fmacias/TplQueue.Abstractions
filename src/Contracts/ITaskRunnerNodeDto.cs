@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Data Transfer Object (DTO) node used exclusively in the serialization pipeline for payload-based task runners.

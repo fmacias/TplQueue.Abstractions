@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Fmacias.TplQueue;
+using System;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Converts retry policies to/from a serializable descriptor.

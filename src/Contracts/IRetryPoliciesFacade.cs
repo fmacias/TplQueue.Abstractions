@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Fmacias.TplQueue;
+using System.Collections.Generic;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     public interface IRetryPoliciesFacade
     {

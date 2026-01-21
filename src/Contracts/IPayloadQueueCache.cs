@@ -1,9 +1,8 @@
-﻿// Abstractions/Contracts/IPayloadQueueCache.cs
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Cache persistente por grafos (root + dependencias).

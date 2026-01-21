@@ -1,6 +1,6 @@
-﻿using Fmaciasruano.TplQueue.Abstractions.Contracts;
+﻿using Fmacias.TplQueue.Contracts;
 
-namespace Fmaciasruano.TplQueue.Abstractions
+namespace Fmacias.TplQueue
 {
     public interface ISerializableRunner : ITaskRunner
     {

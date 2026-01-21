@@ -1,4 +1,4 @@
-﻿namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+﻿namespace Fmacias.TplQueue.Contracts
 {
     public enum TaskRunnerEventStatus
     {

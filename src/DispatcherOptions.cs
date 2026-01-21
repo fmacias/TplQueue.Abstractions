@@ -1,6 +1,6 @@
-﻿using Fmaciasruano.TplQueue.Abstractions.Contracts;
+﻿using Fmacias.TplQueue.Contracts;
 
-namespace Fmaciasruano.TplQueue.Abstractions
+namespace Fmacias.TplQueue
 {
     /// <summary>
     /// Options used by <see cref="ITaskDispatcherFactory"/> to create configured dispatchers.

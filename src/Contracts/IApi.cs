@@ -1,7 +1,6 @@
-﻿using Fmaciasruano.TplQueue.Abstractions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     public interface IApi: ICoreApi
     {

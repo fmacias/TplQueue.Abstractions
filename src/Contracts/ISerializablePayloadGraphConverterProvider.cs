@@ -1,7 +1,6 @@
 ﻿using System.Threading;
-using Fmaciasruano.TplQueue.Abstractions.Contracts;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Provides serialization helpers for payload graphs without requiring a generic class.

@@ -1,4 +1,4 @@
-﻿namespace Fmaciasruano.TplQueue.Abstractions
+﻿namespace Fmacias.TplQueue
 {
     public enum EntryStatus {
         Pending,

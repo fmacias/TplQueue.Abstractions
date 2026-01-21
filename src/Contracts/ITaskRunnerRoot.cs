@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Contracts
+namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Type of <see cref="ITaskRunner"/> can be added to the queue <see cref="ITaskDispatcher"/>

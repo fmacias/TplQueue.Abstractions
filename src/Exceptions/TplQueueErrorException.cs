@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Fmaciasruano.TplQueue.Abstractions.Exceptions
+namespace Fmacias.TplQueue.Exceptions
 {
     /// <summary>
     /// Exception that represents a fatal, application-level error.
