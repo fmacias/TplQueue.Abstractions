@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface ISerializationRunnerNodeAttributes
+    public interface ISerializationJobNodeAttributes
     {
         string HandlerId { get; set; }
         string? PayloadJson { get; set; }

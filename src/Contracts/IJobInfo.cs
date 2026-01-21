@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface ITaskRunnerInfo
+    public interface IJobInfo
     {
         Guid Id { get; }
         string Name { get; }
@@ -14,14 +14,14 @@ namespace Fmacias.TplQueue.Contracts
         DateTime ExecutionEnd { get; }
         TaskStatus Status { get; }
 
-        IReadOnlyCollection<ITaskRunnerInfo> Dependencies { get; }
+        IReadOnlyCollection<IJobInfo> Dependencies { get; }
 
-        ITaskRunnerInfo[] GetInfoDependencies();
+        IJobInfo[] GetJobInfoDependencies();
 
         /// <summary>
         /// Returns an immutable snapshot of this runner's info.
         /// </summary>
-        ITaskRunnerInfo CopyInfo();
+        IJobInfo CopyInfo();
         ISerializedPayload PayloadSerializedData { get; }
     }
 }

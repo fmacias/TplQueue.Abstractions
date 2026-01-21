@@ -2,7 +2,7 @@
 
 namespace Fmacias.TplQueue
 {
-    public interface ISerializableRunner : ITaskRunner
+    public interface ISerializableRunner : IJob
     {
     }
 }

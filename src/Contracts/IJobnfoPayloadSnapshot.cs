@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface ITaskRunnerInfoPayloadSnapshot: ITaskRunnerInfo, ISerializationRunnerNodeAttributes
+    public interface IJobInfoPayloadSnapshot: IJobInfo, ISerializationJobNodeAttributes
     {
     }
 }

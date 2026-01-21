@@ -11,6 +11,6 @@ namespace Fmacias.TplQueue.Contracts
         // Fast, strongly-typed (new)
         string Serialize<T>(T value) where T : IPayloadCommand;
         T Deserialize<T>(string json) where T : IPayloadCommand;
-        string Serialize(IPayloadCarrier carrier);
+        string Serialize(IPayloadCarrierJob carrier);
     }
 }

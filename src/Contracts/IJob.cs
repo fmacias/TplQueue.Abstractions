@@ -3,17 +3,17 @@ using System.Threading.Tasks;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface ITaskRunner : ITaskRunnerInfo
+    public interface IJob : IJobInfo
     {
         /// <summary>
         /// Specifies that this task must run after the given <paramref name="previousTasks"/>.
         /// Each provided task becomes a dependency of this task.
         /// <param name="previousTasks">Tasks that must complete before this task can run.</param>
         /// </summary>
-        ITaskRunner After(params ITaskRunner[] previousTasks);
+        IJob After(params IJob[] previousTasks);
         Func<IRetryPolicy> GetRetryPolicyFactory();
-        void SetRoot(ITaskRunnerRoot taskRunnerRoot);
-        ITaskRunner[] GetBatch();
+        void SetRoot(IJobRoot jobRoot);
+        IJob[] GetJobsBatch();
         /// <summary>
         /// Collects the status of the external asynchronus operation related with this object
         /// in order to get awaited.

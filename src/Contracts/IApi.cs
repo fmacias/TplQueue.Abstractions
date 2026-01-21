@@ -6,8 +6,8 @@ namespace Fmacias.TplQueue.Contracts
     {
         IObserverFactory GetObserverFactory();
         ICacheFactory GetCacheFactory();
-        IPayloadRunnerFactory GetPayloadRunnerFactory();
-        ISerializableDispatcherFactory GetSerializableDispatcherFactory();
+        IPayloadJobFactory GetPayloadJobFactory();
+        ICacheableChainFactory GetSerializableDispatcherFactory();
         IRetryPolicyFactory GetRetryPolicyFactory(IReadOnlyDictionary<string, RetryPolicyOptions> options);
         ICoreApi GetCoreApi();
     }

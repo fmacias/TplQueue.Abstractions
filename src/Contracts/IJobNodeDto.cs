@@ -6,11 +6,11 @@ namespace Fmacias.TplQueue.Contracts
     /// Data Transfer Object (DTO) node used exclusively in the serialization pipeline for payload-based task runners.
     /// Both <see cref="PayloadType"/> and <see cref="PayloadJson"/> are required (non-null).
     /// </summary>
-    public interface ITaskRunnerNodeDto
+    public interface IJobNodeDto
     {
         /// <summary>Unique node identifier.</summary>
-        Guid TaskRunnerId { get; }
-        Guid ParentTaskRunnerId { get; }
+        Guid JobId { get; }
+        Guid ParentJobId { get; }
         /// <summary>User-friendly name for diagnostics (optional).</summary>
         string? Name { get; }
 

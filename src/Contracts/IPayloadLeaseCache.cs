@@ -5,16 +5,16 @@ namespace Fmacias.TplQueue.Contracts
 {
     public interface IPayloadLeaseCache
     {
-        IReadOnlyList<ITaskRunnerNodeDto> Append<TPayload>(IPayloadTaskRunnerRoot<TPayload> root, bool isFifo)
+        IReadOnlyList<IJobNodeDto> Append<TPayload>(IPayloadJobRoot<TPayload> root, bool isFifo)
             where TPayload : IPayloadCommand;
-        bool TryLeaseNextRoot(out IPayloadCarrierRoot payloadCarrierRoot, out ICacheLeaseEntry lease);
-        void AckNode(Guid nodeId, ISerializedPayload payloadData);
-        void FailNode(Guid nodeId, string? errorMessage);
-        void CancelNode(Guid nodeId);
+        bool TryLeaseNextRoot(out IPayloadJobRoot payloadCarrierRoot, out ICacheLeaseEntry lease);
+        void AckNode(Guid jobId, ISerializedPayload payloadData);
+        void FailNode(Guid jobId, string? errorMessage);
+        void CancelNode(Guid jobId);
         void LeaseRootNode(ICacheLeaseEntry leaseEntry);
-        void SuccessRootNode(Guid taskRunnerRootId);
-        bool DeleteRootNode(Guid rootId);
-        ICacheLeaseEntry GetByTaskRunnerId(Guid id);
+        void SuccessRootNode(Guid jobRootId);
+        bool DeleteRootNode(Guid jobRootId);
+        ICacheLeaseEntry GetByJobId(Guid jobId);
         IPayloadLeaseCache CleanDeleted();
         IPayloadLeaseCache CleanFinalized();
     }

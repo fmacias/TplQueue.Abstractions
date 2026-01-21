@@ -2,16 +2,16 @@
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface ITaskRunnerEvent
+    public interface IJobEvent
     {
         /// <summary>
         /// Execution status
         /// </summary>
-        TaskRunnerEventStatus Status { get; }
+        JobEventStatus Status { get; }
         /// <summary>
-        /// Inmutable DTO(Data Transfer Object) related with the <see cref="ITaskRunner"/>
+        /// Inmutable DTO(Data Transfer Object) related with the <see cref="IJob"/>
         /// </summary>
-        ITaskRunnerInfo RunnerDTO { get; }
+        IJobInfo JobDTO { get; }
         /// <summary>
         /// Exception thrown during execution
         /// </summary>

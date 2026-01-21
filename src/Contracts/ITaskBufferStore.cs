@@ -12,7 +12,7 @@ namespace Fmacias.TplQueue.Contracts
             string handlerId,
             string payloadType,
             string payloadJson,
-            TaskRunnerEventStatus lastStatus,
+            JobEventStatus lastStatus,
             DateTime timestamp);
 
         // Devuelve items pendientes por ejecutar (ordenable por timestamp/dep)
