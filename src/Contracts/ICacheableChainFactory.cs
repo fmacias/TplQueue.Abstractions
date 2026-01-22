@@ -8,6 +8,6 @@ namespace Fmacias.TplQueue.Contracts
     /// </summary>
     public interface ICacheableChainFactory
     {
-        ICacheablePayloadChain Create(ILogger<ICacheablePayloadChain> logger, IPayloadLeaseCache payloadLeaseCache, IJobsChain dispatcher);
+        ICacheablePayloadChain Create(ILogger<ICacheablePayloadChain> logger, IPayloadLeaseCache payloadLeaseCache, IJobQ dispatcher);
     }
 }

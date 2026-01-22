@@ -8,7 +8,7 @@ namespace Fmacias.TplQueue.Contracts
     /// Controls a background dispatcher that polls and executes enqueued <see cref="IJob"/> items
     /// and publishes lifecycle events via <see cref="IObservable{T}"/>.
     /// </summary>
-    public interface IJobsChain : IObservable<IJobEvent>, IDisposable
+    public interface IJobQ : IObservable<IJobEvent>, IDisposable
     {
         /// <summary>
         /// Starts polling for work using the configured cadence and parallelism.
@@ -37,9 +37,9 @@ namespace Fmacias.TplQueue.Contracts
         /// before invocation to avoid races with concurrent setters.
         /// </remarks>
         Func<IJobEvent, Task> InternalEventDelegator { get; set; }
-        IJobsChain AddToQueue(IJobRoot jobRoot, bool isFifo, CancellationToken cancellationToken);
-        IJobsChain Enqueue(IJobRoot jobRoot, CancellationToken ct);
-        IJobsChain EnqueueFifo(IJobRoot jobRoot, CancellationToken ct);
+        IJobQ Enqueue(IJobRoot jobRoot, bool isFifo, CancellationToken cancellationToken);
+        IJobQ Enqueue(IJobRoot jobRoot, CancellationToken ct);
+        IJobQ EnqueueFifo(IJobRoot jobRoot, CancellationToken ct);
 
         string Name { get; }
         int MaxParallelism { get; }

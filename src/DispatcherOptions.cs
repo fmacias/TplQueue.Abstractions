@@ -3,7 +3,7 @@
 namespace Fmacias.TplQueue
 {
     /// <summary>
-    /// Options used by <see cref="IChainFactory"/> to create configured dispatchers.
+    /// Options used by <see cref="IQFactory"/> to create configured dispatchers.
     /// Immutable-after-construction; validates invariants based on <see cref="Kind"/>.
     /// </summary>
     public class DispatcherOptions : IChainOptions

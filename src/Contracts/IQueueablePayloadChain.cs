@@ -6,10 +6,10 @@ namespace Fmacias.TplQueue.Contracts
 {
     public interface IQueueablePayloadChain
     {
-        IJobsChain Enqueue<TPayload>(IPayloadJobRoot<TPayload> jobRoot, CancellationToken ct)
+        IJobQ Enqueue<TPayload>(IPayloadJobRoot<TPayload> jobRoot, CancellationToken ct)
             where TPayload : IPayloadCommand;
 
-        IJobsChain EnqueueFifo<TPayload>(IPayloadJobRoot<TPayload> jobRoot, CancellationToken ct)
+        IJobQ EnqueueFifo<TPayload>(IPayloadJobRoot<TPayload> jobRoot, CancellationToken ct)
             where TPayload : IPayloadCommand;
     }
 }
