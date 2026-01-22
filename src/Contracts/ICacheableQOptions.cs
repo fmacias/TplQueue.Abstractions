@@ -1,6 +1,6 @@
 ﻿namespace Fmacias.TplQueue.Contracts
 {
-    public interface ICacheableChainOptions: IChainOptions
+    public interface ICacheableQOptions: IQOptions
     {
         IPayloadLeaseCache PayloadLeaseCache { get; }
         IPayloadJobFactory PayloadRunnerFactory { get; }

@@ -1,6 +1,6 @@
 ﻿namespace Fmacias.TplQueue
 {
-    public enum DispatcherKind
+    public enum QKind
     {
         StrictFifo,
         Parallel,

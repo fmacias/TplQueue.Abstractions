@@ -9,7 +9,7 @@ namespace Fmacias.TplQueue.Contracts
     public interface IQFactory
     {
         /// <summary>Create a parallel dispatcher from full options.</summary>
-        IParallelQ CreateParallel(IChainOptions chainOptions, string name, ILogger logger);
+        IParallelQ CreateParallel(IQOptions chainOptions, string name, ILogger logger);
 
         /// <summary>Create a parallel dispatcher from explicit parameters.</summary>
         IParallelQ CreateParallel(string name, Func<IRetryPolicy> retryPolicyFactory, int maxParallelism, ILogger logger, int pulseMs);
@@ -18,7 +18,7 @@ namespace Fmacias.TplQueue.Contracts
         IParallelQ CreateParallel(string name, ILogger logger);
 
         /// <summary>Create a strict FIFO dispatcher from full options.</summary>
-        IFifoQ CreateFifo(IChainOptions chainOptions, string name, ILogger logger);
+        IFifoQ CreateFifo(IQOptions chainOptions, string name, ILogger logger);
 
         /// <summary>Create a strict FIFO dispatcher from explicit parameters.</summary>
         IFifoQ CreateFifo(string name, Func<IRetryPolicy> retryPolicyFactory, int pulseMs, ILogger logger);

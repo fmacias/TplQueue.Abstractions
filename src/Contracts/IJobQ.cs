@@ -36,7 +36,7 @@ namespace Fmacias.TplQueue.Contracts
         /// Keep this fast and allocation-free. Implementations should capture a local copy
         /// before invocation to avoid races with concurrent setters.
         /// </remarks>
-        Func<IJobEvent, Task> InternalEventDelegator { get; set; }
+        Func<IJobEvent, Task> OnEventChange { get; set; }
         IJobQ Enqueue(IJobRoot jobRoot, bool isFifo, CancellationToken cancellationToken);
         IJobQ Enqueue(IJobRoot jobRoot, CancellationToken ct);
         IJobQ EnqueueFifo(IJobRoot jobRoot, CancellationToken ct);

@@ -1,6 +1,6 @@
 ﻿namespace Fmacias.TplQueue.Contracts
 {
-    public interface IChainOptions
+    public interface IQOptions
     {
         int MaxParallelism { get; }
         int PulseMs { get; }

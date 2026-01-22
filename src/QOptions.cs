@@ -6,15 +6,15 @@ namespace Fmacias.TplQueue
     /// Options used by <see cref="IQFactory"/> to create configured dispatchers.
     /// Immutable-after-construction; validates invariants based on <see cref="Kind"/>.
     /// </summary>
-    public class DispatcherOptions : IChainOptions
+    public class QOptions : IQOptions
     {
-        public DispatcherKind Kind { get; private set; }
+        public QKind Kind { get; private set; }
         public int MaxParallelism { get; private set; }
         public int PulseMs { get; private set; }
         public string RetryPolicy { get; private set; }
  
-        public DispatcherOptions(
-            DispatcherKind kind,
+        public QOptions(
+            QKind kind,
             int maxParallelism,
             int pulseMs,
             string retryPolicy)

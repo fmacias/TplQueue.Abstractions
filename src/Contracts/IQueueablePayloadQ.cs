@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface IQueueablePayloadChain
+    public interface IQueueablePayloadQ
     {
         IJobQ Enqueue<TPayload>(IPayloadJobRoot<TPayload> jobRoot, CancellationToken ct)
             where TPayload : IPayloadCommand;

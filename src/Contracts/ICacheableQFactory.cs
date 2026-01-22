@@ -6,8 +6,8 @@ namespace Fmacias.TplQueue.Contracts
     /// <summary>
     /// Factory that creates configured task dispatchers (parallel, serializable, strict FIFO).
     /// </summary>
-    public interface ICacheableChainFactory
+    public interface ICacheableQFactory
     {
-        ICacheablePayloadChain Create(ILogger<ICacheablePayloadChain> logger, IPayloadLeaseCache payloadLeaseCache, IJobQ dispatcher);
+        ICacheablePayloadQ Create(ILogger<ICacheablePayloadQ> logger, IPayloadLeaseCache payloadLeaseCache, IJobQ dispatcher);
     }
 }
