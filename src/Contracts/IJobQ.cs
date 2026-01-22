@@ -44,7 +44,6 @@ namespace Fmacias.TplQueue.Contracts
         string Name { get; }
         int MaxParallelism { get; }
         Func<IRetryPolicy> RetryPolicyFactory { get; }
-        int PulseMs { get; }
         SemaphoreSlim Semaphore { get; }
         Task WaitRunnerUntilFinishedAsync(Guid jobId);
     }
