@@ -9,7 +9,8 @@ namespace Fmacias.TplQueue.Contracts
     /// </summary>
     public interface ICoreApi
     {
-        IQFactory GetTaskDispatcherFactory(IReadOnlyDictionary<string, IQOptions> options, IRetryPolicyFactory retries);
+        IQFactory GetQFactory(IRetryPolicyFactory retries);
+        IQFactory GetQFactory(IReadOnlyDictionary<string, IQOptions> options, IRetryPolicyFactory retries);
         IJobFactory GetJobFactory();
         IJobRootFactory GetJobRootFactory();
     }

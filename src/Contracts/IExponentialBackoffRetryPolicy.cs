@@ -2,7 +2,7 @@
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface IExponentialFactorRetryPolicy : IBackoffRetryPolicy
+    public interface IExponentialBackoffRetryPolicy : IBackoffRetryPolicy
     {
         double Factor { get; }
     }

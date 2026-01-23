@@ -51,8 +51,8 @@ namespace Fmacias.TplQueue.Contracts
         /// <param name="factor">Exponential factor (&gt; 0).</param>
         /// <param name="shouldRetry">If false, this is equivalent to <see cref="CreateNoRetryPolicy"/>.</param>
         /// <param name="baseDelayMilliseconds">Base delay in milliseconds for the first retry.</param>
-        /// <returns>An <see cref="IExponentialFactorRetryPolicy"/> instance.</returns>
-        IExponentialFactorRetryPolicy CreateExponentialBackoff(
+        /// <returns>An <see cref="IExponentialBackoffRetryPolicy"/> instance.</returns>
+        IExponentialBackoffRetryPolicy CreateExponentialBackoff(
             int maxRetries,
             double factor,
             bool shouldRetry,

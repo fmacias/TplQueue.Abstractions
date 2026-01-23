@@ -2,6 +2,6 @@
 {
     public interface IJobQAdapter: IJobQ
     {
-        IJobQ GetInnerChain();
+        IJobQ GetInnerQ();
     }
 }

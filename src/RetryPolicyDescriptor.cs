@@ -100,6 +100,6 @@ namespace Fmacias.TplQueue
         /// Descriptor for an exponential backoff retry policy.
         /// </summary>
         public static IRetryPolicyDescriptor Exponential(int maxRetries, int baseDelayMs, double factor, bool shouldRetry = true)
-            => new RetryPolicyDescriptor("exponential", typeof(IExponentialFactorRetryPolicy), maxRetries, baseDelayMs, factor, shouldRetry);
+            => new RetryPolicyDescriptor("exponential", typeof(IExponentialBackoffRetryPolicy), maxRetries, baseDelayMs, factor, shouldRetry);
     }
 }

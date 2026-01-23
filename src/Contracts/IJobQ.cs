@@ -46,5 +46,6 @@ namespace Fmacias.TplQueue.Contracts
         Func<IRetryPolicy> RetryPolicyFactory { get; }
         SemaphoreSlim Semaphore { get; }
         Task WaitRunnerUntilFinishedAsync(Guid jobId);
+        IJobQ SetRetryPolicyFactory(Func<IRetryPolicy> retryPolicy);
     }
 }
