@@ -13,9 +13,9 @@ namespace Fmacias.TplQueue.Contracts
         /// Adds this object to the given <see cref="IJobQ"/> with the 
         /// provided <see cref="CancellationToken"/>
         /// </summary>
-        /// <param name="jobsChain"></param>
+        /// <param name="jobQ"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        IJobQ Enqueue(IJobQ jobsChain, CancellationToken ct);
+        IJobQ Enqueue(IJobQ jobQ, CancellationToken ct);
     }
 }

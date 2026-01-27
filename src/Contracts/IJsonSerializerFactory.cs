@@ -7,8 +7,8 @@ namespace Fmacias.TplQueue.Contracts
     /// Factory that produces a typed IJsonPayloadSerializer&lt;T&gt; instance for a given payload Type.
     /// The returned instance is boxed but implements both IJsonPayloadSerializer&lt;T&gt; and IPayloadSerializer&lt;T&gt;.
     /// </summary>
-    public interface IJsonPayloadSerializerFactory
+    public interface IJsonSerializerFactory
     {
-        object Create(Type payloadType);
+        IJsonUniversalPayloadSerializer CreateSerializer();
     }
 }

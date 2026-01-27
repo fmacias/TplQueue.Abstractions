@@ -9,14 +9,14 @@ namespace Fmacias.TplQueue.Contracts
     {
         IPayloadJob<T> Create<T>(
             T payload,
-            IUniversalPayloadSerializer serializer,
+            IJsonUniversalPayloadSerializer serializer,
             string name = "")
             where T : IPayloadCommand;
 
         IPayloadJob<T> Create<T>(
             Guid JobId,
             T payload,
-            IUniversalPayloadSerializer serializer,
+            IJsonUniversalPayloadSerializer serializer,
             string name = "")
             where T : IPayloadCommand;
 
@@ -25,19 +25,19 @@ namespace Fmacias.TplQueue.Contracts
         /// </summary>
         IPayloadCarrierJob Load(
             ICacheLeaseEntry lease,
-            IUniversalPayloadSerializer serializer);
+            IJsonUniversalPayloadSerializer serializer);
 
         IPayloadJobRoot<T> CreateRoot<T>(
             Guid JobId,
             T payload,
-            IUniversalPayloadSerializer serializer,
+            IJsonUniversalPayloadSerializer serializer,
             Func<IRetryPolicy>? retryPolicyFactory = null,
             string name = "")
             where T : IPayloadCommand;
 
         IPayloadJobRoot<T> CreateRoot<T>(
             T payload,
-            IUniversalPayloadSerializer serializer,
+            IJsonUniversalPayloadSerializer serializer,
             Func<IRetryPolicy>? retryPolicyFactory = null,
             string name = "")
             where T : IPayloadCommand;
@@ -47,6 +47,6 @@ namespace Fmacias.TplQueue.Contracts
         /// </summary>
         IPayloadJobRoot LoadRoot(
             ICacheLeaseEntry lease,
-            IUniversalPayloadSerializer serializer);
+            IJsonUniversalPayloadSerializer serializer);
     }
 }
