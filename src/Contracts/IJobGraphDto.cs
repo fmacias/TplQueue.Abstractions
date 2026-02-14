@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface ITaskGraphDto
+    public interface IJobGraphDto
     {
         IReadOnlyList<IJobNodeDto> ExtractNodes(Action<IJobNodeDto, Guid> edgedNodeCallBack);
     }

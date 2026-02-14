@@ -11,7 +11,7 @@ namespace Fmacias.TplQueue.Contracts
         /// <summary>
         /// Inmutable DTO(Data Transfer Object) related with the <see cref="IJob"/>
         /// </summary>
-        IJobInfo JobDTO { get; }
+        IJobInfo JobInfo { get; }
         /// <summary>
         /// Exception thrown during execution
         /// </summary>

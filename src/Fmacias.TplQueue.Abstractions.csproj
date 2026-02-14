@@ -36,6 +36,9 @@
 		<!-- Optional: mark as packable explicitly (default true, but explicit is clear) -->
 		<IsPackable>true</IsPackable>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Contracts\ISerializedPayloadFactory.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Remove="NuGet.config" />

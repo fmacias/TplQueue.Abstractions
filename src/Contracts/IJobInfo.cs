@@ -13,15 +13,6 @@ namespace Fmacias.TplQueue.Contracts
         TimeSpan ExecutionTime { get; }
         DateTime ExecutionEnd { get; }
         TaskStatus Status { get; }
-
         IReadOnlyCollection<IJobInfo> Dependencies { get; }
-
-        IJobInfo[] GetJobInfoDependencies();
-
-        /// <summary>
-        /// Returns an immutable snapshot of this runner's info.
-        /// </summary>
-        IJobInfo CopyInfo();
-        ISerializedPayload PayloadSerializedData { get; }
     }
 }

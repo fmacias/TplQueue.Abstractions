@@ -9,6 +9,6 @@ namespace Fmacias.TplQueue.Contracts
     /// </summary>
     public interface IJsonSerializerFactory
     {
-        IJsonUniversalPayloadSerializer CreateSerializer();
+        IUniversalPayloadSerializer CreateSerializer();
     }
 }

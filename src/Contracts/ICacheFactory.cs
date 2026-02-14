@@ -2,6 +2,7 @@
 {
     public interface ICacheFactory
     {
-        IMemCache CreateMemCache(IPayloadJobFactory payloadRunnerFactory, IJsonUniversalPayloadSerializer serializer);
+        IMemCache CreateMemCache(IPayloadJobFactory payloadRunnerFactory, 
+            IUniversalPayloadSerializer serializer, ICacheEntryFactory cacheFacade);
    }
 }

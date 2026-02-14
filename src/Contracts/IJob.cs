@@ -20,5 +20,12 @@ namespace Fmacias.TplQueue.Contracts
         /// </summary>
         /// <returns></returns>
         Task WaitUntilFinishedAsync();
+        IJobInfo[] GetJobInfoDependencies();
+
+        /// <summary>
+        /// Returns an immutable snapshot of this runner's info.
+        /// </summary>
+        IJobInfo CopyInfo();
+
     }
 }

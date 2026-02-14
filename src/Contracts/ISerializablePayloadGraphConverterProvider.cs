@@ -11,11 +11,11 @@ namespace Fmacias.TplQueue.Contracts
         /// <summary>
         /// Builds a transport DTO for a graph rooted at the given payload task runner.
         /// </summary>
-        /// <typeparam name="TPayload">Payload type that implements <see cref="IPayloadCommand"/>.</typeparam>
+        /// <typeparam name="TPayload">Payload type that implements <see cref="IPayload"/>.</typeparam>
         /// <param name="root">Root node of the payload graph.</param>
         /// 
         /// <returns>A non-generic DTO representing the graph for persistence/rehydration.</returns>
-        ITaskGraphDto ToDto<TPayload>(IPayloadJobRoot<TPayload> root)
-            where TPayload : IPayloadCommand;
+        IJobGraphDto ToDto<TPayload>(IPayloadJobRoot<TPayload> root)
+            where TPayload : IPayload;
     }
 }

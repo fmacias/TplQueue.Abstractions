@@ -45,7 +45,7 @@ namespace Fmacias.TplQueue.Contracts
         int MaxParallelism { get; }
         Func<IRetryPolicy> RetryPolicyFactory { get; }
         SemaphoreSlim Semaphore { get; }
-        Task WaitRunnerUntilFinishedAsync(Guid jobId);
+        Task Wait(int stateAtMs = 0);
         IJobQ SetRetryPolicyFactory(Func<IRetryPolicy> retryPolicy);
     }
 }

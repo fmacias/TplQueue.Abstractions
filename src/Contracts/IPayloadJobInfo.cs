@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface IPayloadJobInfo<TPayload>:IJobInfo
+    public interface IPayloadJobInfo:IJobInfo, ISerializable
     {
-        TPayload Payload { get; }
     }
 }

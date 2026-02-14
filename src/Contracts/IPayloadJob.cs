@@ -6,7 +6,7 @@
     /// access payloads without knowing <typeparamref name="T"/>.
     /// </summary>
     public interface IPayloadJob<T> : IPayloadCarrier<T>, IJob
-        where T : IPayloadCommand
+        where T : IPayload
     {
     }
 }

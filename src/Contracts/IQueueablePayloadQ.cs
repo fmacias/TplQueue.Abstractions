@@ -7,9 +7,9 @@ namespace Fmacias.TplQueue.Contracts
     public interface IQueueablePayloadQ
     {
         IJobQ Enqueue<TPayload>(IPayloadJobRoot<TPayload> jobRoot, CancellationToken ct)
-            where TPayload : IPayloadCommand;
+            where TPayload : IPayload;
 
         IJobQ EnqueueFifo<TPayload>(IPayloadJobRoot<TPayload> jobRoot, CancellationToken ct)
-            where TPayload : IPayloadCommand;
+            where TPayload : IPayload;
     }
 }

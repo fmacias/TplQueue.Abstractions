@@ -7,46 +7,52 @@ namespace Fmacias.TplQueue.Contracts
     /// </summary>
     public interface IPayloadJobFactory
     {
-        IPayloadJob<T> Create<T>(
+        IPayloadJob<T> CreateJob<T>(
             T payload,
-            IJsonUniversalPayloadSerializer serializer,
-            string name = "")
-            where T : IPayloadCommand;
-
-        IPayloadJob<T> Create<T>(
-            Guid JobId,
+            string name = "") where T : IPayload;
+        
+        IPayloadJob<T> CreateJob<T>(
+            Guid id,
             T payload,
-            IJsonUniversalPayloadSerializer serializer,
-            string name = "")
-            where T : IPayloadCommand;
+            string name = "") where T : IPayload;
 
-        /// <summary>
-        /// Rehydrates a payload-carrying runner from a cache lease entry.
-        /// </summary>
-        IPayloadCarrierJob Load(
-            ICacheLeaseEntry lease,
-            IJsonUniversalPayloadSerializer serializer);
+        IPayloadCarrierJob CreateJob(
+            IJobNodeDto dto,
+            IPayload payload);
 
-        IPayloadJobRoot<T> CreateRoot<T>(
-            Guid JobId,
+        IPayloadJobRoot<T> CreateJobRoot<T>(
             T payload,
-            IJsonUniversalPayloadSerializer serializer,
-            Func<IRetryPolicy>? retryPolicyFactory = null,
-            string name = "")
-            where T : IPayloadCommand;
+            string name = "") where T : IPayload;
 
-        IPayloadJobRoot<T> CreateRoot<T>(
+        IPayloadJobRoot<T> CreateJobRoot<T>(
             T payload,
-            IJsonUniversalPayloadSerializer serializer,
-            Func<IRetryPolicy>? retryPolicyFactory = null,
-            string name = "")
-            where T : IPayloadCommand;
+            Func<IRetryPolicy> policy,
+            string name = "") where T : IPayload;
 
-        /// <summary>
-        /// Rehydrates a payload-carrying root runner from a cache lease entry.
-        /// </summary>
-        IPayloadJobRoot LoadRoot(
-            ICacheLeaseEntry lease,
-            IJsonUniversalPayloadSerializer serializer);
+        IPayloadJobRoot<T> CreateJobRoot<T>(
+            T payload,
+            IRetryPolicyDescriptor retryPolicyDescriptor,
+            string name = "") where T : IPayload;
+
+        IPayloadJobRoot<T> CreateJobRoot<T>(
+            Guid id,
+            T payload,
+            string name = "") where T : IPayload;
+
+        IPayloadJobRoot<T> CreateJobRoot<T>(
+            Guid id,
+            T payload,
+            IRetryPolicyDescriptor retryPolicyDescriptor,
+            string name = "") where T : IPayload;
+
+        IPayloadJobRoot CreateJobRoot(
+            IJobNodeDto dto,
+            IPayload payload);
+
+        IPayloadJobRoot<T> CreateJobRoot<T>(
+            Guid jobId,
+            T payload,
+            Func<IRetryPolicy> policy,
+            string name = "") where T : IPayload;
     }
 }

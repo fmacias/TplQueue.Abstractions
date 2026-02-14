@@ -12,7 +12,7 @@ namespace Fmacias.TplQueue.Contracts
         /// <summary>
         /// Añade un grafo a la cache. Devuelve el Id de la entrada creada.
         /// </summary>
-        Task<Guid> AppendAsync(ITaskGraphDto graph, CancellationToken ct);
+        Task<Guid> AppendAsync(IJobGraphDto graph, CancellationToken ct);
 
         /// <summary>Devuelve el siguiente item sin retirarlo (para compatibilidad del adaptador de leases).</summary>
         Task<ICacheEntry?> TryPeekNextAsync(CancellationToken ct);

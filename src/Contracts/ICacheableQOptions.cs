@@ -2,7 +2,7 @@
 {
     public interface ICacheableQOptions: IQOptions
     {
-        IPayloadLeaseCache PayloadLeaseCache { get; }
+        IPayloadJobCache PayloadLeaseCache { get; }
         IPayloadJobFactory PayloadRunnerFactory { get; }
     }
 }

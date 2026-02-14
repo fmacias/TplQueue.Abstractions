@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// Non-generic carrier to allow heterogeneous queues to enforce “serializable-only”.
     /// </summary>
-    public interface IPayloadCarrierJob: IJob
+    public interface IPayloadCarrierJob: IJob, IPayloadJobInfo
     {
         object GetPayload();
         Type PayloadType { get; }
@@ -34,7 +36,7 @@ namespace Fmacias.TplQueue.Contracts
     /// Extends the payload-carrying root and the base runner root contract.
     /// </summary>
     public interface IPayloadJobRoot<T> : IPayloadJob<T>, IPayloadCarrierRoot<T>, IJobRoot
-        where T : IPayloadCommand
+        where T : IPayload
     {
     }
     
@@ -50,9 +52,10 @@ namespace Fmacias.TplQueue.Contracts
     /// <summary>
     /// Resuelve el handler (Func&lt;payload, CancellationToken, Task&gt;) para un tipo de payload.
     /// </summary>
+    [Obsolete("Use IJobHandlerResolver instead.")]
     public interface IHandlerResolver
     {
         /// <summary>Debe devolver un handler UNTIPADO que acepte (object payload, CancellationToken ct).</summary>
-        Func<object, System.Threading.CancellationToken, System.Threading.Tasks.Task> Resolve(Type payloadType);
+        Func<object, CancellationToken, Task> Resolve(Type payloadType);
     }
 }
