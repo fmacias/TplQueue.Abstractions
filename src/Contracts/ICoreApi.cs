@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Fmacias.TplQueue.Contracts
+﻿namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
     /// High-level API (facade) to construct dispatchers, retry policies and task runners
@@ -9,8 +7,8 @@ namespace Fmacias.TplQueue.Contracts
     /// </summary>
     public interface ICoreApi
     {
-        IQFactoryCore GetQFactoryCore();
-        IJobFactory GetJobFactoryCore();
-        IJobRootFactory GetJobRootFactoryCore();
+        ICoreQFactory QFactory { get; }
+        IJobFactory JobFactory { get; }
+        IJobRootFactory JobRootFactory { get; }
     }
 }

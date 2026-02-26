@@ -2,6 +2,6 @@
 {
     public interface ISerializable
     {
-        string Serialize(IUniversalPayloadSerializer serializer);
+        string Serialize(IUniversalDataSerializer serializer);
     }
 }

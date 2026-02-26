@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fmacias.TplQueue.Defaults;
+using System;
 
 namespace Fmacias.TplQueue.Contracts
 {
@@ -22,7 +23,7 @@ namespace Fmacias.TplQueue.Contracts
         void MarkAsDeleted();
         bool IsFinalized();
         void MarkLeased();
-        void MarkAck(ISerializable payloadData, IUniversalPayloadSerializer jsonUniversalPayloadSerializer);
+        void MarkAck(ISerializable payloadData, IUniversalDataSerializer jsonUniversalPayloadSerializer);
         void MarkFailed();
         void MarkCanceled();
         void MarkAsRootSuccessed();

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface IHandlerCatalog
+    public interface IUniversaPayloadHandler
     {
-        Func<object?, CancellationToken, Task> Resolve(string handlerId);
+        Func<object, CancellationToken, Task> ResolveAction { get; }
     }
 }

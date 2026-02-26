@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface IFifoQ: IJobQ
+    public interface IFifoQ: IQ
     {
         IFifoQ Enqueue(Action<CancellationToken> action, CancellationToken ct, string name = "", Func<IRetryPolicy>? retryPolicyFactory = null);
         IFifoQ Enqueue(Func<CancellationToken, Task> func, CancellationToken ct, string name = "", Func<IRetryPolicy>? retryPolicyFactory = null);

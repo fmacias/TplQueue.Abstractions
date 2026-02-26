@@ -8,11 +8,10 @@ namespace Fmacias.TplQueue.Contracts
     /// </summary>
     public interface IRetryPolicyDescriptor
     {
-        string Kind { get; }
-        int? MaxRetries { get; }
-        int? BaseDelayMs { get; }
-        double? Factor { get; }
-        bool? ShouldRetry { get; }
+        int MaxRetries { get; }
+        int BaseDelayMs { get; }
+        double Factor { get; }
         Type? RetryPolicyType { get; }
+        IRetryPolicyDescriptor SetRetryPolicyType(Type retryPolicyType);
     }
 }

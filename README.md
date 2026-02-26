@@ -1,14 +1,40 @@
 ﻿# TplQueue.Abstractions
 
 ## Sumario
-- Operaciones: el build de la solucion ejecuta `pack-local.ps1` y deja paquetes en `..\TplQueue.NugetLocal`.
+- Operaciones: el empaquetado local es manual via `pack-local.ps1` o `WorkspaceTplQueue\pack.ps1`.
 - Operaciones: `NuGet.config` controla el feed local frente a nuget.org segun el entorno.
 
 ## Empaquetado local (DevOps)
-El empaquetado local se dispara desde `Directory.Build.targets`, que llama a `pack-local.ps1` despues del build.
+El empaquetado local es manual via `pack-local.ps1`.
 Salida esperada: `.nupkg` y `.snupkg` en `..\TplQueue.NugetLocal`.
 Para ejecucion manual: `powershell -NoProfile -ExecutionPolicy Bypass -File .\pack-local.ps1`.
-Para omitir: `SkipPackLocal=true`.
+
+## How to (step by step)
+1) Build only (fast loop) from the workspace:
+```powershell
+..\WorkspaceTplQueue\build.ps1 -Configuration Debug
+```
+
+2) Pack this repo explicitly (standalone):
+```powershell
+.\pack-local.ps1
+```
+
+3) Pack all repos in order (workspace):
+```powershell
+..\WorkspaceTplQueue\pack.ps1
+```
+
+## Why this design (justification)
+- Keeps Abstractions buildable on its own while supporting a shared workspace.
+- Avoids unnecessary packing during edits; packaging is explicit when needed.
+- Reduces NuGet cache drift by using a predictable, ordered pack step.
+
+## Local package caching policy
+- The local feed `..\TplQueue.NugetLocal` is the source of truth for dev packages.
+- Pack scripts force restore to reduce stale cache issues.
+- If you still see old types, clear the global cache folder for the package:
+  `C:\Users\<user>\.nuget\packages\fmacias.tplqueue.abstractions\1.0.0`
 
 Public contracts and interfaces used across [TplQueue.Core](../TplQueue.Core) and 
 [TplQueue.Adapters](../TplQueue.Adapter) related components. 
@@ -27,18 +53,8 @@ This solution has been configured to generate the NuGet
 package at parent directory TplQueue.NugetLocal as you 
 can see in [NuGet.config](./NuGet.config) configuration.
 
-The construction of the package `Fmacias.TplQueue.Abstractions` 
-occurs after solution building. 
-```xml
-<Project>
-  <Target Name="PackLocalAfterSolutionBuild" AfterTargets="Build" ...
-...
-</Project>
-```
-Check `Project.Target.Exec` element 
-of [Directory.Build.targets](./Directory.Build.targets). Notice that
-the `Powershell` command file [pack-local.ps1](./pack-local.ps1) is being
-invoked
+The package `Fmacias.TplQueue.Abstractions` is created only when `pack-local.ps1`
+is executed manually (or via `WorkspaceTplQueue\pack.ps1`).
 
 ## Switch between local and nuget.org sources
 

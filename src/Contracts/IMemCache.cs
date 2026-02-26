@@ -1,8 +1,8 @@
 ﻿namespace Fmacias.TplQueue.Contracts
 {
-    public interface IMemCache: IPayloadJobCache
+    public interface IMemCache: IDataJobCache
     {
-        IPayloadJobCache CleanDeleted();
-        IPayloadJobCache CleanFinalized();
+        IDataJobCache CleanDeleted();
+        IDataJobCache CleanFinalized();
     }
 }

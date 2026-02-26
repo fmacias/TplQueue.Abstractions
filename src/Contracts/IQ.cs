@@ -8,7 +8,7 @@ namespace Fmacias.TplQueue.Contracts
     /// Controls a background dispatcher that polls and executes enqueued <see cref="IJob"/> items
     /// and publishes lifecycle events via <see cref="IObservable{T}"/>.
     /// </summary>
-    public interface IJobQ : IObservable<IJobEvent>, IDisposable
+    public interface IQ : IObservable<IJobEvent>, IDisposable
     {
         /// <summary>
         /// Starts polling for work using the configured cadence and parallelism.
@@ -37,15 +37,15 @@ namespace Fmacias.TplQueue.Contracts
         /// before invocation to avoid races with concurrent setters.
         /// </remarks>
         Func<IJobEvent, Task> OnJobEventChanged { get; set; }
-        IJobQ Enqueue(IJobRoot jobRoot, bool isFifo, CancellationToken cancellationToken);
-        IJobQ Enqueue(IJobRoot jobRoot, CancellationToken ct);
-        IJobQ EnqueueFifo(IJobRoot jobRoot, CancellationToken ct);
+        IQ Enqueue(IJobRoot jobRoot, bool isFifo, CancellationToken cancellationToken);
+        IQ Enqueue(IJobRoot jobRoot, CancellationToken ct);
+        IQ EnqueueFifo(IJobRoot jobRoot, CancellationToken ct);
 
         string Name { get; }
         int MaxParallelism { get; }
         Func<IRetryPolicy> RetryPolicyFactory { get; }
         SemaphoreSlim Semaphore { get; }
         Task Wait(int stateAtMs = 0);
-        IJobQ SetRetryPolicyFactory(Func<IRetryPolicy> retryPolicy);
+        IQ SetRetryPolicyFactory(Func<IRetryPolicy> retryPolicy);
     }
 }

@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Fmacias.TplQueue
+namespace Fmacias.TplQueue.Defaults
 {
     public sealed class NoRetryPolicy : INoRetryPolicy
     {
@@ -20,17 +20,12 @@ namespace Fmacias.TplQueue
             return await action(cancellationToken).ConfigureAwait(false);
         }
 
-        public IRetryPolicyDescriptor ToDescriptor()
+        public IRetryPolicyDescriptor ToDescriptor(Type retryPolicyType)
         {
-            return RetryPolicyDescriptor.None;
+            return RetryPolicyOptions.Create(0, 0, 0);
         }
 
         public IRetryPolicy SetFromDescriptor(IRetryPolicyDescriptor descriptor)
-        {
-            return Create();
-        }
-
-        public IRetryPolicy SetFromOptions(RetryPolicyOptions options)
         {
             return Create();
         }

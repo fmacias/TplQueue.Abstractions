@@ -5,51 +5,51 @@ namespace Fmacias.TplQueue.Contracts
     /// <summary>
     /// Factory used to create and rehydrate payload-aware task runners.
     /// </summary>
-    public interface IPayloadJobFactory
+    public interface IDataJobFactory
     {
-        IPayloadJob<T> CreateJob<T>(
+        IDataJob<T> DataJob<T>(
             T payload,
             string name = "") where T : IPayload;
         
-        IPayloadJob<T> CreateJob<T>(
+        IDataJob<T> DataJob<T>(
             Guid id,
             T payload,
             string name = "") where T : IPayload;
 
-        IPayloadCarrierJob CreateJob(
+        IDataJob DataJob(
             IJobNodeDto dto,
             IPayload payload);
 
-        IPayloadJobRoot<T> CreateJobRoot<T>(
+        IDataJobRoot<T> DataJobRoot<T>(
             T payload,
             string name = "") where T : IPayload;
 
-        IPayloadJobRoot<T> CreateJobRoot<T>(
+        IDataJobRoot<T> DataJobRoot<T>(
             T payload,
             Func<IRetryPolicy> policy,
             string name = "") where T : IPayload;
 
-        IPayloadJobRoot<T> CreateJobRoot<T>(
+        IDataJobRoot<T> DataJobRoot<T>(
             T payload,
             IRetryPolicyDescriptor retryPolicyDescriptor,
             string name = "") where T : IPayload;
 
-        IPayloadJobRoot<T> CreateJobRoot<T>(
+        IDataJobRoot<T> DataJobRoot<T>(
             Guid id,
             T payload,
             string name = "") where T : IPayload;
 
-        IPayloadJobRoot<T> CreateJobRoot<T>(
+        IDataJobRoot<T> DataJobRoot<T>(
             Guid id,
             T payload,
             IRetryPolicyDescriptor retryPolicyDescriptor,
             string name = "") where T : IPayload;
 
-        IPayloadJobRoot CreateJobRoot(
+        IDataJobRoot DataJobRoot(
             IJobNodeDto dto,
             IPayload payload);
 
-        IPayloadJobRoot<T> CreateJobRoot<T>(
+        IDataJobRoot<T> DataJobRoot<T>(
             Guid jobId,
             T payload,
             Func<IRetryPolicy> policy,

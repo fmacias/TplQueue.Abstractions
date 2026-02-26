@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface IPayloadJobCache
+    public interface IDataJobCache
     {
         /// <summary>
         /// Dehydrates a payload job graph into DTO nodes that can be persisted by any cache store.
@@ -13,7 +13,7 @@ namespace Fmacias.TplQueue.Contracts
         /// <param name="root"></param>
         /// <param name="isFifo"></param>
         /// <returns></returns>
-        IReadOnlyList<IJobNodeDto> Dehydrate<TPayload>(IPayloadJobRoot<TPayload> root, bool isFifo)
+        IReadOnlyList<IJobNodeDto> Dehydrate<TPayload>(IDataJobRoot<TPayload> root, bool isFifo)
             where TPayload : IPayload;
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Fmacias.TplQueue.Contracts
         /// <param name="payloadJobRoot"></param>
         /// <param name="lease"></param>
         /// <returns></returns>
-        bool TryHydrateNextJob(out IPayloadJobRoot payloadJobRoot, out ICacheEntry lease);
+        bool TryHydrateNextJob(out IDataJobRoot payloadJobRoot, out ICacheEntry lease);
 
         /// <summary>
         /// Mark as acknowledged with its related serializable data

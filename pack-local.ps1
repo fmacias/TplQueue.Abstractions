@@ -56,21 +56,35 @@ function Ensure-NugetSource {
   }
 }
 
-# Pick a packing target: prefer *.Pack.sln, fall back to first *.sln, else the repo root.
-# Example: returns C:\repo\TplQueue.Abstractions\Abstractions.Pack.sln if it exists.
-function Get-PackTarget {
-  param([string]$RepoRoot)
-
-  $packSolution = Get-ChildItem -Path $RepoRoot -Filter '*.Pack.sln' | Select-Object -First 1
-  if (-not $packSolution) {
-    $packSolution = Get-ChildItem -Path $RepoRoot -Filter '*.sln' | Select-Object -First 1
+# Resolve NuGet global-packages folder dynamically.
+function Get-GlobalPackagesPath {
+  $output = (& dotnet nuget locals global-packages -l) | Out-String
+  if ($LASTEXITCODE -ne 0) {
+    throw 'dotnet nuget locals global-packages failed.'
   }
 
-  if ($packSolution) {
-    return $packSolution.FullName
+  $match = [regex]::Match($output, ':\s*(.+)$')
+  if ($match.Success) {
+    return $match.Groups[1].Value.Trim()
   }
 
-  return $RepoRoot
+  if ($env:NUGET_PACKAGES) {
+    return $env:NUGET_PACKAGES
+  }
+
+  return (Join-Path $env:USERPROFILE '.nuget\\packages')
+}
+
+# Clear stale local cache entries for Fmacias packages before packing.
+function Clear-LocalNugetCache {
+  $packagesRoot = Get-GlobalPackagesPath
+  if (-not (Test-Path $packagesRoot)) {
+    return
+  }
+
+  Get-ChildItem -Path $packagesRoot -Directory |
+    Where-Object { $_.Name -like 'fmacias.tplqueue*' -or $_.Name -like 'fmaciasruano.tplqueue*' } |
+    Remove-Item -Recurse -Force
 }
 
 # Run dotnet pack to generate nupkg files into the local NuGet folder.
@@ -82,7 +96,15 @@ function Pack-Local {
   )
 
   Write-Host "Packing $PackTarget to $NugetRoot..."
-  Invoke-Dotnet -DotnetArgs @('pack', $PackTarget, '-c', 'Release', '-o', $NugetRoot, '-p:SkipPackLocal=true')
+  Invoke-Dotnet -DotnetArgs @(
+    'pack',
+    $PackTarget,
+    '-c', 'Release',
+    '-o', $NugetRoot,
+    '-p:SkipPackLocal=true',
+    '-p:RestoreNoCache=true',
+    '-p:RestoreForce=true'
+  )
   Write-Host 'Local NuGet packages created successfully.'
 }
 
@@ -92,9 +114,8 @@ function Main {
   $repoRoot = Get-RepoRoot
   $nugetRoot = Ensure-NugetLocal -RepoRoot $repoRoot
   Ensure-NugetSource -SourceName 'TplQueue.NugetLocal' -SourcePath $nugetRoot
-
-  $packTarget = Get-PackTarget -RepoRoot $repoRoot
-  Pack-Local -PackTarget $packTarget -NugetRoot $nugetRoot
+  Clear-LocalNugetCache
+  Pack-Local -PackTarget $repoRoot -NugetRoot $nugetRoot
 }
 
 try {

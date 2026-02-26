@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface IParallelQ: IJobQ
+    public interface IParallelQ: IQ
     {
         IParallelQ Enqueue(Action<CancellationToken> action, CancellationToken ct, string name = "", Func<IRetryPolicy>? retryPolicyFactory = null);
         IParallelQ Enqueue(Func<CancellationToken, Task> func, CancellationToken ct, string name = "", Func<IRetryPolicy>? retryPolicyFactory = null);

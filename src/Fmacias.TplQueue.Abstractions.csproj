@@ -37,7 +37,20 @@
 		<IsPackable>true</IsPackable>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Remove="Contracts\CacheCancelMode.cs" />
+	  <Compile Remove="Contracts\IBoundArgumentsProvider.cs" />
+	  <Compile Remove="Contracts\IHandlerCatalog.cs" />
+	  <Compile Remove="Contracts\IPayloadJobFactory1.cs" />
+	  <Compile Remove="Contracts\IPayloadQueueCache.cs" />
+	  <Compile Remove="Contracts\ISerializablePayloadGraphConverterProvider.cs" />
+	  <Compile Remove="Contracts\ISerializableRunnerRoot.cs" />
+	  <Compile Remove="Contracts\ISerializationJobNodeAttributes.cs" />
 	  <Compile Remove="Contracts\ISerializedPayloadFactory.cs" />
+	  <Compile Remove="Contracts\ITaskBufferStore.cs" />
+	  <Compile Remove="Contracts\IUniversaDtoHandler.cs" />
+	  <Compile Remove="ISerializableRunner.cs" />
+	  <Compile Remove="NodeState.cs" />
+	  <Compile Remove="RetryPolicyDescriptor.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -2,7 +2,7 @@
 {
     public interface IDeserializable
     {
-        object Deserialize(IUniversalPayloadSerializer serializer);
-        T Deserialize<T>(IUniversalPayloadSerializer serializer);
+        object Deserialize(IUniversalDataSerializer serializer);
+        T Deserialize<T>(IUniversalDataSerializer serializer);
     }
 }

@@ -26,6 +26,5 @@ namespace Fmacias.TplQueue.Contracts
         /// Returns an immutable snapshot of this runner's info.
         /// </summary>
         IJobInfo CopyInfo();
-
     }
 }

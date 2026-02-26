@@ -9,8 +9,7 @@ namespace Fmacias.TplQueue.Contracts
     public interface IRetryPolicySerializable
     {
         /// <summary>Create a descriptor snapshot from a factory producing a policy instance.</summary>
-        IRetryPolicyDescriptor ToDescriptor();
+        IRetryPolicyDescriptor ToDescriptor(Type retryPolicyType);
         IRetryPolicy SetFromDescriptor(IRetryPolicyDescriptor descriptor);
-        IRetryPolicy SetFromOptions(RetryPolicyOptions options);
     }
 }

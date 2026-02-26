@@ -2,12 +2,12 @@
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface IUniversalPayloadSerializer
+    public interface IUniversalDataSerializer
     {
         string Serialize(object value, Type type);
         object Deserialize(string json, Type type);
         string Serialize<T>(T value);
         T Deserialize<T>(string json);
-        string Serialize(IPayloadCarrierJob carrier);
+        string Serialize(IDataJob carrier);
     }
 }
