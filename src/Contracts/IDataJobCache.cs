@@ -6,8 +6,9 @@ namespace Fmacias.TplQueue.Contracts
     public interface IDataJobCache
     {
         /// <summary>
-        /// Dehydrates a payload job graph into DTO nodes that can be persisted by any cache store.
-        /// Concretlly Traverses a payload graph and returns its serialized DTO nodes.
+        /// Dehydrates a data job graph into DTO(Data Transfer Object) nodes 
+        /// that can be persisted by any cache store.
+        /// Concretlly Traverses a data job graph and returns its serialized DTO nodes.
         /// </summary>
         /// <typeparam name="TPayload"></typeparam>
         /// <param name="root"></param>

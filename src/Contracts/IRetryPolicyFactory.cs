@@ -24,5 +24,6 @@ namespace Fmacias.TplQueue.Contracts
         /// <param name="options">Options dictionary</param>
         /// <returns></returns>
         TPolicy CreatePolicy(string name, IReadOnlyDictionary<string, IRetryPolicyDescriptor> options);
+        TPolicy CreatePolicy(IRetryPolicyDescriptor descriptor);
     }
 }
