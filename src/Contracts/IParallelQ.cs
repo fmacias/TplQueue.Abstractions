@@ -6,6 +6,9 @@ namespace Fmacias.TplQueue.Contracts
 {
     public interface IParallelQ: IQ
     {
+        IParallelQ Enqueue(IJobRoot jobRoot, bool isFifo, CancellationToken cancellationToken);
+        IParallelQ EnqueueFifo(IJobRoot jobRoot, CancellationToken ct);
+
         IParallelQ Enqueue(Action<CancellationToken> action, CancellationToken ct, string name = "", Func<IRetryPolicy>? retryPolicyFactory = null);
         IParallelQ Enqueue(Func<CancellationToken, Task> func, CancellationToken ct, string name = "", Func<IRetryPolicy>? retryPolicyFactory = null);
         IParallelQ Enqueue<T>(Action<CancellationToken, T> action, T arg, CancellationToken ct, string name = "", Func<IRetryPolicy>? retryPolicyFactory = null);

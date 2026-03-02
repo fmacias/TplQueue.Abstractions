@@ -37,9 +37,7 @@ namespace Fmacias.TplQueue.Contracts
         /// before invocation to avoid races with concurrent setters.
         /// </remarks>
         Func<IJobEvent, Task> OnJobEventChanged { get; set; }
-        IQ Enqueue(IJobRoot jobRoot, bool isFifo, CancellationToken cancellationToken);
         IQ Enqueue(IJobRoot jobRoot, CancellationToken ct);
-        IQ EnqueueFifo(IJobRoot jobRoot, CancellationToken ct);
 
         string Name { get; }
         int MaxParallelism { get; }

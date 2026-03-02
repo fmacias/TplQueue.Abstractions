@@ -1,6 +1,6 @@
 ﻿namespace Fmacias.TplQueue.Contracts
 {
-    public interface ICacheQ: IQ, IQueueableDataJobQ
+    public interface ICacheQ: IParallelQ, IQueueableDataJobQ
     {
         int LeasingPulseMs { get; set; }
     }
