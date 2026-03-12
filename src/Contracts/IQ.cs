@@ -10,6 +10,7 @@ namespace Fmacias.TplQueue.Contracts
     /// </summary>
     public interface IQ : IObservable<IJobEvent>, IDisposable
     {
+        Guid QueueId { get; }
         /// <summary>
         /// Starts polling for work using the configured cadence and parallelism.
         /// Safe to call multiple times; subsequent calls are no-ops if already running.

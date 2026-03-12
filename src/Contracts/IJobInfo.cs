@@ -14,5 +14,11 @@ namespace Fmacias.TplQueue.Contracts
         DateTime ExecutionEnd { get; }
         TaskStatus Status { get; }
         IReadOnlyCollection<IJobInfo> Dependencies { get; }
+        /// <summary>
+        /// Gets the dispatcher that first claimed this job instance for execution.
+        /// <see cref="Guid.Empty"/> means the job has not been enqueued yet and can still
+        /// be moved between roots during graph composition.
+        /// </summary>
+        Guid CrossQueueId { get; }
     }
 }

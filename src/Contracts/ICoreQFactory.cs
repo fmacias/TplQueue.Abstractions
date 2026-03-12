@@ -9,9 +9,9 @@ namespace Fmacias.TplQueue.Contracts
     public interface ICoreQFactory
     {
         /// <summary>Create a parallel dispatcher from explicit parameters.</summary>
-        IParallelQ Parallel(string name, int maxParallelism, ILogger logger, Func<IRetryPolicy>? retryPolicyFactory = null);
+        IParallelQ Parallel(Guid id, string name, int maxParallelism, ILogger logger, Func<IRetryPolicy>? retryPolicyFactory = null);
 
         /// <summary>Create a strict FIFO dispatcher from explicit parameters.</summary>
-        IFifoQ Fifo(string name, ILogger logger, Func<IRetryPolicy>? retryPolicy = null);
+        IFifoQ Fifo(Guid id, string name, ILogger logger, Func<IRetryPolicy>? retryPolicy = null);
     }
 }
