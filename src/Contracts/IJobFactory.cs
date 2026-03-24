@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface IJobFactory
+    public interface IJobFactory: IJobRootFactory
     {
         IJob Job(Action<CancellationToken> body, string name = "");
         IJob Job(Func<CancellationToken, Task> body, string name = "");

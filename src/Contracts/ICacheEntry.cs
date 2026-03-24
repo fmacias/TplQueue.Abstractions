@@ -12,11 +12,11 @@ namespace Fmacias.TplQueue.Contracts
         Guid JobRootId { get; }
         Guid JobId { get; }
         Guid ParentJobId { get; }
-        IJobNodeDto JobNodeDto { get; }
+        IJobNodeRecord JobNodeRecordDto { get; }
         DateTime CacheUtc { get; }
         bool IsFifo { get; }
         EntryStatus Status { get; }
-        IRetryPolicyDescriptor RetryDescriptor { get; set; }
+        IRetryPolicyOptions RetryPolicyOptions { get; }
         bool IsRoot { get; }
         bool Deleted { get; }
         bool RootSuccessed { get; }

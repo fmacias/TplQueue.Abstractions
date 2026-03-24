@@ -7,8 +7,8 @@
     /// </summary>
     public interface ICoreApi
     {
-        ICoreQFactory QFactory { get; }
+        IQFactory QFactory { get; }
         IJobFactory JobFactory { get; }
-        IJobRootFactory JobRootFactory { get; }
+        IDataJobFactory DataJobFactory { get; }
     }
 }

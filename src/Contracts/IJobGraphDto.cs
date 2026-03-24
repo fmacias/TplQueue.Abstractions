@@ -5,6 +5,6 @@ namespace Fmacias.TplQueue.Contracts
 {
     public interface IJobGraphDto
     {
-        IReadOnlyList<IJobNodeDto> ExtractNodes(Action<IJobNodeDto, Guid> edgedNodeCallBack);
+        IReadOnlyList<IJobNodeDto> ExtractNodes(Action<IJobNodeRecord, Guid> edgedNodeCallBack);
     }
 }

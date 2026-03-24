@@ -10,6 +10,6 @@ namespace Fmacias.TplQueue.Contracts
         /// <summary>
         /// Returns an untyped handler that accepts (object payload, CancellationToken ct).
         /// </summary>
-        IUniversaPayloadHandler Resolve(Guid handlerId);
+        IUniversalPayloadHandler Resolve(Guid handlerId);
     }
 }

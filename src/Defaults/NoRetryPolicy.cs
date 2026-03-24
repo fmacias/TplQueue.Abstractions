@@ -20,12 +20,12 @@ namespace Fmacias.TplQueue.Defaults
             return await action(cancellationToken).ConfigureAwait(false);
         }
 
-        public IRetryPolicyDescriptor ToDescriptor(Type retryPolicyType)
+        public IRetryPolicyOptions ToDescriptor()
         {
             return RetryPolicyOptions.Create(0, 0, 0);
         }
 
-        public IRetryPolicy SetFromDescriptor(IRetryPolicyDescriptor descriptor)
+        public IRetryPolicy SetFromDescriptor(IRetryPolicyOptions descriptor)
         {
             return Create();
         }

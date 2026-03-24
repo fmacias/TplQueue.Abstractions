@@ -5,24 +5,18 @@ namespace Fmacias.TplQueue.Contracts
 {
     public interface IApi
     {
-        IRetryPolicyGenericFactory RetryPolicyGenericFactory { get; }
-        Lazy<IJobRootFactory> JobRootFactory { get; }
-        Lazy<IJobFactory> JobFactory { get; }
-        IDataJobFactory DataJobFactory(IPayloadHandlerResolver payloadHandlerResolver);
-        Lazy<ICacheQFactory> CacheQFactory { get; }
-        Lazy<ICoreQFactoryAdapter> CoreQFactories { get; }
-        IReadOnlyDictionary<string, IRetryPolicyDescriptor> RetryPolicyOptions { get; }
+        IRetryPolicyAbstractFactory RetryPolicyAbstractFactory { get; }
+        IJobFactory JobFactory { get; }
+        IDataJobFactory DataJobFactory { get; }
+        IQFactoryAdapter QFactory { get; }
+        IReadOnlyDictionary<string, IRetryPolicyOptions> RetryPolicyOptions { get; }
         IReadOnlyDictionary<string, IQOptions> QueueOptions { get; }
-        T Cache<T>(
-            ICacheFactory<T> cacheFactory,
-            IUniversalDataSerializer serializer,
-            INodeTypeResolver typeResolver, 
-            IPayloadHandlerResolver payloadHandlerResolver)
+        T Cache<T>(ICacheFactory<T> cacheFactory, IUniversalDataSerializer serializer, ITypeResolver typeResolver)
             where T : IDataJobCache;
         T RetryPolicy<T>(IRetryPolicyFactory<T> retryPolicyFactory, string name)
             where T : IRetryPolicy;
         ISystemTextJsonSerializerFactory SystemTexSerializerFactory();
         IObserverFactory ObserverFactory();
-
     }
 }
+ 

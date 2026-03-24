@@ -1,8 +1,8 @@
 ﻿namespace Fmacias.TplQueue.Contracts
 {
     public interface INodeTypeResolverFactory<TNodeTypeResolver>
-        where TNodeTypeResolver: INodeTypeResolver
+        where TNodeTypeResolver: ITypeResolver
     {
-        TNodeTypeResolver CreateResolver();
+        TNodeTypeResolver Resolver();
     }
 }

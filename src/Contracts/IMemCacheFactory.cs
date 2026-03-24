@@ -1,6 +1,4 @@
-﻿using Fmacias.TplQueue.Contracts;
-
-namespace Fmacias.TplQueue.Cache.MemCache
+﻿namespace Fmacias.TplQueue.Contracts
 {
     public interface IMemCacheFactory : ICacheFactory<IMemCache>
     {

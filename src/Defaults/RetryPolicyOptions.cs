@@ -5,15 +5,15 @@ namespace Fmacias.TplQueue.Defaults
 {
     /// <summary>
     /// Value object describing how to build a retry policy.
-    /// <para>If <see cref="Factor"/> is <c>null</c> → Linear backoff.</para>
-    /// <para>If <see cref="Factor"/> &gt; 0 → Exponential backoff.</para>
+    /// <para>If <see cref="MaxRetries"/> is 0 or less, the factory resolves to no retry.</para>
+    /// <para>If <see cref="Factor"/> &gt; 0, the factory resolves to exponential backoff.</para>
+    /// <para>Otherwise, the factory resolves to linear backoff.</para>
     /// </summary>
-    public sealed class RetryPolicyOptions: IRetryPolicyDescriptor
+    public sealed class RetryPolicyOptions: IRetryPolicyOptions
     {
         public int BaseDelayMs { get; }
         public int MaxRetries { get; }
         public double Factor { get; }
-        public Type? RetryPolicyType { get; private set; }
 
         private RetryPolicyOptions(int baseDelayMs, int maxRetries, double factor = 0d)
         {
@@ -28,19 +28,6 @@ namespace Fmacias.TplQueue.Defaults
         public static RetryPolicyOptions Create(int baseDelayMs, int maxRetries, double factor= 0D)
         {
             return new RetryPolicyOptions(baseDelayMs, maxRetries, factor);
-        }
-        public IRetryPolicyDescriptor SetRetryPolicyType(Type retryPolicyType)
-        {
-            if (retryPolicyType == null) 
-                throw new ArgumentNullException(nameof(retryPolicyType));
-            
-            if (typeof(IRetryPolicy).IsAssignableFrom(retryPolicyType) == false)
-            {
-                throw new InvalidOperationException(
-                    $"Failed to create retry policy instance of type '{retryPolicyType.FullName}'.");
-            }
-            RetryPolicyType = retryPolicyType;
-            return this;
         }
     }
 }

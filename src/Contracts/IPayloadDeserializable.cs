@@ -1,6 +1,6 @@
 ﻿namespace Fmacias.TplQueue.Contracts
 {
-    public interface IDeserializable
+    public interface IPayloadDeserializable
     {
         object Deserialize(IUniversalDataSerializer serializer);
         T Deserialize<T>(IUniversalDataSerializer serializer);

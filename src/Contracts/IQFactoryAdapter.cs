@@ -2,7 +2,7 @@
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface ICoreQFactoryAdapter: ICoreQFactory
+    public interface IQFactoryAdapter: IQFactory
     {
         public IParallelQ Parallel(IQOptions queueOptions, string name, ILogger logger);
         public IParallelQ Parallel(string name, ILogger logger);

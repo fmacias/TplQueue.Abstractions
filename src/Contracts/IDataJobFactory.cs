@@ -7,52 +7,11 @@ namespace Fmacias.TplQueue.Contracts
     /// </summary>
     public interface IDataJobFactory
     {
-        IDataJob<T> DataJob<T>(
-            T payload,
-            string name = "") where T : IPayload;
-        
-        IDataJob<T> DataJob<T>(
-            Guid id,
-            T payload,
-            string name = "") where T : IPayload;
-
-        IDataJob DataJob(
-            IJobNodeDto dto,
-            IPayload payload);
-
-        IDataJobRoot<T> DataJobRoot<T>(
-            T payload,
-            string name = "") where T : IPayload;
-
-        IDataJobRoot<T> DataJobRoot<T>(
-            T payload,
-            Func<IRetryPolicy> policy,
-            string name = "") where T : IPayload;
-
-        IDataJobRoot<T> DataJobRoot<T>(
-            T payload,
-            IRetryPolicyDescriptor retryPolicyDescriptor,
-            string name = "") where T : IPayload;
-
-        IDataJobRoot<T> DataJobRoot<T>(
-            Guid id,
-            T payload,
-            string name = "") where T : IPayload;
-
-        IDataJobRoot<T> DataJobRoot<T>(
-            Guid id,
-            T payload,
-            IRetryPolicyDescriptor retryPolicyDescriptor,
-            string name = "") where T : IPayload;
-
-        IDataJobRoot DataJobRoot(
-            IJobNodeDto dto,
-            IPayload payload);
-
-        IDataJobRoot<T> DataJobRoot<T>(
-            Guid jobId,
-            T payload,
-            Func<IRetryPolicy> policy,
-            string name = "") where T : IPayload;
+        IDataJob<T> DataJob<T>(T payload, IUniversalPayloadHandler payloadHandler, string name = "") where T : IPayload;
+        IDataJob<T> DataJob<T>(Guid id, T payload, IUniversalPayloadHandler payloadHandler, string name = "") where T : IPayload;
+        IDataJob DataJob(IJobNodeRecord jobNodeRecord, IPayload payload, IUniversalPayloadHandler payloadHandler);
+        IDataJobRoot<T> DataJobRoot<T>(T payload, IUniversalPayloadHandler payloadHandler, string name = "", Func<IRetryPolicy>? retryPolicy = null) where T : IPayload;
+        IDataJobRoot<T> DataJobRoot<T>(Guid id, T payload, IUniversalPayloadHandler payloadHandler, string name = "",  Func<IRetryPolicy>? retryPolicy = null) where T : IPayload;
+        IDataJobRoot DataJobRoot(Guid jobId, string name, IPayload payload, IUniversalPayloadHandler payloadHandler, Func<IRetryPolicy>? retryPolicy = null);
     }
 }

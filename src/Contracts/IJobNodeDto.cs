@@ -2,20 +2,8 @@
 
 namespace Fmacias.TplQueue.Contracts
 {
-    public interface IJobNodeDto: IDeserializable
+    public interface IJobNodeDto: IJobNodeRecord
     {
-        /// <summary>Unique node identifier.</summary>
-        Guid JobId { get; }
-        Guid ParentJobId { get; }
-        /// <summary>User-friendly name for diagnostics (optional).</summary>
-        string Name { get; }
-        DateTime NodeCreationUtc { get; }
-        bool IsRoot { get; }
-        bool IsFifo { get; }
-        void UpdatePayloadJson(string payloadJson);
-        IRetryPolicyDescriptor RetryDescriptor { get; }
-        string PayloadTypeName { get; }
         Type PayloadType { get; }
-        string PayloadJson { get; }
     }
 }

@@ -21,9 +21,9 @@ namespace Fmacias.TplQueue.Contracts
         /// Create a retry policy by name from a configured options map.
         /// </summary>
         /// <param name="name">Logical policy name; must exist in the configured options dictionary.</param>
-        /// <param name="options">Options dictionary</param>
+        /// <param name="retrypoliciesByName">Options dictionary</param>
         /// <returns></returns>
-        TPolicy CreatePolicy(string name, IReadOnlyDictionary<string, IRetryPolicyDescriptor> options);
-        TPolicy CreatePolicy(IRetryPolicyDescriptor descriptor);
+        TPolicy CreatePolicy(string name, IReadOnlyDictionary<string, IRetryPolicyOptions> retrypoliciesByName);
+        TPolicy CreatePolicy(IRetryPolicyOptions options);
     }
 }
