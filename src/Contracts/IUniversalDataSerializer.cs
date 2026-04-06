@@ -8,6 +8,6 @@ namespace Fmacias.TplQueue.Contracts
         object Deserialize(string json, Type type);
         string Serialize<T>(T value);
         T Deserialize<T>(string json);
-        string Serialize(IDataJob carrier);
+        string Serialize(IDataJobNode carrier);
     }
 }

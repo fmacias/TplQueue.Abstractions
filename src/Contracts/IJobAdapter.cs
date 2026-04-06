@@ -1,7 +1,7 @@
 ﻿namespace Fmacias.TplQueue.Contracts
 {
-    public interface IJobAdapter: IJob
+    public interface IJobAdapter: IJobNode
     {
-        IJob GetInnerJob();
+        IJobNode GetInnerJob();
     }
 }
