@@ -2,6 +2,6 @@
 {
     public interface IExponentialBackofFactory: IRetryPolicyFactory<IExponentialBackoff>
     {
-        IExponentialBackoff CreateExponentialBackoff(int maxRetries, int delayMs, double factor);
+        IExponentialBackoff ExponentialBackof(int maxRetries, int delayMs, double factor);
     }
 }

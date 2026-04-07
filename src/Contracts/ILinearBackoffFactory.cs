@@ -2,6 +2,6 @@
 {
     public interface ILinearBackoffFactory : IRetryPolicyFactory<ILinearBackoff>
     {
-        ILinearBackoff CreateLienarBackoff(int maxRetries, int delayMs);
+        ILinearBackoff LinearBackoff(int maxRetries, int delayMs);
     }
 }
