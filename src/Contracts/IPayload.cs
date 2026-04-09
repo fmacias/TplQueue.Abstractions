@@ -1,15 +1,20 @@
-﻿using System;
+using System;
 
 namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
-    /// Payload serializable con metadatos de enrutamiento para su handler.
+    /// Serializable payload with the stable logical identifier used to resolve its handler.
     /// </summary>
     public interface IPayload
     {
-        Guid HandlerId { get; }
-        /// <summary>Identificador lógico del handler (útil para desambiguar en replays/offline).</summary>
+        /// <summary>
+        /// Stable handler key used by cache hydration and plugin-style handler resolution.
+        /// </summary>
         string PayloadId { get; }
+
+        /// <summary>
+        /// Collection timestamp carried by the payload.
+        /// </summary>
         DateTime CollectionTime { get; }
     }
 }

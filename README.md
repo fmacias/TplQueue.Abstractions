@@ -99,6 +99,20 @@ dotnet nuget push ..\TplQueue.NugetLocal\Fmacias.TplQueue.Abstractions.1.2.3.nup
   --api-key <YOUR_NUGET_API_KEY>
 ```
 
+## Payload handler roadmap
+
+Current state:
+
+- `IPayload.PayloadId` is the single stable persisted handler key for hydrated payload jobs
+- `IPayloadHandlers` resolves public `IHandler` implementations only by that stable string key
+- plugin-style registration is exposed through `IPayloadHandlerPlugin` and `IPayloadHandlerRegistry`
+- handler classes can be composed from the application layer or an IoC container through handler factories
+
+Next step:
+
+- add optional higher-level plugin discovery helpers on top of the key-based registration contract
+- document recommended handler-key versioning conventions for long-lived cached payloads
+
 ## Visual Studio session note
 Avoid opening `WorkspaceTplQueue.sln` and any `TplQueue.*.sln` in separate VS sessions at the same time. The workspace swaps to project references, while standalone solutions stay package-based, and running both can lead to confusing dependency views or build output conflicts.
 

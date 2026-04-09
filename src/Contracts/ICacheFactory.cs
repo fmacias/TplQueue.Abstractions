@@ -14,7 +14,7 @@
             IUniversalDataSerializer serializer,
             IDataJobFactory payloadJobFactory,
             ITypeResolver typeResolver, 
-            IPayloadHandlerResolver payloadHandlerResolver, 
+            IPayloadHandlers payloadHandlerResolver, 
             IRetryPolicyAbstractFactory retryPolicyAbstractFactory);
     }
 }

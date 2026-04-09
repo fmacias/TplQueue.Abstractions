@@ -1,4 +1,3 @@
-﻿// File: Abstractions/Contracts/IQueueCommand.cs
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,17 +5,16 @@ using System.Threading.Tasks;
 namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
-    /// Marca para payloads serializables que se encolan.
-    /// Debe incluir un identificador de handler y su instante de encolado.
+    /// Marker for serializable queue commands carrying their stable payload handler key.
     /// </summary>
     public interface IQueueCommand
     {
-        string HandlerId { get; }
+        string PayloadId { get; }
         DateTime EnqueueUtc { get; }
     }
 
     /// <summary>
-    /// Variante auto-ejecutable (si prefieres que el payload se ejecute solo).
+    /// Self-executable queue command variant.
     /// </summary>
     public interface IExecutableQueueCommand : IQueueCommand
     {

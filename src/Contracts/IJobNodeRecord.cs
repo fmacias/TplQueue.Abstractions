@@ -6,11 +6,11 @@ namespace Fmacias.TplQueue.Contracts
     /// Persistence-safe representation of a payload job node.
     /// This contract avoids CLR runtime-only types so records can be stored in durable media.
     /// </summary>
-    public interface IJobNodeRecord: IPayloadDeserializable
+    public interface IJobNodeRecord : IPayloadDeserializable
     {
         Guid JobId { get; }
         Guid ParentJobId { get; }
-        Guid PayloadHandlerId { get; }
+        string PayloadHandlerKey { get; }
         string Name { get; }
         DateTime NodeCreationUtc { get; }
         bool IsRoot { get; }

@@ -7,11 +7,11 @@ namespace Fmacias.TplQueue.Contracts
     /// </summary>
     public interface IDataJobFactory
     {
-        IDataJob<T> DataJob<T>(T payload, IUniversalPayloadHandler payloadHandler, string name = "") where T : IPayload;
-        IDataJob<T> DataJob<T>(Guid id, T payload, IUniversalPayloadHandler payloadHandler, string name = "") where T : IPayload;
-        IDataJob DataJob(IJobNodeRecord jobNodeRecord, IPayload payload, IUniversalPayloadHandler payloadHandler);
-        IDataJobRoot<T> DataJobRoot<T>(T payload, IUniversalPayloadHandler payloadHandler, string name = "", Func<IRetryPolicy>? retryPolicy = null) where T : IPayload;
-        IDataJobRoot<T> DataJobRoot<T>(Guid id, T payload, IUniversalPayloadHandler payloadHandler, string name = "",  Func<IRetryPolicy>? retryPolicy = null) where T : IPayload;
-        IDataJobRoot DataJobRoot(Guid jobId, string name, IPayload payload, IUniversalPayloadHandler payloadHandler, Func<IRetryPolicy>? retryPolicy = null);
+        IDataJob<T> DataJob<T>(T payload, IHandler payloadHandler, string name = "") where T : IPayload;
+        IDataJob<T> DataJob<T>(Guid id, T payload, IHandler payloadHandler, string name = "") where T : IPayload;
+        IDataJob DataJob(IJobNodeRecord jobNodeRecord, IPayload payload, IHandler payloadHandler);
+        IDataJobRoot<T> DataJobRoot<T>(T payload, IHandler payloadHandler, string name = "", Func<IRetryPolicy>? retryPolicy = null) where T : IPayload;
+        IDataJobRoot<T> DataJobRoot<T>(Guid id, T payload, IHandler payloadHandler, string name = "",  Func<IRetryPolicy>? retryPolicy = null) where T : IPayload;
+        IDataJobRoot DataJobRoot(Guid jobId, string name, IPayload payload, IHandler payloadHandler, Func<IRetryPolicy>? retryPolicy = null);
     }
 }

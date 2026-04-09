@@ -97,6 +97,9 @@ If you find contradictions, obsolete terminology, or architectural inconsistenci
 
 6. Respect the existing architecture, naming, layering, and design intent before proposing broader changes.
 
+7. Do not stage changes applied during review, refactor, or implementation unless the human explicitly asks for staging.
+   - Leave applied changes unstaged so the human can review and stage them manually.
+
 ---
 
 ## Rules for code review
