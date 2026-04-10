@@ -22,6 +22,8 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+!src/Defaults/Log/
+!src/Defaults/Log/**
 
 # .NET Core
 project.lock.json

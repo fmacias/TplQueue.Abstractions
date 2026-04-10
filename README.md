@@ -39,6 +39,35 @@ Para ejecucion manual: `powershell -NoProfile -ExecutionPolicy Bypass -File .\pa
 Public contracts and interfaces used across [TplQueue.Core](../TplQueue.Core) and 
 [TplQueue.Adapters](../TplQueue.Adapter) related components. 
 
+## Defaults namespace policy
+
+`Fmacias.TplQueue.Defaults` contains reusable default artifacts intended to simplify
+implementation across the TplQueue ecosystem, including code that lives outside the
+public API composition boundary.
+
+This namespace is acceptable for:
+
+- immutable default values and option builders
+- stateless helper classes
+- logging metadata and precompiled logging delegates such as `Fmacias.TplQueue.Defaults.Log`
+- small reusable objects that do not retain or mutate shared process state
+
+This namespace is not a place for:
+
+- global services
+- service locators
+- mutable static state
+- process-wide caches or registries with internal state
+- static classes that coordinate runtime behavior by storing shared data
+
+Acceptance rule:
+
+- a type under `Fmacias.TplQueue.Defaults` is acceptable only when it does not change global state, does not retain mutable shared state, and exists to keep associated services in the TplQueue ecosystem simpler and more consistent
+
+If a component needs to keep state, coordinate runtime behavior, or own process-wide
+resources, it should stay behind a normal service abstraction and explicit composition,
+not under `Fmacias.TplQueue.Defaults`.
+
 ## Cache hydration contracts
 
 Payload-aware cache hydration is intentionally split into two responsibilities:
