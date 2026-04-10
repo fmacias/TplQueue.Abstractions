@@ -39,6 +39,38 @@ Para ejecucion manual: `powershell -NoProfile -ExecutionPolicy Bypass -File .\pa
 Public contracts and interfaces used across [TplQueue.Core](../TplQueue.Core) and 
 [TplQueue.Adapters](../TplQueue.Adapter) related components. 
 
+## Cache hydration contracts
+
+Payload-aware cache hydration is intentionally split into two responsibilities:
+
+- `ITypeResolver` resolves the persisted payload CLR type name into a `System.Type`.
+- `IUniversalDataSerializer` serializes and deserializes payload JSON once that `Type` is known.
+- `IRuntimeNodeTypeResolver` specializes `ITypeResolver` for runtime/AppDomain-based resolution.
+- `IRuntimeNodeTypeResolverFactory` exposes the default runtime-oriented resolver factory contract used by the adapter cache modules.
+
+The adapter cache flow is:
+
+1. `JobNodeDto` persists `PayloadTypeName` from the payload CLR type, together with `PayloadJson`.
+2. `ITypeResolver.Resolve(string payloadTypeName)` turns the stored type name back into a CLR `Type`.
+3. `IUniversalDataSerializer.Deserialize(string json, Type type)` materializes the payload instance.
+
+This separation keeps JSON serialization concerns independent from runtime type lookup, which is useful for cache hydration, plugin loading, and future whitelist-based resolvers.
+
+When a custom resolution boundary is needed, reuse `TypeDeserializer.TryResolveType(...)` from `Fmacias.TplQueue.Defaults` inside your own `ITypeResolver` implementation.
+
+## Runtime type resolution roadmap
+
+Current state:
+
+- `IRuntimeNodeTypeResolver` is intentionally AppDomain-based for compatibility with the current adapter implementation.
+- The current contract is suitable for simple runtime probing and legacy-oriented hosting scenarios.
+
+Next step:
+
+- for modern .NET plugin loading and unloadable isolation boundaries, prefer `AssemblyLoadContext` as the target design direction
+- treat `AppDomain` as a .NET Framework-era abstraction that should be considered for future replacement or upgrade in the dynamic-plugin path
+- keep `ITypeResolver` as the abstraction boundary so the runtime-loading mechanism can evolve without coupling it to `IUniversalDataSerializer`
+
 ## Workspace solution (optional)
 This repo builds standalone. If you also clone the umbrella 
 workspace `WorkspaceTplQueue`, this repo will automatically import 
