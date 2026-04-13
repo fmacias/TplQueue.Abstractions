@@ -8,6 +8,5 @@ namespace Fmacias.TplQueue.Contracts
         ILoggingObserver CreateLoggingObserver(ILogger<ILoggingObserver> logger);
         IConsoleObserver CreateConsoleObserver();
         IProfilingObserver CreateProfilingObserver(ILogger<IProfilingObserver> logger);
-        IViewModelObserver CreateViewModeObserver(IObserverDispatcher observerDispatcher);
     }
 }

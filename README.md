@@ -39,6 +39,21 @@ Para ejecucion manual: `powershell -NoProfile -ExecutionPolicy Bypass -File .\pa
 Public contracts and interfaces used across [TplQueue.Core](../TplQueue.Core) and 
 [TplQueue.Adapters](../TplQueue.Adapter) related components. 
 
+## Retry policy factory contract
+
+`IRetryPolicyAbstractFactory` supports two usage styles:
+
+- non-generic lookup through `PolicyByName(...)`, where missing names fall back to `NoRetryPolicy`
+- typed lookup through `PolicyByName<T>(...)` and `GetPolicy<T>()`, where the default adapter maps built-in retry policy interfaces to their implementations
+
+The built-in retry policy interfaces supported by the default adapter are:
+
+- `INoRetryPolicy`
+- `ILinearBackoff`
+- `IExponentialBackoff`
+
+Custom retry policies should be requested by concrete type. The concrete custom policy must implement `IRetryPolicy` and expose a public parameterless constructor so the adapter can instantiate it. Custom interfaces are not resolved automatically unless a future registration mechanism is introduced.
+
 ## Defaults namespace policy
 
 `Fmacias.TplQueue.Defaults` contains reusable default artifacts intended to simplify

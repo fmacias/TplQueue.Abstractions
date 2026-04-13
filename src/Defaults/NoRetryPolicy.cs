@@ -7,7 +7,14 @@ namespace Fmacias.TplQueue.Defaults
 {
     public sealed class NoRetryPolicy : INoRetryPolicy
     {
-        private NoRetryPolicy() { }
+        /// <summary>
+        /// Initializes a retry policy that executes the operation once without retrying.
+        /// </summary>
+        public NoRetryPolicy() { }
+
+        /// <summary>
+        /// Creates a retry policy that executes the operation once without retrying.
+        /// </summary>
         public static NoRetryPolicy Create() => new();
 
         public int RetryCount => 0;
