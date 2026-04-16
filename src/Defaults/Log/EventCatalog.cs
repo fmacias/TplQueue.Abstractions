@@ -61,6 +61,18 @@ namespace Fmacias.TplQueue.Defaults.Log
         public static readonly EventId BackgroundError =
             new EventId(3001, nameof(BackgroundError));
 
+        public static readonly EventId ObserverHubDrainTimeout =
+            new EventId(3002, nameof(ObserverHubDrainTimeout));
+
+        public static readonly EventId SchedulerCanceled =
+            new EventId(3003, nameof(SchedulerCanceled));
+
+        public static readonly EventId SchedulerDisposed =
+            new EventId(3004, nameof(SchedulerDisposed));
+
+        public static readonly EventId SchedulerFinalizationTimeout =
+            new EventId(3005, nameof(SchedulerFinalizationTimeout));
+
         public static readonly EventId RetryPolicyApplied =
             new EventId(4000, nameof(RetryPolicyApplied));
     }

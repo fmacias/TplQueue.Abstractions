@@ -100,6 +100,42 @@ namespace Fmacias.TplQueue.Defaults.Log
                 EventCatalog.ObserverError,
                 "Observer callback threw.");
 
+        public static readonly Action<ILogger, Exception> ObserverHubDisposed =
+            LoggerMessage.Define(
+                LogLevel.Warning,
+                EventCatalog.ObserverError,
+                "Observer hub has been disposed");
+
+        public static readonly Action<ILogger, Exception> ObserverHubCanceled =
+            LoggerMessage.Define(
+                LogLevel.Warning,
+                EventCatalog.ObserverError,
+                "Observer hub has been canceled due to finalization");
+
+        public static readonly Action<ILogger, Exception?> ObserverHubDrainTimeout =
+            LoggerMessage.Define(
+                LogLevel.Warning,
+                EventCatalog.ObserverHubDrainTimeout,
+                "Observer hub disposal exceeded the drain timeout; remaining observer messages may be abandoned.");
+
+        public static readonly Action<ILogger, Exception> SchedulerCanceled =
+            LoggerMessage.Define(
+                LogLevel.Warning,
+                EventCatalog.SchedulerCanceled,
+                "Queue scheduler has been canceled during finalization.");
+
+        public static readonly Action<ILogger, Exception> SchedulerDisposed =
+            LoggerMessage.Define(
+                LogLevel.Warning,
+                EventCatalog.SchedulerDisposed,
+                "Queue scheduler has been disposed during finalization.");
+
+        public static readonly Action<ILogger, int, Exception?> SchedulerFinalizationTimeout =
+            LoggerMessage.Define<int>(
+                LogLevel.Warning,
+                EventCatalog.SchedulerFinalizationTimeout,
+                "Queue scheduler disposal exceeded {TimeoutMs} ms; pending scheduler work may be abandoned.");
+
         public static readonly Action<ILogger, Exception> BackgroundError =
             LoggerMessage.Define(
                 LogLevel.Error,
