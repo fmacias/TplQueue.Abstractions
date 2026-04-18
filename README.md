@@ -100,6 +100,32 @@ The adapter cache flow is:
 
 This separation keeps serialization concerns independent from runtime type lookup, which is useful for cache hydration, plugin loading, and future whitelist-based resolvers.
 
+## Payload handler contracts
+
+`IPayload.PayloadId` is the stable persisted handler key for payload-aware jobs. Keep it stable across deployments for any payload type that can be dehydrated into a cache and hydrated later.
+
+Recommended key style:
+
+```text
+<domain>.<operation>/v<version>
+```
+
+Example:
+
+```csharp
+public sealed class MeasurementPayload : IPayload
+{
+    public const string HandlerKey = "measurements.persist/v1";
+
+    public string SensorId { get; set; } = string.Empty;
+    public double Value { get; set; }
+    public string PayloadId => HandlerKey;
+    public DateTime CollectionTime => DateTime.UtcNow;
+}
+```
+
+`IApi.RegisterPayloadHandler(...)` and `IApi.RegisterPayloadHandlerPlugin(...)` are the public adapter-facing registration path. Cache hydration resolves `IPayload.PayloadId` through the API-owned internal handler registry, not through a caller-built handler collection.
+
 ## Serializer public surface decision
 
 `IUniversalDataSerializer` remains the shared serializer contract used by cache hydration and payload graph reconstruction. Concrete serializer modules may expose narrower factory contracts, but cache-facing APIs should continue to accept `IUniversalDataSerializer`.
@@ -119,18 +145,58 @@ Existing JSON-oriented public names such as `IUniversalDataSerializer.Deserializ
 
 When a custom resolution boundary is needed, reuse `TypeDeserializer.TryResolveType(...)` from `Fmacias.TplQueue.Defaults` inside your own `ITypeResolver` implementation.
 
-## Runtime type resolution roadmap
+## Serializer and cache usage shape
+
+Concrete serializer implementations live in `TplQueue.Adapter`, but they are consumed through the contracts defined here:
+
+```csharp
+IUniversalDataSerializer jsonSerializer =
+    api.SystemTextSerializerFactory().Serializer();
+
+IUniversalDataSerializer xmlSerializer =
+    api.XmlSerializerFactory().Serializer();
+```
+
+The same serializer contract is passed into cache creation with a separate type resolver:
+
+```csharp
+ITypeResolver typeResolver =
+    RuntimeNodeTypeResolverFactory.Create().Resolver();
+
+IMemCache cache = api.Cache<IMemCache>(
+    MemCacheFactory.Create(),
+    jsonSerializer,
+    typeResolver);
+```
+
+After hydration, the cache returns an `IDataJobRoot`, which is dispatched through the normal queue contract:
+
+```csharp
+if (cache.TryHydrateNextJob(out IDataJobRoot hydratedRoot, out ICacheEntry lease))
+{
+    ILogger<IParallelQ> logger = loggerFactory.CreateLogger<IParallelQ>();
+    IParallelQ queue = api.QFactory.Parallel("main", logger);
+
+    queue.Enqueue(hydratedRoot, CancellationToken.None);
+    queue.Start();
+
+    await hydratedRoot.WaitUntilFinishedAsync();
+}
+```
+
+Use the XML serializer in the same cache flow when XML payload storage is desired; the cache still depends only on `IUniversalDataSerializer`.
+
+## Runtime type resolution status
 
 Current state:
 
 - `IRuntimeNodeTypeResolver` is intentionally AppDomain-based for compatibility with the current adapter implementation.
 - The current contract is suitable for simple runtime probing and legacy-oriented hosting scenarios.
 
-Next step:
+Deferred work:
 
-- for modern .NET plugin loading and unloadable isolation boundaries, prefer `AssemblyLoadContext` as the target design direction
-- treat `AppDomain` as a .NET Framework-era abstraction that should be considered for future replacement or upgrade in the dynamic-plugin path
-- keep `ITypeResolver` as the abstraction boundary so the runtime-loading mechanism can evolve without coupling it to `IUniversalDataSerializer`
+- modern .NET plugin loading and unloadable isolation boundaries should use an `AssemblyLoadContext`-oriented resolver when that becomes a real requirement
+- keep `ITypeResolver` as the abstraction boundary so runtime loading can evolve without coupling it to `IUniversalDataSerializer`
 
 ## Workspace solution (optional)
 This repo builds standalone. If you also clone the umbrella 
@@ -192,7 +258,7 @@ dotnet nuget push ..\TplQueue.NugetLocal\Fmacias.TplQueue.Abstractions.1.2.3.nup
   --api-key <YOUR_NUGET_API_KEY>
 ```
 
-## Payload handler roadmap
+## Payload handler contract status
 
 Current state:
 
@@ -201,10 +267,10 @@ Current state:
 - plugin-style registration is exposed through `IPayloadHandlerPlugin` and `IPayloadHandlerRegistry`
 - handler classes can be composed from the application layer or an IoC container through handler factories
 
-Next step:
+Deferred work:
 
 - add optional higher-level plugin discovery helpers on top of the key-based registration contract
-- document recommended handler-key versioning conventions for long-lived cached payloads
+- keep any future discovery helper separate from direct `IApi.RegisterPayloadHandler(...)` registration
 
 ## Visual Studio session note
 Avoid opening `WorkspaceTplQueue.sln` and any `TplQueue.*.sln` in separate VS sessions at the same time. The workspace swaps to project references, while standalone solutions stay package-based, and running both can lead to confusing dependency views or build output conflicts.
