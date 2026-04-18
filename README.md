@@ -96,7 +96,7 @@ The adapter cache flow is:
 
 1. `JobNodeDto` persists `PayloadTypeName` from the payload CLR type, together with the serialized payload content.
 2. `ITypeResolver.Resolve(string payloadTypeName)` turns the stored type name back into a CLR `Type`.
-3. `IUniversalDataSerializer.Deserialize(string json, Type type)` materializes the payload instance.
+3. `IUniversalDataSerializer.Deserialize(string json, Type type)` materializes the payload instance. The `json` parameter name is retained for compatibility; the value is serializer-specific payload content.
 
 This separation keeps serialization concerns independent from runtime type lookup, which is useful for cache hydration, plugin loading, and future whitelist-based resolvers.
 
@@ -113,7 +113,7 @@ The approved XML serializer surface is:
 
 The current serializer scope is JSON and XML only. Do not add serializer plugin discovery, serializer registries, or external serializer dependencies as part of this scope.
 
-Existing JSON-oriented public names such as `SystemTexSerializerFactory()` and persisted members such as `PayloadJson` remain compatibility concerns and should not be renamed as part of XML serializer support.
+Existing JSON-oriented public names such as `SystemTexSerializerFactory()`, `IUniversalDataSerializer.Deserialize(string json, Type type)`, and persisted members such as `PayloadJson` remain compatibility concerns and should not be renamed as part of XML serializer support. Treat `PayloadJson` as the legacy storage member for serializer-specific payload content.
 
 When a custom resolution boundary is needed, reuse `TypeDeserializer.TryResolveType(...)` from `Fmacias.TplQueue.Defaults` inside your own `ITypeResolver` implementation.
 

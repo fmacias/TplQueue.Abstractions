@@ -23,6 +23,14 @@ namespace Fmacias.TplQueue.Contracts
         void MarkAsDeleted();
         bool IsFinalized();
         void MarkLeased();
+        /// <summary>
+        /// Marks the entry as acknowledged and updates its serialized payload content.
+        /// </summary>
+        /// <param name="payloadData">Serializable payload data produced by execution.</param>
+        /// <param name="jsonUniversalPayloadSerializer">
+        /// Serializer used to produce the stored payload content. The parameter name is retained for compatibility and
+        /// is not limited to JSON.
+        /// </param>
         void MarkAck(ISerializable payloadData, IUniversalDataSerializer jsonUniversalPayloadSerializer);
         void MarkFailed();
         void MarkCanceled();
