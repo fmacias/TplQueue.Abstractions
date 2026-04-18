@@ -113,7 +113,9 @@ The approved XML serializer surface is:
 
 The current serializer scope is JSON and XML only. Do not add serializer plugin discovery, serializer registries, or external serializer dependencies as part of this scope.
 
-Existing JSON-oriented public names such as `SystemTexSerializerFactory()`, `IUniversalDataSerializer.Deserialize(string json, Type type)`, and persisted members such as `PayloadJson` remain compatibility concerns and should not be renamed as part of XML serializer support. Treat `PayloadJson` as the legacy storage member for serializer-specific payload content.
+Existing JSON-oriented public names such as `IUniversalDataSerializer.Deserialize(string json, Type type)` and persisted members such as `PayloadJson` remain compatibility concerns and should not be renamed as part of XML serializer support. Treat `PayloadJson` as the legacy storage member for serializer-specific payload content.
+
+`SystemTexSerializerFactory()` is also retained for compatibility. New code should prefer the correctly spelled `SystemTextSerializerFactory()` facade member.
 
 When a custom resolution boundary is needed, reuse `TypeDeserializer.TryResolveType(...)` from `Fmacias.TplQueue.Defaults` inside your own `ITypeResolver` implementation.
 
