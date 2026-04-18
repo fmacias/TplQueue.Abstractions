@@ -88,17 +88,32 @@ not under `Fmacias.TplQueue.Defaults`.
 Payload-aware cache hydration is intentionally split into two responsibilities:
 
 - `ITypeResolver` resolves the persisted payload CLR type name into a `System.Type`.
-- `IUniversalDataSerializer` serializes and deserializes payload JSON once that `Type` is known.
+- `IUniversalDataSerializer` serializes and deserializes payload data once that `Type` is known.
 - `IRuntimeNodeTypeResolver` specializes `ITypeResolver` for runtime/AppDomain-based resolution.
 - `IRuntimeNodeTypeResolverFactory` exposes the default runtime-oriented resolver factory contract used by the adapter cache modules.
 
 The adapter cache flow is:
 
-1. `JobNodeDto` persists `PayloadTypeName` from the payload CLR type, together with `PayloadJson`.
+1. `JobNodeDto` persists `PayloadTypeName` from the payload CLR type, together with the serialized payload content.
 2. `ITypeResolver.Resolve(string payloadTypeName)` turns the stored type name back into a CLR `Type`.
 3. `IUniversalDataSerializer.Deserialize(string json, Type type)` materializes the payload instance.
 
-This separation keeps JSON serialization concerns independent from runtime type lookup, which is useful for cache hydration, plugin loading, and future whitelist-based resolvers.
+This separation keeps serialization concerns independent from runtime type lookup, which is useful for cache hydration, plugin loading, and future whitelist-based resolvers.
+
+## Serializer public surface decision
+
+`IUniversalDataSerializer` remains the shared serializer contract used by cache hydration and payload graph reconstruction. Concrete serializer modules may expose narrower factory contracts, but cache-facing APIs should continue to accept `IUniversalDataSerializer`.
+
+The approved XML serializer surface is:
+
+- `IXmlSerializerFactory` for creating XML serializer instances
+- `IXmlUniversalSerializer : IUniversalDataSerializer` as the XML-specific serializer marker contract
+- `IApi.XmlSerializerFactory()` on the adapter facade
+- `Fmacias.TplQueue.Serialization.Xml` as the adapter module that contains the concrete XML implementation
+
+The current serializer scope is JSON and XML only. Do not add serializer plugin discovery, serializer registries, or external serializer dependencies as part of this scope.
+
+Existing JSON-oriented public names such as `SystemTexSerializerFactory()` and persisted members such as `PayloadJson` remain compatibility concerns and should not be renamed as part of XML serializer support.
 
 When a custom resolution boundary is needed, reuse `TypeDeserializer.TryResolveType(...)` from `Fmacias.TplQueue.Defaults` inside your own `ITypeResolver` implementation.
 

@@ -45,6 +45,11 @@ namespace Fmacias.TplQueue.Contracts
         IExponentialBackoff RetryPolicy(IExponentialBackofFactory exponentialBackofFactory, int maxRetries, int delayMs, double factor);
         ILinearBackoff RetryPolicy(ILinearBackoffFactory linearBackofFactory, int maxRetries, int delayMs);
         ISystemTextJsonSerializerFactory SystemTexSerializerFactory();
+        /// <summary>
+        /// Creates the XML serializer factory exposed by the adapter facade.
+        /// </summary>
+        /// <returns>An XML serializer factory.</returns>
+        IXmlSerializerFactory XmlSerializerFactory();
         IObserverFactory ObserverFactory();
     }
 }
