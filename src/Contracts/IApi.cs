@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Fmacias.TplQueue.Contracts
 {
+
     public interface IApi
     {
         IRetryPolicyAbstractFactory RetryPolicyAbstractFactory { get; }
@@ -13,6 +14,14 @@ namespace Fmacias.TplQueue.Contracts
         IQFactoryAdapter QFactory { get; }
         IReadOnlyDictionary<string, IRetryPolicyOptions> RetryPolicyOptions { get; }
         IReadOnlyDictionary<string, IQOptions> QueueOptions { get; }
+        /// <summary>
+        /// Creates a cache using the facade-owned default runtime type resolver.
+        /// </summary>
+        T Cache<T>(ICacheFactory<T> cacheFactory, IUniversalDataSerializer serializer)
+            where T : IDataJobCache;
+        /// <summary>
+        /// Creates a cache using an explicit payload type resolver.
+        /// </summary>
         T Cache<T>(ICacheFactory<T> cacheFactory, IUniversalDataSerializer serializer, ITypeResolver typeResolver)
             where T : IDataJobCache;
         /// <summary>

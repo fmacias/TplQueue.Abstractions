@@ -36,8 +36,8 @@ Para ejecucion manual: `powershell -NoProfile -ExecutionPolicy Bypass -File .\pa
 - If you still see old types, clear the global cache folder for the package:
   `C:\Users\<user>\.nuget\packages\fmacias.tplqueue.abstractions\1.0.0`
 
-Public contracts and interfaces used across [TplQueue.Core](../TplQueue.Core) and 
-[TplQueue.Adapters](../TplQueue.Adapter) related components. 
+Public contracts and interfaces used across [TplQueue.Core](../TplQueue.Core/README.md) and
+[TplQueue.Adapter](../TplQueue.Adapter/README.md) related components.
 
 ## Retry policy factory contract
 
@@ -147,7 +147,7 @@ When a custom resolution boundary is needed, reuse `TypeDeserializer.TryResolveT
 
 ## Serializer and cache usage shape
 
-Concrete serializer implementations live in `TplQueue.Adapter`, but they are consumed through the contracts defined here:
+Concrete serializer implementations live in [TplQueue.Adapter](../TplQueue.Adapter/README.md), but they are consumed through the contracts defined here:
 
 ```csharp
 IUniversalDataSerializer jsonSerializer =
@@ -157,7 +157,15 @@ IUniversalDataSerializer xmlSerializer =
     api.XmlSerializerFactory().Serializer();
 ```
 
-The same serializer contract is passed into cache creation with a separate type resolver:
+The same serializer contract is passed into cache creation. The common facade path uses the adapter-owned default runtime resolver:
+
+```csharp
+IMemCache cache = api.Cache<IMemCache>(
+    MemCacheFactory.Create(),
+    jsonSerializer);
+```
+
+Keep the explicit resolver overload when a custom resolution boundary is required:
 
 ```csharp
 ITypeResolver typeResolver =
