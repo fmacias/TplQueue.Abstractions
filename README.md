@@ -36,8 +36,8 @@ Para ejecucion manual: `powershell -NoProfile -ExecutionPolicy Bypass -File .\pa
 - If you still see old types, clear the global cache folder for the package:
   `C:\Users\<user>\.nuget\packages\fmacias.tplqueue.abstractions\1.0.0`
 
-Public contracts and interfaces used across [TplQueue.Core](../TplQueue.Core/README.md) and
-[TplQueue.Adapter](../TplQueue.Adapter/README.md) related components.
+Public contracts and interfaces used across [TplQueue.Core](https://github.com/fmacias/TplQueue.Core/blob/main/README.md) and
+[TplQueue.Adapter](https://github.com/fmacias/TplQueue.Adapter/blob/main/README.md) related components.
 
 ## Retry policy factory contract
 
@@ -147,7 +147,7 @@ When a custom resolution boundary is needed, reuse `TypeDeserializer.TryResolveT
 
 ## Serializer and cache usage shape
 
-Concrete serializer implementations live in [TplQueue.Adapter](../TplQueue.Adapter/README.md), but they are consumed through the contracts defined here:
+Concrete serializer implementations live in [TplQueue.Adapter](https://github.com/fmacias/TplQueue.Adapter/blob/main/README.md), but they are consumed through the contracts defined here:
 
 ```csharp
 IUniversalDataSerializer jsonSerializer =
