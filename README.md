@@ -25,6 +25,16 @@ Para ejecucion manual: `powershell -NoProfile -ExecutionPolicy Bypass -File .\pa
 ..\WorkspaceTplQueue\pack.ps1
 ```
 
+4) Pack this repo as an official strong-named build:
+```powershell
+.\pack-local.ps1 `
+  -Version 0.1.0-preview.1 `
+  -StrongNameKeyFile C:\secure\keys\Fmacias.TplQueue.official.snk `
+  -StrongNamePublicKey <public-key>
+```
+
+The private `.snk` file is never stored in this repository. The full public key is generated from the private key and passed only at release-pack time. For the full key-generation and verification procedure, see `..\WorkspaceTplQueue\docs\strong-name-signing.md`.
+
 ## Why this design (justification)
 - Keeps Abstractions buildable on its own while supporting a shared workspace.
 - Avoids unnecessary packing during edits; packaging is explicit when needed.
@@ -222,6 +232,19 @@ can see in [NuGet.config](./NuGet.config) configuration.
 
 The package `Fmacias.TplQueue.Abstractions` is created only when `pack-local.ps1`
 is executed manually (or via `WorkspaceTplQueue\pack.ps1`).
+
+## Strong-name signing
+
+Normal source builds are unsigned. Official release packages are strong-named only when `pack-local.ps1` receives an external private key path and the matching full public key.
+
+```powershell
+.\pack-local.ps1 `
+  -Version 0.1.0-preview.1 `
+  -StrongNameKeyFile C:\secure\keys\Fmacias.TplQueue.official.snk `
+  -StrongNamePublicKey <public-key>
+```
+
+This repository does not contain the official `.snk` key and does not reference a repository-local key path. Anyone building from source can choose their own signing strategy for their own distribution. Only packages built with the official private key carry the official TplQueue strong-name identity.
 
 ## Switch between local and nuget.org sources
 

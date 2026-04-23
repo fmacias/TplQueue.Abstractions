@@ -1,5 +1,7 @@
 param(
-  [string]$Version
+  [string]$Version,
+  [string]$StrongNameKeyFile,
+  [string]$StrongNamePublicKey
 )
 
 $ErrorActionPreference = 'Stop'
@@ -15,17 +17,38 @@ function Invoke-Dotnet {
   }
 }
 
-function Get-PackVersionProperties {
-  param([string]$Version)
+function Get-PackProperties {
+  param(
+    [string]$Version,
+    [string]$StrongNameKeyFile,
+    [string]$StrongNamePublicKey
+  )
 
-  if ([string]::IsNullOrWhiteSpace($Version)) {
-    return @()
+  if (-not [string]::IsNullOrWhiteSpace($StrongNameKeyFile) -and [string]::IsNullOrWhiteSpace($StrongNamePublicKey)) {
+    throw 'StrongNamePublicKey is required when StrongNameKeyFile is provided.'
   }
 
-  return @(
-    "-p:Version=$Version",
-    "-p:PackageVersion=$Version"
-  )
+  $properties = @()
+  if (-not [string]::IsNullOrWhiteSpace($Version)) {
+    $properties += @(
+      "-p:Version=$Version",
+      "-p:PackageVersion=$Version",
+      "-p:TplQueuePackageVersion=$Version"
+    )
+  }
+
+  if (-not [string]::IsNullOrWhiteSpace($StrongNameKeyFile)) {
+    $properties += @(
+      '-p:TplQueueOfficialSign=true',
+      "-p:TplQueueStrongNameKeyFile=$StrongNameKeyFile"
+    )
+  }
+
+  if (-not [string]::IsNullOrWhiteSpace($StrongNamePublicKey)) {
+    $properties += "-p:TplQueueStrongNamePublicKey=$StrongNamePublicKey"
+  }
+
+  return $properties
 }
 
 # Return the folder that contains this script.
@@ -110,7 +133,9 @@ function Pack-Local {
   param(
     [string]$PackTarget,
     [string]$NugetRoot,
-    [string]$Version
+    [string]$Version,
+    [string]$StrongNameKeyFile,
+    [string]$StrongNamePublicKey
   )
 
   Write-Host "Packing $PackTarget to $NugetRoot..."
@@ -122,7 +147,7 @@ function Pack-Local {
     '-p:SkipPackLocal=true',
     '-p:RestoreNoCache=true',
     '-p:RestoreForce=true'
-  ) + (Get-PackVersionProperties -Version $Version)
+  ) + (Get-PackProperties -Version $Version -StrongNameKeyFile $StrongNameKeyFile -StrongNamePublicKey $StrongNamePublicKey)
 
   Invoke-Dotnet -DotnetArgs $dotnetArgs
   Write-Host 'Local NuGet packages created successfully.'
@@ -135,11 +160,14 @@ function Main {
   if (-not [string]::IsNullOrWhiteSpace($Version)) {
     Write-Host "Coordinated package version: $Version"
   }
+  if (-not [string]::IsNullOrWhiteSpace($StrongNameKeyFile)) {
+    Write-Host 'Official strong-name signing: enabled'
+  }
 
   $nugetRoot = Ensure-NugetLocal -RepoRoot $repoRoot
   Ensure-NugetSource -SourceName 'TplQueue.NugetLocal' -SourcePath $nugetRoot
   Clear-LocalNugetCache
-  Pack-Local -PackTarget $repoRoot -NugetRoot $nugetRoot -Version $Version
+  Pack-Local -PackTarget $repoRoot -NugetRoot $nugetRoot -Version $Version -StrongNameKeyFile $StrongNameKeyFile -StrongNamePublicKey $StrongNamePublicKey
 }
 
 try {
