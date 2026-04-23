@@ -1,4 +1,8 @@
-﻿$ErrorActionPreference = 'Stop'
+param(
+  [string]$Version
+)
+
+$ErrorActionPreference = 'Stop'
 
 # Run dotnet with a known argument list and stop on non-zero exit.
 # Example: Invoke-Dotnet -DotnetArgs @('pack','My.sln','-c','Release')
@@ -9,6 +13,19 @@ function Invoke-Dotnet {
   if ($LASTEXITCODE -ne 0) {
     throw "dotnet $($DotnetArgs -join ' ') failed with exit code $LASTEXITCODE."
   }
+}
+
+function Get-PackVersionProperties {
+  param([string]$Version)
+
+  if ([string]::IsNullOrWhiteSpace($Version)) {
+    return @()
+  }
+
+  return @(
+    "-p:Version=$Version",
+    "-p:PackageVersion=$Version"
+  )
 }
 
 # Return the folder that contains this script.
@@ -92,11 +109,12 @@ function Clear-LocalNugetCache {
 function Pack-Local {
   param(
     [string]$PackTarget,
-    [string]$NugetRoot
+    [string]$NugetRoot,
+    [string]$Version
   )
 
   Write-Host "Packing $PackTarget to $NugetRoot..."
-  Invoke-Dotnet -DotnetArgs @(
+  $dotnetArgs = @(
     'pack',
     $PackTarget,
     '-c', 'Release',
@@ -104,7 +122,9 @@ function Pack-Local {
     '-p:SkipPackLocal=true',
     '-p:RestoreNoCache=true',
     '-p:RestoreForce=true'
-  )
+  ) + (Get-PackVersionProperties -Version $Version)
+
+  Invoke-Dotnet -DotnetArgs $dotnetArgs
   Write-Host 'Local NuGet packages created successfully.'
 }
 
@@ -112,10 +132,14 @@ function Pack-Local {
 # Example: running the script in TplQueue.Abstractions will pack into ..\TplQueue.NugetLocal.
 function Main {
   $repoRoot = Get-RepoRoot
+  if (-not [string]::IsNullOrWhiteSpace($Version)) {
+    Write-Host "Coordinated package version: $Version"
+  }
+
   $nugetRoot = Ensure-NugetLocal -RepoRoot $repoRoot
   Ensure-NugetSource -SourceName 'TplQueue.NugetLocal' -SourcePath $nugetRoot
   Clear-LocalNugetCache
-  Pack-Local -PackTarget $repoRoot -NugetRoot $nugetRoot
+  Pack-Local -PackTarget $repoRoot -NugetRoot $nugetRoot -Version $Version
 }
 
 try {
