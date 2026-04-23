@@ -246,6 +246,8 @@ Normal source builds are unsigned. Official release packages are strong-named on
 
 This repository does not contain the official `.snk` key and does not reference a repository-local key path. Anyone building from source can choose their own signing strategy for their own distribution. Only packages built with the official private key carry the official TplQueue strong-name identity.
 
+This is assembly strong-name signing only. NuGet package X.509 signing and obfuscation are not part of the current v1.0.0 release flow; the central policy is maintained in `..\WorkspaceTplQueue\docs\release-policy.md`.
+
 ## Switch between local and nuget.org sources
 
 The [NuGet.config](./NuGet.config) file defines both the local feed and
