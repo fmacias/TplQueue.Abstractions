@@ -12,13 +12,11 @@
 		<Authors>Fernando Macías Ruano</Authors>
 		<Company></Company>
 		<Product>TplQueue.Abstractions</Product>
-		<Description><![CDATA[Contracts and data structures for the TplQueue 
-		orchestration ecosystem: task runners, dispatchers, observers, retry policies, 
-		cache abstractions and related models.]]>
-		</Description>
-		<PackageTags>tplqueue;task;queue;orchestration;abstractions;</PackageTags>
+		<Description>Public contracts and shared models for TplQueue jobs, queues, retry policies, observers, payloads, cache hydration, and serialization.</Description>
+		<PackageTags>tplqueue;job;queue;concurrency;retry;observer;payload;cache;netstandard</PackageTags>
 		<RepositoryUrl>https://github.com/fmacias/TplQueue.Abstractions</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://github.com/fmacias/TplQueue.Abstractions</PackageProjectUrl>
 
 		<!-- License: MIT for abstractions -->
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
