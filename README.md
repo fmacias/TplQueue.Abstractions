@@ -9,6 +9,7 @@ It is the common contract layer consumed by [TplQueue.Core](https://github.com/f
 - [Summary](#summary)
 - [Install](#install)
 - [Package contents](#package-contents)
+- [C# language-version policy](#c-language-version-policy)
 - [Retry policy factory contract](#retry-policy-factory-contract)
 - [Defaults namespace policy](#defaults-namespace-policy)
 - [Cache hydration contracts](#cache-hydration-contracts)
@@ -59,6 +60,14 @@ The package includes the core contracts and reusable models that the rest of the
 - retry-policy contracts and option models
 - observer and event contracts for diagnostics and monitoring
 - payload, serializer, and cache-hydration contracts
+
+## C# language-version policy
+
+The shipped `netstandard2.0` package line is pinned to `LangVersion=9.0`.
+
+This is a source-build policy for TplQueue itself, not a runtime requirement for applications that reference the compiled package. Consumers targeting classic `.NET Framework` or any other runtime that can reference `netstandard2.0` assemblies do not need to raise their own project `LangVersion` only to consume `Fmacias.TplQueue.Abstractions`.
+
+`9.0` is the intentional floor because it preserves the current nullable-aware source style and the small amount of C# 9 syntax already used in the product code, while removing the accidental long-term dependency on `LangVersion=latest`. If you build this repository from source, use a .NET SDK that supports C# 9 or later.
 
 ## Retry policy factory contract
 
