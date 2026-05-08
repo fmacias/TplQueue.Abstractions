@@ -41,10 +41,6 @@ namespace Fmacias.TplQueue.Contracts
         /// </summary>
         IApi RegisterPayloadHandler<TPayload>(string payloadHandlerKey, Func<TPayload, CancellationToken, Task> handler)
             where TPayload : IPayload;
-        /// <summary>
-        /// Applies payload handler registrations from a plugin module.
-        /// </summary>
-        IApi RegisterPayloadHandlerPlugin(IPayloadHandlerPlugin plugin);
         T RetryPolicy<T>(IRetryPolicyFactory<T> retryPolicyFactory) 
             where T : IRetryPolicy;
         T RetryPolicy<T>(IRetryPolicyFactory<T> retryPolicyFactory, string name)

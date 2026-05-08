@@ -153,7 +153,7 @@ public sealed class MeasurementPayload : IPayload
 }
 ```
 
-`IApi.RegisterPayloadHandler(...)` and `IApi.RegisterPayloadHandlerPlugin(...)` are the public adapter-facing registration path. Cache hydration resolves `IPayload.PayloadId` through the API-owned internal handler registry, not through a caller-built handler collection.
+`IApi.RegisterPayloadHandler(...)` is the public adapter-facing registration path. Cache hydration resolves `IPayload.PayloadId` through the API-owned internal handler registry, not through a caller-built handler collection.
 
 ## Serializer public surface decision
 
@@ -321,13 +321,13 @@ Current state:
 
 - `IPayload.PayloadId` is the single stable persisted handler key for hydrated payload jobs
 - `IPayloadHandlers` resolves public `IHandler` implementations only by that stable string key
-- plugin-style registration is exposed through `IPayloadHandlerPlugin` and `IPayloadHandlerRegistry`
 - handler classes can be composed from the application layer or an IoC container through handler factories
+- application-level grouping logic should call the direct `IApi.RegisterPayloadHandler(...)` overloads itself instead of relying on a plugin abstraction in this package layer
 
 Deferred work:
 
-- add optional higher-level plugin discovery helpers on top of the key-based registration contract
-- keep any future discovery helper separate from direct `IApi.RegisterPayloadHandler(...)` registration
+- keep any future higher-level discovery or module-loading helper outside this package layer
+- keep direct `IApi.RegisterPayloadHandler(...)` registration as the composition boundary for payload handlers
 
 ## Visual Studio session note
 
