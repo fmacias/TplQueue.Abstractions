@@ -1,53 +1,64 @@
-﻿# TplQueue.Abstractions
+# TplQueue.Abstractions
 
-## Sumario
-- Operaciones: el empaquetado local es manual via `pack-local.ps1` o `WorkspaceTplQueue\pack.ps1`.
-- Operaciones: `NuGet.config` controla el feed local frente a nuget.org segun el entorno.
+`TplQueue.Abstractions` provides the public contracts and shared models for the TplQueue ecosystem. Use this package when you need to reference jobs, job roots, queues, retry-policy contracts, observer contracts, payload contracts, serializer contracts, or cache-related abstractions without taking a dependency on the concrete runtime implementations.
 
-## Empaquetado local (DevOps)
-El empaquetado local es manual via `pack-local.ps1`.
-Salida esperada: `.nupkg` y `.snupkg` en `..\TplQueue.NugetLocal`.
-Para ejecucion manual: `powershell -NoProfile -ExecutionPolicy Bypass -File .\pack-local.ps1`.
+It is the common contract layer consumed by [TplQueue.Core](https://github.com/fmacias/TplQueue.Core/blob/main/README.md) and the integration modules in [TplQueue.Adapter](https://github.com/fmacias/TplQueue.Adapter/blob/main/README.md).
 
-## How to (step by step)
-1) Build only (fast loop) from the workspace:
-```powershell
-..\WorkspaceTplQueue\build.ps1 -Configuration Debug
+## Table of contents
+
+- [Summary](#summary)
+- [Install](#install)
+- [Package contents](#package-contents)
+- [Retry policy factory contract](#retry-policy-factory-contract)
+- [Defaults namespace policy](#defaults-namespace-policy)
+- [Cache hydration contracts](#cache-hydration-contracts)
+- [Payload handler contracts](#payload-handler-contracts)
+- [Serializer public surface decision](#serializer-public-surface-decision)
+- [Serializer and cache usage shape](#serializer-and-cache-usage-shape)
+- [Runtime type resolution status](#runtime-type-resolution-status)
+- [Workspace solution (optional)](#workspace-solution-optional)
+- [NuGet packaging](#nuget-packaging)
+- [Strong-name signing](#strong-name-signing)
+- [License](#license)
+- [Switch between local and nuget.org sources](#switch-between-local-and-nugetorg-sources)
+- [Publish a new version to NuGet.org](#publish-a-new-version-to-nugetorg)
+- [Payload handler contract status](#payload-handler-contract-status)
+
+## Summary
+
+Choose `Fmacias.TplQueue.Abstractions` when you want a stable contract package for:
+
+- `IJob`, `IJobRoot`, `IDataJob`, and `IDataJobRoot`
+- `IParallelQ`, `IFifoQ`, and `ICacheQ`
+- retry-policy contracts and related option models
+- observer contracts and `IJobEvent`
+- payload, serializer, and cache-hydration abstractions
+
+This package is intended for application code, integration packages, and extension libraries that need the TplQueue public API surface without carrying the execution kernel or adapter implementations.
+
+## Install
+
+Install from NuGet:
+
+```bash
+dotnet add package Fmacias.TplQueue.Abstractions --version 0.1.0-preview.1
 ```
 
-2) Pack this repo explicitly (standalone):
-```powershell
-.\pack-local.ps1
+Or reference it directly in a project file:
+
+```xml
+<PackageReference Include="Fmacias.TplQueue.Abstractions" Version="0.1.0-preview.1" />
 ```
 
-3) Pack all repos in order (workspace):
-```powershell
-..\WorkspaceTplQueue\pack.ps1
-```
+## Package contents
 
-4) Pack this repo as an official strong-named build:
-```powershell
-.\pack-local.ps1 `
-  -Version 0.1.0-preview.1 `
-  -StrongNameKeyFile C:\secure\keys\Fmacias.TplQueue.official.snk `
-  -StrongNamePublicKey <public-key>
-```
+The package includes the core contracts and reusable models that the rest of the TplQueue line builds on:
 
-The private `.snk` file is never stored in this repository. The full public key is generated from the private key and passed only at release-pack time. For the full key-generation and verification procedure, see `..\WorkspaceTplQueue\docs\strong-name-signing.md`.
-
-## Why this design (justification)
-- Keeps Abstractions buildable on its own while supporting a shared workspace.
-- Avoids unnecessary packing during edits; packaging is explicit when needed.
-- Reduces NuGet cache drift by using a predictable, ordered pack step.
-
-## Local package caching policy
-- The local feed `..\TplQueue.NugetLocal` is the source of truth for dev packages.
-- Pack scripts force restore to reduce stale cache issues.
-- If you still see old types, clear the global cache folder for the package:
-  `C:\Users\<user>\.nuget\packages\fmacias.tplqueue.abstractions\1.0.0`
-
-Public contracts and interfaces used across [TplQueue.Core](https://github.com/fmacias/TplQueue.Core/blob/main/README.md) and
-[TplQueue.Adapter](https://github.com/fmacias/TplQueue.Adapter/blob/main/README.md) related components.
+- job graph contracts and public factory-facing abstractions
+- queue contracts for bounded parallel, FIFO, and cache-backed flows
+- retry-policy contracts and option models
+- observer and event contracts for diagnostics and monitoring
+- payload, serializer, and cache-hydration contracts
 
 ## Retry policy factory contract
 
@@ -85,9 +96,8 @@ This namespace is not a place for:
 - process-wide caches or registries with internal state
 - static classes that coordinate runtime behavior by storing shared data
 
-Acceptance rule:
-
-- a type under `Fmacias.TplQueue.Defaults` is acceptable only when it does not change global state, does not retain mutable shared state, and exists to keep associated services in the TplQueue ecosystem simpler and more consistent
+> [!NOTE]
+> **Acceptance rule:** a type under `Fmacias.TplQueue.Defaults` is acceptable only when it does not change global state, does not retain mutable shared state, and exists to keep associated services in the TplQueue ecosystem simpler and more consistent
 
 If a component needs to keep state, coordinate runtime behavior, or own process-wide
 resources, it should stay behind a normal service abstraction and explicit composition,
@@ -217,25 +227,22 @@ Deferred work:
 - keep `ITypeResolver` as the abstraction boundary so runtime loading can evolve without coupling it to `IUniversalDataSerializer`
 
 ## Workspace solution (optional)
-This repo builds standalone. If you also clone the umbrella 
-workspace `WorkspaceTplQueue`, this repo will automatically import 
-the shared `Directory.Build.props` from `..\\WorkspaceTplQueue\\Directory.Build.props` via 
-its local `Directory.Build.props`.
-The import is conditional; if the workspace folder is not present, 
-nothing changes.
+
+This repository builds standalone. If you also clone the umbrella workspace `WorkspaceTplQueue`, this repository automatically imports the shared `Directory.Build.props` from `..\WorkspaceTplQueue\Directory.Build.props` via its local `Directory.Build.props`.
+
+The import is conditional. If the workspace folder is not present, nothing changes.
 
 ## NuGet packaging
 
-This solution has been configured to generate the NuGet 
-package at parent directory TplQueue.NugetLocal as you 
-can see in [NuGet.config](./NuGet.config) configuration.
+This solution is configured to write NuGet packages to the parent `TplQueue.NugetLocal` folder, as defined in [NuGet.config](./NuGet.config).
 
-The package `Fmacias.TplQueue.Abstractions` is created only when `pack-local.ps1`
-is executed manually (or via `WorkspaceTplQueue\pack.ps1`).
+The package `Fmacias.TplQueue.Abstractions` is created only when `pack-local.ps1` is executed manually, or when it is invoked through `WorkspaceTplQueue\pack.ps1`.
 
 ## Strong-name signing
 
-Normal source builds are unsigned. Official release packages are strong-named only when `pack-local.ps1` receives an external private key path and the matching full public key.
+**Source builds are unsigned by default. This is intentional.**
+
+**Official TplQueue release builds are strong-named only when `pack-local.ps1` receives an external private key path and the matching full public key.**
 
 ```powershell
 .\pack-local.ps1 `
@@ -248,13 +255,16 @@ This repository does not contain the official `.snk` key and does not reference 
 
 This is assembly strong-name signing only. NuGet package X.509 signing and obfuscation are not part of the current v1.0.0 release flow; the central policy is maintained in `..\WorkspaceTplQueue\docs\release-policy.md`.
 
+## License
+
+`TplQueue.Abstractions` is distributed under the MIT license.
+
 ## Switch between local and nuget.org sources
 
-The [NuGet.config](./NuGet.config) file defines both the local feed and
-nuget.org. To switch which one is used for restores, either enable/disable
-the source or edit the file.
+The [NuGet.config](./NuGet.config) file defines both the local feed and nuget.org. To switch which one is used for restores, either enable or disable the source, or edit the file directly.
 
-Option A: enable/disable sources
+Option A: enable or disable sources
+
 ```powershell
 dotnet nuget list source
 dotnet nuget disable source LocalPackages
@@ -262,29 +272,34 @@ dotnet nuget enable source nuget.org
 ```
 
 To switch back to the local folder:
+
 ```powershell
 dotnet nuget enable source LocalPackages
 dotnet nuget disable source nuget.org
 ```
 
 Option B: edit `NuGet.config`
+
 ```xml
 <packageSources>
   <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
   <add key="LocalPackages" value="..\\TplQueue.NugetLocal" />
 </packageSources>
 ```
+
 Remove or comment the source you do not want active.
 
 ## Publish a new version to NuGet.org
 
-1) Update the version in `src/Fmacias.TplQueue.Abstractions.csproj`
-   (for example, set `<PackageVersion>1.2.3</PackageVersion>`).
-2) Pack the release build:
+1. Update the version in `src/Fmacias.TplQueue.Abstractions.csproj` or override it through the pack pipeline.
+2. Pack the release build:
+
 ```powershell
 dotnet pack .\Fmacias.TplQueue.Abstractions.sln -c Release -o ..\TplQueue.NugetLocal -p:SkipPackLocal=true
 ```
-3) Push the package to NuGet.org:
+
+3. Push the package to NuGet.org:
+
 ```powershell
 dotnet nuget push ..\TplQueue.NugetLocal\Fmacias.TplQueue.Abstractions.1.2.3.nupkg `
   --source https://api.nuget.org/v3/index.json `
@@ -306,6 +321,5 @@ Deferred work:
 - keep any future discovery helper separate from direct `IApi.RegisterPayloadHandler(...)` registration
 
 ## Visual Studio session note
-Avoid opening `WorkspaceTplQueue.sln` and any `TplQueue.*.sln` in separate VS sessions at the same time. The workspace swaps to project references, while standalone solutions stay package-based, and running both can lead to confusing dependency views or build output conflicts.
 
-
+Avoid opening `WorkspaceTplQueue.sln` and any `TplQueue.*.sln` in separate Visual Studio sessions at the same time. The workspace swaps to project references, while standalone solutions stay package-based, and running both can lead to confusing dependency views or build output conflicts.

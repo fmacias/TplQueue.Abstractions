@@ -10,9 +10,9 @@
 
 		<!-- Package metadata -->
 		<Authors>Fernando Macías Ruano</Authors>
-		<Company></Company>
+		<Company>Fernando Macías Ruano</Company>
 		<Product>TplQueue.Abstractions</Product>
-		<Description>Public contracts and shared models for TplQueue jobs, queues, retry policies, observers, payloads, cache hydration, and serialization.</Description>
+		<Description>Public contracts and shared models for TplQueue jobs, queues, retry policies, observers, payload handling, cache hydration, and serializer integration.</Description>
 		<PackageTags>tplqueue;job;queue;concurrency;retry;observer;payload;cache;netstandard</PackageTags>
 		<RepositoryUrl>https://github.com/fmacias/TplQueue.Abstractions</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
@@ -21,7 +21,9 @@
 		<!-- License: MIT for abstractions -->
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-		<!-- Optional: link the project README as NuGet readme -->
+		<Copyright>Copyright (c) Fernando Macías Ruano 2026</Copyright>
+
+		<!-- Package README shown on nuget.org -->
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 
 		<!-- Optional: don't pack on every build; we pack explicitly -->
