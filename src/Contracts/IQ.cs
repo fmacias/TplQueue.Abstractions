@@ -15,7 +15,7 @@ namespace Fmacias.TplQueue.Contracts
         /// Starts polling for work using the configured cadence and parallelism.
         /// Safe to call multiple times; subsequent calls are no-ops if already running.
         /// </summary>
-        void Start();
+        void ResumePolling();
 
         /// <summary>
         /// Requests the dispatcher to stop polling and finish outstanding callbacks gracefully.
@@ -44,7 +44,7 @@ namespace Fmacias.TplQueue.Contracts
         int MaxParallelism { get; }
         Func<IRetryPolicy> RetryPolicyFactory { get; }
         SemaphoreSlim Semaphore { get; }
-        Task Wait(int stateAtMs = 0);
+        Task Wait();
         IQ SetRetryPolicyFactory(Func<IRetryPolicy> retryPolicy);
     }
 }
