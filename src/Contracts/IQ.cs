@@ -7,13 +7,16 @@ namespace Fmacias.TplQueue.Contracts
     /// <summary>
     /// Controls a background dispatcher that polls and executes enqueued <see cref="IJob"/> items
     /// and publishes lifecycle events via <see cref="IObservable{T}"/>.
+    /// Per-job execution failures are published as <see cref="IJobEvent"/> values with failed
+    /// status through observer <c>OnNext</c>, while observer <c>OnError</c> is reserved for
+    /// fatal dispatcher failures that make the queue unusable.
     /// </summary>
     public interface IQ : IObservable<IJobEvent>, IDisposable
     {
         Guid QueueId { get; }
         /// <summary>
-        /// Starts polling for work using the configured cadence and parallelism.
-        /// Safe to call multiple times; subsequent calls are no-ops if already running.
+        /// Resumes polling for work using the configured cadence and parallelism.
+        /// Safe to call multiple times; subsequent calls are no-ops if already polling.
         /// </summary>
         void ResumePolling();
 
@@ -44,6 +47,10 @@ namespace Fmacias.TplQueue.Contracts
         int MaxParallelism { get; }
         Func<IRetryPolicy> RetryPolicyFactory { get; }
         SemaphoreSlim Semaphore { get; }
+        /// <summary>
+        /// Waits until the dispatcher finalizes all queue-owned buffered and running work
+        /// accepted before the call completes or fails.
+        /// </summary>
         Task Wait();
         IQ SetRetryPolicyFactory(Func<IRetryPolicy> retryPolicy);
     }
