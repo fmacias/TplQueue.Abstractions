@@ -22,7 +22,7 @@ It is the common contract layer consumed by [TplQueue.Core](https://github.com/f
 - [Strong-name signing](#strong-name-signing)
 - [License](#license)
 - [Switch between local and nuget.org sources](#switch-between-local-and-nugetorg-sources)
-- [Publish a new version to NuGet.org](#publish-a-new-version-to-nugetorg)
+- [Public release flow](#public-release-flow)
 - [Payload handler contract status](#payload-handler-contract-status)
 
 ## Summary
@@ -262,7 +262,7 @@ The package `Fmacias.TplQueue.Abstractions` is created only when `pack-local.ps1
 
 This repository does not contain the official `.snk` key and does not reference a repository-local key path. Anyone building from source can choose their own signing strategy for their own distribution. Only packages built with the official private key carry the official TplQueue strong-name identity.
 
-This is assembly strong-name signing only. NuGet package X.509 signing and obfuscation are not part of the current v1.0.0 release flow; the central policy is maintained in `..\WorkspaceTplQueue\docs\release-policy.md`.
+This is assembly strong-name signing only. NuGet package X.509 signing and obfuscation are not part of the current TplQueue release flow. The central release policy is maintained in the shared `WorkspaceTplQueue\docs` documentation set.
 
 ## License
 
@@ -298,22 +298,52 @@ Option B: edit `NuGet.config`
 
 Remove or comment the source you do not want active.
 
-## Publish a new version to NuGet.org
+## Public release flow
 
-1. Update the version in `src/Fmacias.TplQueue.Abstractions.csproj` or override it through the pack pipeline.
-2. Pack the release build:
+Public NuGet publication is intentionally coordinated from the shared `WorkspaceTplQueue` workspace, not by pushing directly from this repository README.
+
+Recommended release path:
+
+1. Choose the release version in the workspace pack pipeline.
+2. Build signed artifacts through `WorkspaceTplQueue\pack.ps1`, providing the external private `.snk` path and the matching full public key.
+3. Validate the signed artifacts with `WorkspaceTplQueue\publish.ps1 -ExpectedStrongNamePublicKey <public-key>` before any public push.
+4. Load the scoped NuGet API key only for the current shell session and run the workspace publish helper when the release is approved.
+
+Example signed dry run:
 
 ```powershell
-dotnet pack .\Fmacias.TplQueue.Abstractions.sln -c Release -o ..\TplQueue.NugetLocal -p:SkipPackLocal=true
+.\pack.ps1 `
+  -Version 0.1.0-preview.1 `
+  -StrongNameKeyFile C:\secure\keys\Fmacias.TplQueue.official.snk `
+  -StrongNamePublicKey <public-key>
+
+.\publish.ps1 `
+  -Version 0.1.0-preview.1 `
+  -ExpectedStrongNamePublicKey <public-key>
 ```
 
-3. Push the package to NuGet.org:
+Example public push session:
 
 ```powershell
-dotnet nuget push ..\TplQueue.NugetLocal\Fmacias.TplQueue.Abstractions.1.2.3.nupkg `
-  --source https://api.nuget.org/v3/index.json `
-  --api-key <YOUR_NUGET_API_KEY>
+$env:TPLQUEUE_NUGET_API_KEY = '<nuget-api-key>'
+.\publish.ps1 -Version 0.1.0-preview.1 -Push
+Remove-Item Env:TPLQUEUE_NUGET_API_KEY
 ```
+
+Use `.\pack-local.ps1` in this repository only for local package generation. The operational release checklist, owner-model decision, prefix-reservation notes, and publish-authentication guidance live in the shared `WorkspaceTplQueue\docs` release documents.
+
+## Versioning and release
+
+The active public prototype line is `0.1.0-preview.1`. Until the first stable release, local builds and local package generation default to that preview line unless an explicit `-Version` is supplied.
+
+For any coordinated release:
+
+1. All publishable `Fmacias.TplQueue.*` packages use the same version.
+2. The published package version, git tag `v<version>`, and GitHub Release title `TplQueue <version>` must match exactly.
+3. Each contributing product repository should be tagged with that same version on the exact commit that produced the published package.
+4. `1.0.0` is reserved for the first stable release and should not be used for preview packages.
+
+Use `WorkspaceTplQueue\pack.ps1 -Version <version>` and `WorkspaceTplQueue\publish.ps1 -Version <version>` for coordinated release validation and publication. The detailed policy is maintained in `..\WorkspaceTplQueue\docs\release-policy.md`.
 
 ## Payload handler contract status
 
