@@ -8,6 +8,7 @@ It is the common contract layer consumed by [TplQueue.Core](https://github.com/f
 
 - [Summary](#summary)
 - [Install](#install)
+- [Public usage repository](#public-usage-repository)
 - [Package contents](#package-contents)
 - [C# language-version policy](#c-language-version-policy)
 - [Retry policy factory contract](#retry-policy-factory-contract)
@@ -50,6 +51,12 @@ Or reference it directly in a project file:
 ```xml
 <PackageReference Include="Fmacias.TplQueue.Abstractions" Version="0.1.0-preview.1" />
 ```
+
+## Public usage repository
+
+For package-consumption samples, public integration tests, and observer-facing validation without private source access, see [TplQueue.Usage](https://github.com/fmacias/TplQueue.Usage).
+
+That repository consumes the preview packages through normal package references and acts as the public verification surface for the current package line.
 
 ## Package contents
 

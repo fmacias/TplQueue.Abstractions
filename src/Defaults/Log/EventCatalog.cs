@@ -73,6 +73,9 @@ namespace Fmacias.TplQueue.Defaults.Log
         public static readonly EventId SchedulerFinalizationTimeout =
             new EventId(3005, nameof(SchedulerFinalizationTimeout));
 
+        public static readonly EventId SchedulerFinalizedGracefully =
+            new EventId(3006, nameof(SchedulerFinalizedGracefully));
+
         public static readonly EventId RetryPolicyApplied =
             new EventId(4000, nameof(RetryPolicyApplied));
     }

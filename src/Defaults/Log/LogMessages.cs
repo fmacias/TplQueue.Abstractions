@@ -136,6 +136,12 @@ namespace Fmacias.TplQueue.Defaults.Log
                 EventCatalog.SchedulerFinalizationTimeout,
                 "Queue scheduler disposal exceeded {TimeoutMs} ms; pending scheduler work may be abandoned.");
 
+        public static readonly Action<ILogger, Exception?> SchedulerFinalizedGracefully =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                EventCatalog.SchedulerFinalizedGracefully,
+                "Queue scheduler finalized gracefully during disposal.");
+
         public static readonly Action<ILogger, Exception> BackgroundError =
             LoggerMessage.Define(
                 LogLevel.Error,
