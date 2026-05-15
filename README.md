@@ -19,6 +19,7 @@ It is the common contract layer consumed by [TplQueue.Core](https://github.com/f
 - [Serializer and cache usage shape](#serializer-and-cache-usage-shape)
 - [Runtime type resolution status](#runtime-type-resolution-status)
 - [Workspace solution (optional)](#workspace-solution-optional)
+- [Local validation](#local-validation)
 - [NuGet packaging](#nuget-packaging)
 - [Strong-name signing](#strong-name-signing)
 - [License](#license)
@@ -247,6 +248,23 @@ Deferred work:
 This repository builds standalone. If you also clone the umbrella workspace `WorkspaceTplQueue`, this repository automatically imports the shared `Directory.Build.props` from `..\WorkspaceTplQueue\Directory.Build.props` via its local `Directory.Build.props`.
 
 The import is conditional. If the workspace folder is not present, nothing changes.
+
+## Local validation
+
+Run the repository test project directly when you change the public contracts or shared defaults:
+
+```powershell
+dotnet test .\test\Fmacias.TplQueue.Abstractions.Test\Fmacias.TplQueue.Abstractions.Test.csproj
+```
+
+For deterministic coverage collection and baseline enforcement:
+
+```powershell
+.\coverage.ps1
+.\coverage.ps1 -EnforceBaseline
+```
+
+The coverage script writes Cobertura reports, JSON summaries, and `artifacts/coverage/html/index.html` when the standard `ReportGenerator` tool is available. The accepted repository baseline is stored in `coverage-baseline.json`, and the cross-repository release record is maintained in `..\WorkspaceTplQueue\docs\test-coverage.md`.
 
 ## NuGet packaging
 
