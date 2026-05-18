@@ -26,7 +26,7 @@ namespace Fmacias.TplQueue.Defaults.Log
             LoggerMessage.Define(
                 LogLevel.Error,
                 EventCatalog.PayloadJobSerialization,
-                "Job must implement ISerializedPayload to be included into the CacheableQ workflow");
+                "CacheQ payload acknowledgment requires a tracked live payload job.");
 
         public static readonly Action<ILogger, Guid, string, Exception?> JobStarted =
             LoggerMessage.Define<Guid, string>(

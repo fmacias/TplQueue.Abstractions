@@ -9,7 +9,8 @@ namespace Fmacias.TplQueue.Contracts
         /// </summary>
         JobEventStatus Status { get; }
         /// <summary>
-        /// Inmutable DTO(Data Transfer Object) related with the <see cref="IJob"/>
+        /// Immutable metadata snapshot related to the <see cref="IJob"/> at publication time.
+        /// Implementations are not required to expose payload ownership through this snapshot.
         /// </summary>
         IJobInfo JobInfo { get; }
         /// <summary>
