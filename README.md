@@ -57,7 +57,7 @@ Or reference it directly in a project file:
 
 For package-consumption samples, public integration tests, and observer-facing validation without private source access, see [TplQueue.Usage](https://github.com/fmacias/TplQueue.Usage).
 
-That repository consumes the preview packages through normal package references and acts as the public verification surface for the current package line.
+That repository consumes the preview packages through normal package references and acts as the public verification surface for the current package line. The current runnable sample entry points are [QueueObserverConsole](https://github.com/fmacias/TplQueue.Usage/tree/main/samples/QueueObserverConsole) and [QueueObserverSignalRDashboard](https://github.com/fmacias/TplQueue.Usage/tree/main/samples/QueueObserverSignalRDashboard).
 
 ## Package contents
 
