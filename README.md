@@ -22,7 +22,7 @@ The package exposes the shared contracts and reusable models for:
 
 Related repositories:
 
-- [TplQueue.Core](https://github.com/fmacias/TplQueue.Core)
+- `TplQueue.Core` is the published runtime package line, while the source repository remains private and subject to separate approval and license terms
 - [TplQueue.Adapter](https://github.com/fmacias/TplQueue.Adapter)
 - [TplQueue.Usage](https://github.com/fmacias/TplQueue.Usage)
 
