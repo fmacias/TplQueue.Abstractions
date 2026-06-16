@@ -3,7 +3,7 @@
 namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
-    /// Factory used to create and rehydrate payload-aware task runners.
+    /// Factory used to create and rehydrate payload-aware jobs.
     /// </summary>
     public interface IDataJobFactory
     {

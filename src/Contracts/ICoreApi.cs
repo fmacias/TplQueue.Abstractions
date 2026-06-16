@@ -1,7 +1,7 @@
 ﻿namespace Fmacias.TplQueue.Contracts
 {
     /// <summary>
-    /// High-level API (facade) to construct dispatchers, retry policies and task runners
+    /// High-level API (facade) to construct dispatchers, retry policies, and jobs
     /// using the registered factories. This type does not execute work; it only creates
     /// configured instances for consumption.
     /// </summary>

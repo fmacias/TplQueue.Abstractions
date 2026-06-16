@@ -8,7 +8,7 @@ namespace Fmacias.TplQueue.Contracts
         /// <summary>
         /// Resolves a payload handler from the persisted payload handler key.
         /// </summary>
-        /// <param name="payloadHandlerKey">Stable plugin-style handler identifier.</param>
+        /// <param name="payloadHandlerKey">Stable persisted payload handler identifier.</param>
         /// <returns>The registered handler.</returns>
         IHandler Handler(string payloadHandlerKey);
     }

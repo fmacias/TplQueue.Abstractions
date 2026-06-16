@@ -14,15 +14,13 @@ namespace Fmacias.TplQueue.Contracts
         IJobNode[] GetJobsBatch();
 
         /// <summary>
-        /// Collects the status of the external asynchronus operation related with this object
-        /// in order to get awaited.
+        /// Exposes the external asynchronous operation associated with this node so callers can await completion.
         /// </summary>
-        /// <returns></returns>
         Task WaitUntilFinishedAsync();
         IJobInfo[] GetJobInfoDependencies();
 
         /// <summary>
-        /// Returns an immutable snapshot of this runner's info.
+        /// Returns an immutable snapshot of this job node's info.
         /// </summary>
         IJobInfo CopyInfo();
     }

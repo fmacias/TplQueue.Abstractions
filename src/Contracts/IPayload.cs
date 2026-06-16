@@ -8,7 +8,7 @@ namespace Fmacias.TplQueue.Contracts
     public interface IPayload
     {
         /// <summary>
-        /// Stable handler key used by cache hydration and plugin-style handler resolution.
+        /// Stable handler key used by cache hydration and payload-handler resolution.
         /// </summary>
         string PayloadId { get; }
 

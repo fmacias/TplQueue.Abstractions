@@ -10,6 +10,7 @@ It is the common contract layer consumed by [TplQueue.Core](https://github.com/f
 - [Install](#install)
 - [Public usage repository](#public-usage-repository)
 - [Package contents](#package-contents)
+- [Stable API freeze notes](#stable-api-freeze-notes)
 - [C# language-version policy](#c-language-version-policy)
 - [Retry policy factory contract](#retry-policy-factory-contract)
 - [Defaults namespace policy](#defaults-namespace-policy)
@@ -68,6 +69,17 @@ The package includes the core contracts and reusable models that the rest of the
 - retry-policy contracts and option models
 - observer and event contracts for diagnostics and monitoring
 - payload, serializer, and cache-hydration contracts
+
+## Stable API freeze notes
+
+For `TPLQ-V1-015`, this package treats the current public contract line as the baseline for `1.0.0`.
+
+The freeze-specific decisions in this repository are:
+
+- `IJobEvent.JobInfo` remains the metadata-first event snapshot surface. Payload-aware live state continues to belong to `IDataJob`, `IDataJobRoot`, and explicit `IDataJobInfo` projections.
+- preview-line public names with known spelling or naming debt are kept for compatibility instead of being renamed before `1.0.0`, including `SystemTexSerializerFactory()`, `IExponentialBackofFactory`, `IExponentialBackofRetryPolicyOptions`, `PayloadRunnerFactory`, and `PayloadJson`.
+- `IJobInfoDto` is now treated as a compatibility alias only. New code should use `IJobInfo` directly.
+- payload-handler composition remains the direct `IApi.RegisterPayloadHandler(...)` boundary. No plugin-registration model is being reintroduced at this layer.
 
 ## C# language-version policy
 

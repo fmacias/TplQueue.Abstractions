@@ -27,8 +27,8 @@ namespace Fmacias.TplQueue.Contracts
     }
 
     /// <summary>
-    /// Strongly-typed root payload task runner.
-    /// Extends the payload-carrying root and the base runner root contract.
+    /// Strongly-typed root payload job.
+    /// Extends the payload-carrying root and the base job-root contract.
     /// </summary>
     public interface IDataJobRoot<T> : IDataJobRoot
         where T : IPayload
