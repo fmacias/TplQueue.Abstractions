@@ -9,6 +9,6 @@
         /// <remarks>
         /// The property name is retained for compatibility with the preview line.
         /// </remarks>
-        IDataJobFactory PayloadRunnerFactory { get; }
+        IDataJobFactory PayloadJobFactory { get; }
     }
 }

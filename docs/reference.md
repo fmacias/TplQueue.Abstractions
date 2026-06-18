@@ -77,7 +77,7 @@ For `TPLQ-V1-015`, this package treats the current public contract line as the b
 The freeze-specific decisions in this repository are:
 
 - `IJobEvent.JobInfo` remains the metadata-first event snapshot surface. Payload-aware live state continues to belong to `IDataJob`, `IDataJobRoot`, and explicit `IDataJobInfo` projections.
-- preview-line public names with known spelling or naming debt are kept for compatibility instead of being renamed before `1.0.0`, including `SystemTexSerializerFactory()`, `IExponentialBackofFactory`, `IExponentialBackofRetryPolicyOptions`, `PayloadRunnerFactory`, and `PayloadJson`.
+- the preview-line compatibility names `SystemTexSerializerFactory()`, `IExponentialBackofFactory`, `IExponentialBackofRetryPolicyOptions`, `PayloadRunnerFactory`, and `PayloadJson` were renamed before `1.0.0` so the stable API surface uses normalized names
 - `IJobInfoDto` is now treated as a compatibility alias only. New code should use `IJobInfo` directly.
 - payload-handler composition remains the direct `IApi.RegisterPayloadHandler(...)` boundary. No plugin-registration model is being reintroduced at this layer.
 
@@ -188,9 +188,7 @@ The approved XML serializer surface is:
 
 The current serializer scope is JSON and XML only. Do not add serializer plugin discovery, serializer registries, or external serializer dependencies as part of this scope.
 
-Existing JSON-oriented public names such as `IUniversalDataSerializer.Deserialize(string json, Type type)` and persisted members such as `PayloadJson` remain compatibility concerns and should not be renamed as part of XML serializer support. Treat `PayloadJson` as the legacy storage member for serializer-specific payload content.
-
-`SystemTexSerializerFactory()` is also retained for compatibility. New code should prefer the correctly spelled `SystemTextSerializerFactory()` facade member.
+`IUniversalDataSerializer.Deserialize(string json, Type type)` still keeps its historical parameter name for compatibility, but payload-record members now use serializer-agnostic naming such as `SerializedPayload`.
 
 When a custom resolution boundary is needed, reuse `TypeDeserializer.TryResolveType(...)` from `Fmacias.TplQueue.Defaults` inside your own `ITypeResolver` implementation.
 

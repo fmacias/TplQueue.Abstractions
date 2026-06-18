@@ -47,22 +47,13 @@ namespace Fmacias.TplQueue.Contracts
             where T : IRetryPolicy;
         T RetryPolicy<T>(IRetryPolicyFactory<T> retryPolicyFactory, IRetryPolicyOptions retryPolicyOptions)
             where T : IRetryPolicy;
-        IExponentialBackoff RetryPolicy(IExponentialBackofFactory exponentialBackofFactory, int maxRetries, int delayMs, double factor);
+        IExponentialBackoff RetryPolicy(IExponentialBackoffFactory exponentialBackoffFactory, int maxRetries, int delayMs, double factor);
         ILinearBackoff RetryPolicy(ILinearBackoffFactory linearBackofFactory, int maxRetries, int delayMs);
         /// <summary>
         /// Creates the System.Text.Json serializer factory exposed by the adapter facade.
         /// </summary>
         /// <returns>A System.Text.Json serializer factory.</returns>
         ISystemTextJsonSerializerFactory SystemTextSerializerFactory();
-        /// <summary>
-        /// Creates the System.Text.Json serializer factory exposed by the adapter facade.
-        /// </summary>
-        /// <remarks>
-        /// This typo-preserving member is retained for source and binary compatibility.
-        /// Prefer <see cref="SystemTextSerializerFactory"/>.
-        /// </remarks>
-        /// <returns>A System.Text.Json serializer factory.</returns>
-        ISystemTextJsonSerializerFactory SystemTexSerializerFactory();
         /// <summary>
         /// Creates the XML serializer factory exposed by the adapter facade.
         /// </summary>

@@ -19,7 +19,7 @@ namespace Fmacias.TplQueue.Abstractions.UnitTests.Contracts
         }
 
         [Test]
-        public void IApi_ExposesPreferredAndCompatibilitySerializerFactoryMethods()
+        public void IApi_ExposesOnlySystemTextSerializerFactoryMethod()
         {
             var methodNames = typeof(IApi)
                 .GetMethods()
@@ -28,7 +28,19 @@ namespace Fmacias.TplQueue.Abstractions.UnitTests.Contracts
                 .ToArray();
 
             Assert.That(methodNames, Does.Contain(nameof(IApi.SystemTextSerializerFactory)));
-            Assert.That(methodNames, Does.Contain(nameof(IApi.SystemTexSerializerFactory)));
+            Assert.That(methodNames, Does.Not.Contain("SystemTexSerializerFactory"));
+        }
+
+        [Test]
+        public void IJobNodeRecord_UsesSerializedPayloadNaming()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(typeof(IJobNodeRecord).GetProperty(nameof(IJobNodeRecord.SerializedPayload)), Is.Not.Null);
+                Assert.That(typeof(IJobNodeRecord).GetMethod(nameof(IJobNodeRecord.UpdateSerializedPayload)), Is.Not.Null);
+                Assert.That(typeof(IJobNodeRecord).GetProperty("PayloadJson"), Is.Null);
+                Assert.That(typeof(IJobNodeRecord).GetMethod("UpdatePayloadJson"), Is.Null);
+            });
         }
 
         [Test]

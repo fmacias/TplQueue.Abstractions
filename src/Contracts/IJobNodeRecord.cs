@@ -20,17 +20,17 @@ namespace Fmacias.TplQueue.Contracts
         /// Serialized payload content.
         /// </summary>
         /// <remarks>
-        /// The property name is retained for public compatibility. The value is produced by the configured
-        /// <see cref="IUniversalDataSerializer"/> and can contain JSON, XML, or another supported serialized format.
+        /// The value is produced by the configured <see cref="IUniversalDataSerializer"/> and can
+        /// contain JSON, XML, or another supported serialized format.
         /// </remarks>
-        string PayloadJson { get; }
+        string SerializedPayload { get; }
         IRetryPolicyOptions RetryPolicyOptions { get; }
         /// <summary>
-        /// Replaces the serialized payload content stored in <see cref="PayloadJson"/>.
+        /// Replaces the serialized payload content stored in <see cref="SerializedPayload"/>.
         /// </summary>
-        /// <param name="payloadJson">
-        /// Serialized payload content. The parameter name is retained for compatibility and is not limited to JSON.
+        /// <param name="serializedPayload">
+        /// Serialized payload content. The format is serializer-specific and is not limited to JSON.
         /// </param>
-        void UpdatePayloadJson(string payloadJson);
+        void UpdateSerializedPayload(string serializedPayload);
     }
 }

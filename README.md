@@ -20,7 +20,7 @@ The package exposes the shared contracts and reusable models for:
 - observer contracts and `IJobEvent`
 - payload, serializer, and cache-hydration abstractions
 
-The `TPLQ-V1-015` API-freeze work keeps the current public contract line as the `1.0.0` baseline. Known preview-line compatibility names stay available, while new code should follow the normalized job-based terminology documented in [docs/reference.md](docs/reference.md).
+The `TPLQ-V1-015` API-freeze work keeps the current public contract line as the `1.0.0` baseline while removing the remaining typo and legacy-compatibility names before the stable release. The normalized contract surface is documented in [docs/reference.md](docs/reference.md).
 
 Related repositories:
 
