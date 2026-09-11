@@ -8,6 +8,6 @@ namespace Fmacias.TplQueue.Contracts
     /// </summary>
     public interface ICacheQFactory
     {
-        ICacheQ CacheQ(ILogger<ICacheQ> logger, IDataJobCache payloadLeaseCache, IParallelQ queue);
+        ICacheQ CacheQ(Func<IDataJobCache> dataJobCacheFactory, ILogger<ICacheQ> logger, IParallelQ queue);
     }
 }

@@ -50,11 +50,13 @@ namespace Fmacias.TplQueue.Abstractions.UnitTests.Defaults
             });
         }
 
-        [Test]
-        public void QOptions_Ctor_ThrowsWhenRetryPolicyIsBlank()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public void QOptions_Ctor_AllowsUnspecifiedRetryPolicy(string name)
         {
-            Assert.Throws<ArgumentException>(
-                () => new QOptions(Guid.NewGuid(), 1, " "));
+            var options = new QOptions(Guid.NewGuid(), 1, name);
+            Assert.That(options.RetryPolicy, Is.EqualTo(name));
         }
 
         [Test]

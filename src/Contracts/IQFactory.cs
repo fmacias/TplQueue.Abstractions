@@ -13,6 +13,9 @@ namespace Fmacias.TplQueue.Contracts
 
         /// <summary>Create a strict FIFO dispatcher from explicit parameters.</summary>
         IFifoQ Fifo(Guid id, string name, ILogger logger, Func<IRetryPolicy>? retryPolicy = null);
-        ICacheQ CacheQ(ILogger<ICacheQ> logger, IDataJobCache payloadLeaseCache, IParallelQ queue);
+        /// <summary>
+        /// Creates a cache-backed queue with a cache instance supplied specifically for that queue.
+        /// </summary>
+        ICacheQ CacheQ(Func<IDataJobCache> dataJobCacheFactory, ILogger<ICacheQ> logger, IParallelQ queue);
     }
 }

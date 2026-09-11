@@ -2,7 +2,7 @@
 
 ## Context
 
-You are working in the TplQueue.Abstractions git repository folder, member of the overall `fmacias` workspace, which contains three separate git repositories:
+You are working in the TplQueue.Abstractions git repository folder, member of the overall `fmacias` workspace, which contains three separate git repositories between others:
 
 - `TplQueue.Adapter`
 - `TplQueue.Core`
@@ -13,11 +13,17 @@ Each repository contains:
 - a `src` folder with the production code
 - a `test` folder with the related test projects
 
+Apply the common instructions described at AGENtS.md file of the parent overall workspace `fmacias`.
+
 The repositories are related and may depend on one another, but they must still be treated as separate git repositories with independent boundaries.
 
 The code intentionally targets **.NET Standard 2.0**, because these libraries are designed to remain compatible with older .NET Framework applications as well as modern .NET / .NET Core applications where possible.
 
 This workspace focuses on **multithreading control, task dispatching, concurrency coordination, retry policies, queue-based execution, and observability**.
+
+## Implementation Rules
+
+Implementation rules such as Implementation, review, refactor and test are found at user main folder ./.,/fmacias
 
 ## Important terminology
 
@@ -315,3 +321,14 @@ When creating or substantially modifying C# code:
 - Preserve `.NET Standard 2.0` compatibility unless the human explicitly instructs otherwise.
 - Prefer the existing project terminology and patterns over inventing new abstractions.
 - Unless the task is review-only, apply changes directly in the workspace without asking for confirmation.
+
+## Current contract and configuration notes
+
+- Preserve `WaitAsync`, `IPayload.HandlerKey`, factory-based CacheQ creation and the moved `Then` extensions when modifying this source line.
+- Configured queue retry-policy names are optional; null, empty, or whitespace selects NoRetry. An explicit root NoRetry overrides the queue policy; an unspecified root policy inherits it.
+- DI settings are configuration-time builders. Registration captures independent option snapshots; later Upsert calls do not reconfigure the API.
+- Follow the [coordinated API migration notes](../TplQueue.Adapter/docs/en/operations/api-migration.md). Public documentation continues to be published only from Adapter's language trees; this change does not alter the publishing boundary.
+
+- Use `IQ.Subscribe` for all job lifecycle notifications, including Enqueued. `IQ.OnJobEventChanged` has been removed; do not reintroduce an inline event-handler route in Publish or enqueue.
+- CacheQ owns a private cache observer and its subscription to the supplied queue. Terminal cache transitions run through that observer; enqueue and dispatch do not invoke it inline.
+- Preserve `WaitAsync` as a wait for underlying queue work. It does not wait for observer delivery or cache acknowledgment. Slow subscribers on the shared hub can delay cache updates. CacheQ.Dispose unsubscribes and can leave queued notifications unapplied; it is not an acknowledgment barrier.

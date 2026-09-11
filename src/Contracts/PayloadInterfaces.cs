@@ -15,6 +15,12 @@ namespace Fmacias.TplQueue.Contracts
 
     public interface IDataJob : IJob, IDataJobNode
     {
+        /// <summary>
+        /// Specifies that this data job must run after the given
+        /// <paramref name="previousTasks"/>.
+        /// </summary>
+        /// <param name="previousTasks">Jobs that must complete before this data job can run.</param>
+        new IDataJob After(params IJob[] previousTasks);
     }
 
     public interface IDataJob<T> : IDataJob where T : IPayload
@@ -24,6 +30,12 @@ namespace Fmacias.TplQueue.Contracts
 
     public interface IDataJobRoot : IJobRoot, IDataJobNode
     {
+        /// <summary>
+        /// Specifies that this data-job root must run after the given
+        /// <paramref name="previousTasks"/>.
+        /// </summary>
+        /// <param name="previousTasks">Nodes that must complete before this root can run.</param>
+        new IDataJobRoot After(params IJobNode[] previousTasks);
     }
 
     /// <summary>

@@ -31,16 +31,6 @@ namespace Fmacias.TplQueue.Contracts
         /// </summary>
         bool IsDisposed { get; }
 
-        /// <summary>
-        /// Optional async delegator invoked for each internal queue event.
-        /// Must be non-blocking and resilient to exceptions. The dispatcher will
-        /// catch and ignore any exception thrown by the delegator to preserve stability.
-        /// </summary>
-        /// <remarks>
-        /// Keep this fast and allocation-free. Implementations should capture a local copy
-        /// before invocation to avoid races with concurrent setters.
-        /// </remarks>
-        Func<IJobEvent, Task> OnJobEventChanged { get; set; }
         IQ Enqueue(IJobRoot jobRoot, CancellationToken ct);
 
         string Name { get; }
@@ -48,10 +38,14 @@ namespace Fmacias.TplQueue.Contracts
         Func<IRetryPolicy> RetryPolicyFactory { get; }
         SemaphoreSlim Semaphore { get; }
         /// <summary>
-        /// Waits until the dispatcher finalizes all queue-owned buffered and running work
+        /// Waits asynchronously until the dispatcher finalizes all queue-owned buffered and running work
         /// accepted before the call completes or fails.
         /// </summary>
-        Task Wait();
+        /// <remarks>
+        /// Observer delivery is asynchronous and is not drained by this operation.
+        /// Cache transitions performed by an observer may still be pending after it completes.
+        /// </remarks>
+        Task WaitAsync();
         IQ SetRetryPolicyFactory(Func<IRetryPolicy> retryPolicy);
     }
 }

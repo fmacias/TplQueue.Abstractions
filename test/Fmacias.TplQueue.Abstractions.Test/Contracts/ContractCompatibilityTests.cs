@@ -44,6 +44,42 @@ namespace Fmacias.TplQueue.Abstractions.UnitTests.Contracts
         }
 
         [Test]
+        public void IPayload_ExposesHandlerKeyAsString()
+        {
+            var property = typeof(IPayload).GetProperty(nameof(IPayload.HandlerKey));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(property, Is.Not.Null);
+                Assert.That(property!.PropertyType, Is.EqualTo(typeof(string)));
+                Assert.That(property.CanRead, Is.True);
+                Assert.That(property.CanWrite, Is.False);
+            });
+        }
+
+        [TestCase(typeof(IDataJob), typeof(IJob[]), typeof(IDataJob))]
+        [TestCase(typeof(IDataJobRoot), typeof(IJobNode[]), typeof(IDataJobRoot))]
+        public void DataJobContracts_ExposeTypedAfter(
+            Type contractType,
+            Type dependencyType,
+            Type returnType)
+        {
+            var method = contractType
+                .GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+                .Single(candidate => candidate.Name == nameof(IJob.After));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(method.ReturnType, Is.EqualTo(returnType));
+                Assert.That(method.GetParameters(), Has.Length.EqualTo(1));
+                Assert.That(method.GetParameters()[0].ParameterType, Is.EqualTo(dependencyType));
+                Assert.That(
+                    method.GetParameters()[0].GetCustomAttribute<ParamArrayAttribute>(),
+                    Is.Not.Null);
+            });
+        }
+
+        [Test]
         public void IJobInfoDto_IsMarkedAsObsoleteCompatibilityAlias()
         {
 #pragma warning disable CS0618

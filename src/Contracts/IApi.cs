@@ -62,4 +62,3 @@ namespace Fmacias.TplQueue.Contracts
         IObserverFactory ObserverFactory();
     }
 }
- 

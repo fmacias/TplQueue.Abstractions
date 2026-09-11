@@ -159,5 +159,29 @@ namespace Fmacias.TplQueue.Defaults.Log
                 LogLevel.Debug,
                 EventCatalog.ObserverCompleted,
                 "Observer reported completion.");
+
+        public static readonly Action<ILogger, string, Exception?> FileObserverCompleted =
+            LoggerMessage.Define<string>(
+                LogLevel.Information,
+                EventCatalog.ObserverCompleted,
+                "[{Queue}] OBSERVER COMPLETED");
+
+        public static readonly Action<ILogger, string, string, Exception?> FileObserverError =
+            LoggerMessage.Define<string, string>(
+                LogLevel.Error,
+                EventCatalog.ObserverError,
+                "[{Queue}] OBSERVER ERROR: {Message}");
+
+        public static readonly Action<ILogger, string, Exception?> FileObserverNullEvent =
+            LoggerMessage.Define<string>(
+                LogLevel.Warning,
+                EventCatalog.FileObserverNullEvent,
+                "[{Queue}] NULL event received");
+
+        public static readonly Action<ILogger, string, string, Exception?> FileObserverEventWritten =
+            LoggerMessage.Define<string, string>(
+                LogLevel.Information,
+                EventCatalog.FileObserverEventWritten,
+                "[{Queue}] {Line}");
     }
 }

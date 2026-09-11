@@ -17,7 +17,7 @@ namespace Fmacias.TplQueue.Defaults
         public int MaxParallelism { get; }
 
         /// <inheritdoc />
-        public string RetryPolicy { get; }
+        public string? RetryPolicy { get; }
 
         /// <inheritdoc />
         public Guid Id { get; }
@@ -27,12 +27,11 @@ namespace Fmacias.TplQueue.Defaults
         /// </summary>
         /// <param name="id">The queue option identifier.</param>
         /// <param name="maxParallelism">The maximum number of jobs allowed to execute in parallel.</param>
-        /// <param name="retryPolicy">The retry policy name associated with this queue configuration.</param>
-        public QOptions(Guid id, int maxParallelism, string retryPolicy)
+        /// <param name="retryPolicy">The optional retry-policy name. Null, empty, or whitespace selects NoRetry.</param>
+        public QOptions(Guid id, int maxParallelism, string? retryPolicy)
         {
             if (id == null || id == Guid.Empty) throw new ArgumentNullException(nameof(id));
             if (maxParallelism < 1) throw new ArgumentOutOfRangeException(nameof(maxParallelism));
-            if (string.IsNullOrWhiteSpace(retryPolicy)) throw new ArgumentException("RetryPolicy cannot be null/empty.", nameof(retryPolicy));
             Id = id;
             MaxParallelism = maxParallelism;
             RetryPolicy = retryPolicy;

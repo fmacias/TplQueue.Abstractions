@@ -6,6 +6,9 @@ namespace Fmacias.TplQueue.Contracts
     {
         Guid Id { get; }
         int MaxParallelism { get; }
-        string RetryPolicy { get; }
+        /// <summary>
+        /// Gets the optional retry-policy name. Null, empty, or whitespace selects NoRetry.
+        /// </summary>
+        string? RetryPolicy { get; }
     }
 }

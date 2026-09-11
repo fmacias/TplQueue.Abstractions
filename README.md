@@ -20,7 +20,7 @@ The package exposes the shared contracts and reusable models for:
 - observer contracts and `IJobEvent`
 - payload, serializer, and cache-hydration abstractions
 
-The `TPLQ-V1-015` API-freeze work keeps the current public contract line as the `1.0.0` baseline while removing the remaining typo and legacy-compatibility names before the stable release. The normalized contract surface is documented in [docs/reference.md](docs/reference.md).
+The `TPLQ-V1-015` work established an initial `1.0.0` contract baseline. The current source includes further breaking changes to queue, payload and factory contracts before the stable release; rebuild dependent packages and consumers together. The normalized contract surface is documented in [docs/reference.md](docs/reference.md).
 
 Related repositories:
 
@@ -67,3 +67,9 @@ For package-consumption samples, public integration tests, and observer-facing v
 ## License
 
 `TplQueue.Abstractions` is distributed under the MIT license.
+
+Queue configuration may omit the retry-policy name. Null, empty, or whitespace selects NoRetry; a supplied name uses the configured policy lookup.
+
+Observe waiting and executing jobs through `IQ.Subscribe`; `IQ.OnJobEventChanged` has been removed. CacheQ owns a private observer for terminal cache updates.
+
+`WaitAsync` waits for underlying queue work. Cache acknowledgment remains asynchronous, and slow subscribers on the shared observer hub can delay it. CacheQ disposal unsubscribes its observer and can discard pending notifications; completing `WaitAsync` does not guarantee that cache acknowledgment has finished.

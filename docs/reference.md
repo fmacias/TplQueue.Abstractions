@@ -72,7 +72,7 @@ The package includes the core contracts and reusable models that the rest of the
 
 ## Stable API freeze notes
 
-For `TPLQ-V1-015`, this package treats the current public contract line as the baseline for `1.0.0`.
+The `TPLQ-V1-015` baseline is being revised before the stable release. Current source changes rename `IQ.Wait()` to `WaitAsync()`, require `IPayload.HandlerKey`, accept cache factories instead of cache instances, add typed payload `After` members, move `Then` extensions to `Fmacias.TplQueue.Extensions.JobExtension`, and remove `IQ.OnJobEventChanged` in favor of `IQ.Subscribe`. Rebuild all dependent packages and consumers together. See the [coordinated migration notes](../../TplQueue.Adapter/docs/en/operations/api-migration.md).
 
 The freeze-specific decisions in this repository are:
 
@@ -93,7 +93,8 @@ This is a source-build policy for TplQueue itself, not a runtime requirement for
 
 `IRetryPolicyAbstractFactory` supports two usage styles:
 
-- non-generic lookup through `PolicyByName(...)`, where missing names fall back to `NoRetryPolicy`
+- queue options allow a null, empty, or whitespace `RetryPolicy` name; the queue adapter selects `NoRetryPolicy` directly before named lookup
+- non-generic lookup through `PolicyByName(...)`, where unregistered nonblank names fall back to `NoRetryPolicy`; blank names are rejected
 - typed lookup through `PolicyByName<T>(...)` and `GetPolicy<T>()`, where the default adapter maps built-in retry policy interfaces to their implementations
 
 The built-in retry policy interfaces supported by the default adapter are:
@@ -151,7 +152,10 @@ This separation keeps serialization concerns independent from runtime type looku
 
 ## Payload handler contracts
 
-`IPayload.PayloadId` is the stable persisted handler key for payload-aware jobs. Keep it stable across deployments for any payload type that can be dehydrated into a cache and hydrated later.
+`IPayload.HandlerKey` is the stable persisted routing key for payload-aware
+jobs. Keep it stable across deployments for any payload type that can be
+dehydrated into a cache and hydrated later. `IPayload.PayloadId` identifies an
+individual payload instance and must remain stable for that instance.
 
 Recommended key style:
 
@@ -164,16 +168,17 @@ Example:
 ```csharp
 public sealed class MeasurementPayload : IPayload
 {
-    public const string HandlerKey = "measurements.persist/v1";
+    public const string HandlerKeyValue = "measurements.persist/v1";
 
+    public string PayloadId { get; set; } = Guid.NewGuid().ToString("N");
     public string SensorId { get; set; } = string.Empty;
     public double Value { get; set; }
-    public string PayloadId => HandlerKey;
-    public DateTime CollectionTime => DateTime.UtcNow;
+    public DateTime CollectionTime { get; set; } = DateTime.UtcNow;
+    public string HandlerKey => HandlerKeyValue;
 }
 ```
 
-`IApi.RegisterPayloadHandler(...)` is the public adapter-facing registration path. Cache hydration resolves `IPayload.PayloadId` through the API-owned internal handler registry, not through a caller-built handler collection.
+`IApi.RegisterPayloadHandler(...)` is the public adapter-facing registration path. Cache hydration resolves `IPayload.HandlerKey` through the API-owned internal handler registry, not through a caller-built handler collection.
 
 ## Serializer public surface decision
 
@@ -384,7 +389,8 @@ Use `WorkspaceTplQueue\pack.ps1 -Version <version>` and `WorkspaceTplQueue\publi
 
 Current state:
 
-- `IPayload.PayloadId` is the single stable persisted handler key for hydrated payload jobs
+- `IPayload.HandlerKey` is the single stable persisted routing key for hydrated payload jobs
+- `IPayload.PayloadId` identifies the individual payload instance
 - `IPayloadHandlers` resolves public `IHandler` implementations only by that stable string key
 - handler classes can be composed from the application layer or an IoC container through handler factories
 - application-level grouping logic should call the direct `IApi.RegisterPayloadHandler(...)` overloads itself instead of relying on a plugin abstraction in this package layer
@@ -397,3 +403,7 @@ Deferred work:
 ## Visual Studio session note
 
 Avoid opening `WorkspaceTplQueue.sln` and any `TplQueue.*.sln` in separate Visual Studio sessions at the same time. The workspace swaps to project references, while standalone solutions stay package-based, and running both can lead to confusing dependency views or build output conflicts.
+
+Queue acceptance (`Enqueued`) and execution lifecycle events are delivered through `IQ.Subscribe`. The `OnJobEventChanged` property has been removed from `IQ`; migrate its consumers to `IObserver<IJobEvent>` subscriptions.
+
+CacheQ owns a private observer and the subscription used for terminal cache updates. `WaitAsync` waits for underlying queue work, independently of observer delivery and cache acknowledgment. The shared hub invokes subscribers from one background pump, so a slow subscriber can delay cache updates. CacheQ.Dispose unsubscribes and may leave queued notifications unapplied; applications requiring acknowledgment must confirm it separately before disposal.

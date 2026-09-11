@@ -38,6 +38,12 @@ namespace Fmacias.TplQueue.Defaults.Log
         public static readonly EventId ObserverCompleted =
             new EventId(1099, nameof(ObserverCompleted));
 
+        public static readonly EventId FileObserverNullEvent =
+            new EventId(1101, nameof(FileObserverNullEvent));
+
+        public static readonly EventId FileObserverEventWritten =
+            new EventId(1102, nameof(FileObserverEventWritten));
+
         // ---- Cache / leasing / memory pressure ----
         public static readonly EventId SignificantMemoryIncrease =
             new EventId(2000, nameof(SignificantMemoryIncrease));
