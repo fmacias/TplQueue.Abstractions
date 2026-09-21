@@ -332,3 +332,7 @@ When creating or substantially modifying C# code:
 - Use `IQ.Subscribe` for all job lifecycle notifications, including Enqueued. `IQ.OnJobEventChanged` has been removed; do not reintroduce an inline event-handler route in Publish or enqueue.
 - CacheQ owns a private cache observer and its subscription to the supplied queue. Terminal cache transitions run through that observer; enqueue and dispatch do not invoke it inline.
 - Preserve `WaitAsync` as a wait for underlying queue work. It does not wait for observer delivery or cache acknowledgment. Slow subscribers on the shared hub can delay cache updates. CacheQ.Dispose unsubscribes and can leave queued notifications unapplied; it is not an acknowledgment barrier.
+
+## Execution-channel observation
+
+The optional IJobExecutionEvent interface adds nullable ExecutionChannel metadata without changing IJobEvent. A non-null value identifies queue-local execution capacity, remains stable across retries while capacity is held, and is captured in terminal events before release. Pre-execution and legacy events remain unassigned. Channels are diagnostic facts, never thread IDs or scheduling controls.

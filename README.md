@@ -73,3 +73,7 @@ Queue configuration may omit the retry-policy name. Null, empty, or whitespace s
 Observe waiting and executing jobs through `IQ.Subscribe`; `IQ.OnJobEventChanged` has been removed. CacheQ owns a private observer for terminal cache updates.
 
 `WaitAsync` waits for underlying queue work. Cache acknowledgment remains asynchronous, and slow subscribers on the shared observer hub can delay it. CacheQ disposal unsubscribes its observer and can discard pending notifications; completing `WaitAsync` does not guarantee that cache acknowledgment has finished.
+
+## Execution-channel observation
+
+The optional IJobExecutionEvent interface adds nullable ExecutionChannel metadata without changing IJobEvent. A non-null value identifies queue-local execution capacity, remains stable across retries while capacity is held, and is captured in terminal events before release. Pre-execution and legacy events remain unassigned. Channels are diagnostic facts, never thread IDs or scheduling controls.
