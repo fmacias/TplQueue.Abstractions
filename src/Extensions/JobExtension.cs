@@ -34,6 +34,15 @@ namespace Fmacias.TplQueue.Extensions
             return next.After(previous);
         }
 
+//Review 
+        public static T Then<T>(this T previous, T next) where T:IDataJob
+        {
+            if (previous == null) throw new ArgumentNullException(nameof(previous));
+            if (next == null) throw new ArgumentNullException(nameof(next));
+            return (T)next.After(previous);
+        }
+
+
         /// <summary>
         /// Declares that <paramref name="next"/> data job must run after
         /// <paramref name="previous"/>.
@@ -44,6 +53,14 @@ namespace Fmacias.TplQueue.Extensions
             if (next == null) throw new ArgumentNullException(nameof(next));
             return next.After(previous);
         }
+
+        public static T Then<T>(this IDataJobNode previous, T next) where T: IDataJobRoot
+        {
+            if (previous == null) throw new ArgumentNullException(nameof(previous));
+            if (next == null) throw new ArgumentNullException(nameof(next));
+            return (T)next.After(previous);
+        }
+
 
         /// <summary>
         /// Declares that <paramref name="next"/> data-job root must run after
