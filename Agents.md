@@ -1,35 +1,120 @@
 # AGENTS.md
 
-## Context
+## Repository context
 
-You are working in the TplQueue.Abstractions git repository folder, member of the overall `fmacias` workspace, which contains three separate git repositories between others:
+You are working in the `TplQueue.Abstractions` git repository, part of the overall `fmacias` workspace.
 
-- `TplQueue.Adapter`
-- `TplQueue.Core`
+Related repositories include:
+
 - `TplQueue.Abstractions`
+- `TplQueue.Core`
+- `TplQueue.Adapter`
+- `TplQueue.Usage`
 
-Each repository contains:
+Treat every repository as an independent git boundary even when code, packages, documentation, tests, or samples depend on another repository.
 
-- a `src` folder with the production code
-- a `test` folder with the related test projects
+When this repository is checked out inside the overall `fmacias` workspace and an applicable parent `AGENTS.md` exists, apply those common instructions first.
 
-Apply the common instructions described at AGENtS.md file of the parent overall workspace `fmacias`.
+This file adds repository-specific instructions for `TplQueue.Abstractions`.
 
-The repositories are related and may depend on one another, but they must still be treated as separate git repositories with independent boundaries.
+The repository follows the standard workspace organization with production code under `src` and tests under `test`.
 
-The code intentionally targets **.NET Standard 2.0**, because these libraries are designed to remain compatible with older .NET Framework applications as well as modern .NET / .NET Core applications where possible.
+Production libraries intentionally target `netstandard2.0`.
 
-This workspace focuses on **multithreading control, task dispatching, concurrency coordination, retry policies, queue-based execution, and observability**.
+This compatibility target allows the contracts to remain usable from older .NET Framework applications as well as modern .NET runtimes where supported.
 
-## Implementation Rules
+When working inside an area containing a more-specific `AGENTS.md`, read that file in addition to this root file.
 
-Implementation rules such as Implementation, review, refactor and test are found at user main folder ./.,/fmacias
+---
 
-## Important terminology
+## Instruction and source-of-truth hierarchy
 
-Use the terminology already present in the codebase.
+Apply instructions and evidence in this order:
 
-The current core domain contracts are:
+1. explicit human task
+2. applicable workspace-level `AGENTS.md`
+3. this repository root `AGENTS.md`
+4. nearest more-specific `AGENTS.md`
+5. current source code
+6. current tests
+7. applicable migration/architecture documentation
+8. installed Agent Skills as workflow guidance
+
+Skills complement repository instructions.
+
+They do not replace repository-local source of truth.
+
+If an installed Skill describes an older baseline than the current repository, follow the repository's current source, tests, instructions, and applicable documentation.
+
+Do not silently reconcile contradictions between repositories.
+
+---
+
+## Agent Skills
+
+When available, use Skills from the `engineering` plugin for generic engineering procedure, including:
+
+- `review-csharp`
+- `review-concurrency`
+- `review-public-api`
+- `architecture-review`
+- `refactor-code`
+- `implement-feature`
+- `testing-dotnet`
+- `validate-dotnet-change`
+- `align-cross-repository-documentation`
+- `document-csharp-api`
+- `summarize-staged-commit`
+
+Do not duplicate those generic workflows in this file.
+
+When available, use the `tplqueue-abstractions` plugin for Abstractions-specific workflows:
+
+- `review-abstractions-architecture`
+- `modify-abstractions-public-contracts`
+- `modify-execution-channel-observation`
+
+Additional Abstractions-specific Skills should only be created when a distinct reusable contract workflow or behavioral invariant justifies them.
+
+Do not create one Skill per interface or folder.
+
+---
+
+## Repository role
+
+`TplQueue.Abstractions` defines reusable contracts shared by the TplQueue ecosystem.
+
+Keep this repository focused on public abstractions and contract definitions.
+
+Avoid introducing concrete runtime implementation concerns into public contracts when those concerns belong to Core, Adapter, or consumer repositories.
+
+Public contracts should express the behavior required from implementations without unnecessarily constraining implementation details.
+
+Changes to this repository may have broad downstream impact and must be evaluated accordingly.
+
+---
+
+## Compatibility
+
+Production code targets `netstandard2.0`.
+
+Preserve this compatibility unless the human explicitly requests a framework-policy change.
+
+Repository configuration may enable modern C# language features, but do not introduce public API or runtime dependencies that violate the production compatibility target.
+
+Do not introduce new external dependencies unless explicitly requested.
+
+Do not change namespaces unless strictly necessary.
+
+Minimize public API changes.
+
+---
+
+## Domain terminology
+
+Use the terminology already established by the current codebase.
+
+The current core domain contracts include:
 
 - `IJob`
 - `IJobRoot`
@@ -39,300 +124,212 @@ The current core domain contracts are:
 - `IFifoQ`
 - `ICacheQ`
 
-Use these names consistently in analysis, refactoring, implementation, comments, and documentation.
+Use these names consistently in:
 
-Do **not** rename these concepts or replace them with alternative terminology unless the human explicitly requests it.
+- analysis
+- implementation
+- refactoring
+- tests
+- comments
+- XML documentation
+- public documentation
 
-If some older code or documentation still refers to previous names such as `TaskRunner`, `TaskRunnerRoot`, or related historical abstractions, treat those names as **legacy terminology**. Preserve compatibility where required, but prefer the current `Job`-based naming in new work.
+Do not rename these concepts or replace them with alternative terminology unless the human explicitly requests it.
 
-Do not introduce parallel vocabulary for the same concept. For example, do not mix `job`, `task runner`, `work item`, or similar terms if they refer to the same abstraction.
+Older names such as `TaskRunner`, `TaskRunnerRoot`, and related historical abstractions are legacy terminology.
 
-Some parts of the codebase may still contain legacy names from earlier design iterations. Do not perform broad terminology migration unless explicitly requested. When modifying existing code, preserve local naming consistency while respecting the current official public contracts.
+Preserve them where compatibility or existing source requires it, but prefer the current Job-based terminology in new work.
+
+Do not introduce parallel vocabulary such as `job`, `task runner`, and `work item` for the same abstraction.
+
+Do not perform broad terminology migrations unless explicitly requested.
+
+---
 
 ## Architectural intent
 
-The purpose of these libraries is to provide reusable infrastructure for:
+The TplQueue contracts support infrastructure for:
 
 - controlled asynchronous and concurrent execution
 - strict FIFO execution where required
 - parallel dispatch where allowed
 - retry-policy-driven execution
-- observable execution flow through the Observer pattern
+- observable execution flow
 - optional payload handling through `IDataJob` and `IDataJobRoot`
-- optional cache-backed persistence before enqueueing into memory-based dispatchers
-- future integration with front-end monitoring systems such as:
-  - web dashboards, for example React + SignalR
-  - desktop UI applications
-  - reactive front ends
+- optional cache-backed dispatch integration
+- monitoring and front-end integration without coupling UI concerns into the abstraction layer
 
-A dispatcher queue acts as an in-memory buffer of `IJobRoot` elements. Depending on the concrete dispatcher, execution may be strict FIFO or parallel.
+A dispatcher queue conceptually operates on `IJobRoot` elements and may provide FIFO or parallel execution behavior depending on the implementation.
 
-This architecture allows legacy applications to progressively externalize, monitor, and modernize asynchronous work without requiring an immediate full UI or architecture rewrite.
+The abstractions should allow legacy and modern applications to consume TplQueue functionality without requiring a particular UI, host, storage system, or concrete dispatcher implementation.
 
-This workspace is intended to solve multithreading and concurrency-control problems by abstracting executable work into jobs (`IJob`, `IJobRoot`, `IDataJob`, `IDataJobRoot`) and dispatching them through queue-based components that support either strict FIFO or parallel execution policies.
-
-## Test structure
-
-Tests may be either:
-
-- **Unit tests**: isolated tests, usually using mocks where appropriate
-- **Integration tests**: tests that compose concrete dependencies and verify collaboration between real implementations, while still following a clear Arrange / Act / Assert structure
-
-Integration tests must remain readable and useful to a human reviewer.
-
-## Documentation consistency
-
-If you find contradictions, obsolete terminology, or architectural inconsistencies in this document or in nearby documentation, report them clearly in your final response.
-
-## Cross-repository documentation alignment
-
-When a task touches documentation, navigation, publishing, licensing text, or repository-boundary explanations:
-
-1. Read the root `Agents.md` or `AGENTS.md` and the root `README.md` of every directly affected repository before editing.
-2. If a more specific instruction file exists for the affected surface, such as `docs/Agents.md` or a package-level `AGENTS.md`, read it after the root files.
-3. Compare the requested change against the current documented source-of-truth model and note any contradictions before applying broad edits.
-4. Do not silently normalize contradictions across repositories.
-5. If the human instruction conflicts with the existing documentation or instruction files and intent is not already explicit, ask whether to:
-   - align the documentation to the current human instruction and treat the inconsistency as an exception, or
-   - preserve the existing inconsistency as the current operating rule.
-6. When proceeding with a cross-repository documentation change, update the relevant `README.md`, `Agents.md` or `AGENTS.md`, and sync or publishing instructions together so the documentation boundary remains aligned.
+Preserve this architectural direction unless the explicit task deliberately changes it.
 
 ---
 
-## General operating rules
+## Public contract changes
 
-1. Work only within the scope requested by the human:
-   - **Review** = analyze and report
-   - **Refactor** = improve existing code without changing intended behavior
-   - **Implementation** = fix a bug or add a feature
+Treat modifications to public interfaces, public DTO/event contracts, public enums, records, structs, extension-facing contracts, or other externally consumed types as API changes.
 
-2. Prefer small, safe, understandable changes unless the human explicitly asks for a broader refactor.
+Before changing a public contract:
 
-3. Preserve the current architectural style unless there is a clear defect, contradiction, or explicit requirement to change it.
+1. identify the owning contract;
+2. inspect current tests;
+3. identify Core consumers;
+4. identify Adapter consumers;
+5. identify Usage consumers;
+6. determine compatibility and migration impact.
 
-4. Do not silently redesign the library.
+Prefer compatible extensions where practical.
 
-5. Keep public behavior stable unless a bug fix or the explicit task requires a change.
+Do not expose concrete implementation details merely to simplify a consumer implementation.
 
-6. Respect the existing architecture, naming, layering, and design intent before proposing broader changes.
+When a deliberate breaking or coordinated API migration is required, update the affected source, tests, repository instructions, migration information, and downstream-impact notes coherently.
 
-7. Do not stage changes applied during review, refactor, or implementation unless the human explicitly asks for staging.
-   - Leave applied changes unstaged so the human can review and stage them manually.
-
----
-
-## Rules for code review
-
-When asked to perform a **code review**, follow this process:
-
-1. Verify that the changes to be reviewed are staged in the relevant git repository.
-   - If they are not staged, stop the review and inform the human.
-   - Reason: staged changes are easier to inspect, discuss, and revert safely.
-
-2. Verify the relevant project-level configuration files, such as `.props`, solution-level settings, or project settings, to confirm that:
-   - the C# language version is appropriate for `.NET Standard 2.0`
-   - the project configuration is consistent with the intended compatibility targets
-
-   If the configuration is inconsistent, stop and report the issue first.
-
-3. Review the code according to these principles:
-   - SOLID
-   - DRY
-   - KISS
-   - YAGNI
-   - Separation of Concerns
-   - Fail Fast
-   - Defensive programming
-   - Immutability by default where reasonable
-   - Readability and maintainability
-   - Thread safety where relevant
-   - Safe async usage
-   - Serialization safety where relevant
-
-4. Review all relevant public and internal services within the affected scope.
-
-5. Identify and report:
-   - duplication
-   - long or overly complex methods
-   - missing validation or guard clauses
-   - hidden side effects
-   - poor separation of responsibilities
-   - misleading naming
-   - test gaps
-   - documentation gaps
-   - risks to backward compatibility
-
-6. Static helper classes:
-   - should remain stateless
-   - should not mutate instance state
-   - should be internal unless a public static API is truly justified
-
-7. During review, do not refactor broadly unless the human explicitly requested review plus fixes.
-   - Minor non-invasive corrections are acceptable only if explicitly requested.
-
-8. When reporting SOLID concerns, pay special attention to the user’s design preferences:
-   - internal construction logic may intentionally use static factories
-   - not every internal implementation is meant to be substitutable
-   - testability is still required, including for internal and non-public services where appropriate
-
-9. If you detect a major design issue involving OCP or LSP that would require architectural change rather than a safe local improvement:
-   - stop before making invasive changes
-   - explain the issue clearly
-   - propose the safest next step
-
-10. After review, report findings in a structured way:
-   - critical issues
-   - design issues
-   - maintainability issues
-   - test gaps
-   - optional improvements
+Use `modify-abstractions-public-contracts` when available.
 
 ---
 
-## Rules for refactoring
+## Current coordinated contract baseline
 
-When asked to perform a **refactor**, follow all review rules above first, then:
+The current source line participates in coordinated API work involving contracts such as:
 
-1. Refactor only within the repository scope requested by the human.
+- `WaitAsync`
+- `IPayload.HandlerKey`
+- current `Then` extension ownership/location
+- CacheQ creation APIs where they intersect with public contracts
 
-2. Do not modify dependent repositories unless the human explicitly requested cross-repository changes.
+Follow the coordinated API migration notes maintained with the public Adapter documentation:
 
-3. If a defect in a dependency prevents a correct refactor:
-   - stop
-   - explain the blocking dependency
-   - describe the likely fix required in the dependent component
+`../TplQueue.Adapter/docs/en/operations/api-migration.md`
 
-4. Allowed refactoring actions include:
-   - fixing clearly incorrect logic
-   - adding guard clauses and argument validation
-   - simplifying control flow
-   - extracting private helper methods
-   - removing dead private code
-   - improving XML documentation
-   - improving internal naming where it does not break the public API
-   - reducing duplication
-   - improving readability and cohesion
+Do not assume that every item in a coordinated migration is owned by `TplQueue.Abstractions`.
 
-5. Refactoring must preserve intended behavior unless a bug is being fixed as part of the task.
+Determine ownership from the actual source and project structure.
 
-6. Refactoring should improve code quality without introducing speculative abstractions or unnecessary architectural changes.
+Runtime implementation semantics belonging to Core or Adapter must not be copied into Abstractions merely because they participate in the same migration.
+
+When an Abstractions contract changes, identify the required Core, Adapter, and Usage consumer changes explicitly.
 
 ---
-
-## Rules for implementation
-
-When asked to perform an **implementation** task, including a bug fix or a new feature:
-
-1. First apply the same analysis discipline used in review and refactor mode.
-
-2. If the request is ambiguous, infer the safest interpretation from the codebase and surrounding context.
-   - Avoid unnecessary clarification questions when the intent can reasonably be recovered from the existing code and documentation.
-
-3. You may modify dependent repositories only if this is necessary to implement the feature or bug fix correctly and the requested scope allows cross-repository changes.
-
-4. Prefer solutions that:
-   - preserve the existing architecture
-   - minimize public API changes
-   - keep backward compatibility where practical
-   - fit the existing code style and conventions
-
-5. For bug fixes:
-   - identify the root cause, not only the symptom
-   - add or adapt tests covering the failing case
-
-6. For new features:
-   - integrate them into the existing abstractions rather than introducing parallel ad-hoc patterns
-   - keep the feature extensible, but do not over-engineer
-
-7. When implementing concurrency-related changes, pay special attention to:
-   - thread safety
-   - race conditions
-   - cancellation flow
-   - retry consistency
-   - ordering guarantees
-   - shared mutable state
-   - async correctness
-8. Apply TDD ( Test Driven Design). Upadate or add the Unit test and integration test belongs to the changes. Deletes are first not desired. prefer to have obsolete unit tests instead.
-
----
-
-## Test expectations
-
-Whenever code changes are made:
-
-1. Update or add tests as needed.
-
-2. Cover:
-   - valid paths
-   - edge cases
-   - invalid arguments
-   - invalid state transitions
-   - exception paths
-
-3. Use:
-   - NUnit
-   - Moq where appropriate
-   - Arrange / Act / Assert structure
-
-4. Keep integration tests readable and representative of real composition behavior.
-
-5. Do not remove tests unless they are objectively invalid, obsolete, or replaced by better coverage.
-   - If a test is removed, explain why.
-
-6. Do not generate or expand tests unless they are necessary for the requested change, bug fix, or refactor scope.
-
-# Providing a commit text ready to pase of staged changes
-
-Sometime, the human will request from you to check the staged changes to commit, by applied differencies.
-In this case, check the applied differencies, deduce the changes and provide the output humanized and summarized per implemented issue into one commit text.
-
----
-
-## Build and validation workflow
-
-When code changes are made, run the relevant validation steps in this order when possible:
-
-1. Build the affected projects
-2. Run unit tests
-3. Pack locally using the repository’s local packaging script if available, for example `pack-local`
-4. Run integration tests that depend on packaged outputs, if applicable
-
-If any step cannot be executed, state that clearly and explain why.
-
-
----
-
-## Documentation expectations
-
-When creating or substantially modifying C# code:
-
-1. Add or improve XML documentation comments in English where relevant.
-2. Keep documentation technically precise, concise, and consistent with the actual behavior.
-3. Do not leave misleading, outdated, or speculative comments in the code.
-
----
-
-## Constraints
-
-- Do **not** change namespaces unless strictly necessary.
-- Do **not** change public API signatures unless strictly necessary to fix a bug or implement the requested feature.
-- Do **not** introduce new external dependencies.
-- Keep changes understandable, consistent, and as small as reasonably possible.
-- Preserve `.NET Standard 2.0` compatibility unless the human explicitly instructs otherwise.
-- Prefer the existing project terminology and patterns over inventing new abstractions.
-- Unless the task is review-only, apply changes directly in the workspace without asking for confirmation.
-
-## Current contract and configuration notes
-
-- Preserve `WaitAsync`, `IPayload.HandlerKey`, factory-based CacheQ creation and the moved `Then` extensions when modifying this source line.
-- Configured queue retry-policy names are optional; null, empty, or whitespace selects NoRetry. An explicit root NoRetry overrides the queue policy; an unspecified root policy inherits it.
-- DI settings are configuration-time builders. Registration captures independent option snapshots; later Upsert calls do not reconfigure the API.
-- Follow the [coordinated API migration notes](../TplQueue.Adapter/docs/en/operations/api-migration.md). Public documentation continues to be published only from Adapter's language trees; this change does not alter the publishing boundary.
-
-- Use `IQ.Subscribe` for all job lifecycle notifications, including Enqueued. `IQ.OnJobEventChanged` has been removed; do not reintroduce an inline event-handler route in Publish or enqueue.
-- CacheQ owns a private cache observer and its subscription to the supplied queue. Terminal cache transitions run through that observer; enqueue and dispatch do not invoke it inline.
-- Preserve `WaitAsync` as a wait for underlying queue work. It does not wait for observer delivery or cache acknowledgment. Slow subscribers on the shared hub can delay cache updates. CacheQ.Dispose unsubscribes and can leave queued notifications unapplied; it is not an acknowledgment barrier.
 
 ## Execution-channel observation
 
-The optional IJobExecutionEvent interface adds nullable ExecutionChannel metadata without changing IJobEvent. A non-null value identifies queue-local execution capacity, remains stable across retries while capacity is held, and is captured in terminal events before release. Pre-execution and legacy events remain unassigned. Channels are diagnostic facts, never thread IDs or scheduling controls.
+The optional `IJobExecutionEvent` contract adds nullable `ExecutionChannel` metadata without changing `IJobEvent`.
+
+Current semantics are:
+
+- `IJobExecutionEvent` is optional;
+- `ExecutionChannel` is nullable;
+- a non-null value identifies queue-local execution capacity;
+- the value remains stable across retries while that capacity is held;
+- terminal events capture the channel before execution capacity is released;
+- pre-execution events remain unassigned;
+- legacy events remain unassigned unless they expose the optional contract;
+- execution-channel metadata is diagnostic information;
+- an execution channel is not a thread ID;
+- execution-channel metadata is not a scheduling-control mechanism.
+
+Do not add execution-channel semantics to `IJobEvent` merely for convenience while the optional-interface model remains the current contract.
+
+Do not introduce assumptions that execution channels are globally unique or directly correspond to operating-system threads.
+
+Changes to this contract may affect Core event generation, Adapter Observer integration, and Usage monitoring/visualization.
+
+Identify those impacts explicitly.
+
+Use `modify-execution-channel-observation` when available.
+
+---
+
+## Related repositories
+
+### TplQueue.Core
+
+Core implements runtime behavior against Abstractions contracts.
+
+When an Abstractions change requires Core implementation changes, identify the impact explicitly and respect Core as a separate git boundary.
+
+Do not encode private Core implementation assumptions in public Abstractions contracts.
+
+### TplQueue.Adapter
+
+Adapter provides facade and integration packages built around Abstractions and Core-facing behavior.
+
+Changes to Abstractions may affect Adapter compilation, public APIs, integration packages, configuration, and public documentation.
+
+Public end-user documentation is currently published from Adapter's documentation trees.
+
+If an Abstractions change alters documented public behavior, identify the corresponding Adapter documentation update.
+
+### TplQueue.Usage
+
+Usage is a separate consumer/integration repository containing samples and executable usage scenarios.
+
+When an Abstractions change affects Usage:
+
+- identify the consumer impact;
+- do not place Usage-specific implementation in Abstractions;
+- do not modify Usage during an Abstractions-only task unless explicitly requested;
+- use the `tplqueue-usage` plugin for Usage-specific work when available.
+
+---
+
+## Tests
+
+Keep tests aligned with public contract changes.
+
+When changing an abstraction, cover the contract behavior needed to protect compatibility and intended semantics.
+
+Use the generic `testing-dotnet` workflow when available.
+
+Repository-specific contract tests should focus on behavior and compatibility relevant to the changed abstraction.
+
+Do not duplicate generic test methodology in this file.
+
+---
+
+## Documentation and cross-repository alignment
+
+When a public contract or terminology change affects multiple repositories:
+
+- inspect the relevant root `AGENTS.md` and `README.md` files;
+- inspect more-specific documentation instructions where present;
+- identify contradictions before changing documentation;
+- do not silently normalize inconsistent repository descriptions;
+- keep migration guidance and public documentation aligned with the actual contracts.
+
+Use `align-cross-repository-documentation` when available.
+
+Public documentation publishing remains owned by the Adapter documentation trees unless explicitly changed.
+
+---
+
+## Validation
+
+For production changes, validate the affected scope as applicable:
+
+- build affected projects;
+- run relevant unit tests;
+- pack locally using the repository packaging mechanism when applicable;
+- run integration tests that depend on packaged outputs when applicable;
+- report any validation step that could not be executed.
+
+Use `validate-dotnet-change` when available for the generic validation workflow.
+
+---
+
+## Change-scope guidance
+
+Prefer the smallest coherent contract change that satisfies the requested behavior.
+
+Keep work inside `TplQueue.Abstractions` unless the explicit task includes cross-repository changes.
+
+If another repository must change:
+
+- explain why;
+- identify the affected contract;
+- identify the required downstream work;
+- respect that repository's own AGENTS.md and plugin guidance.
+
+Do not silently expand an Abstractions-only task into Core, Adapter, or Usage.
