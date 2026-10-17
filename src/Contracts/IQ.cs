@@ -31,6 +31,20 @@ namespace Fmacias.TplQueue.Contracts
         /// </summary>
         bool IsDisposed { get; }
 
+        /// <summary>
+        /// Submits a root and its dependencies for dispatcher admission.
+        /// </summary>
+        /// <remarks>
+        /// A live job instance already admitted by any dispatcher is not admitted again,
+        /// including by its owning dispatcher or after completion. Skipping that instance
+        /// publishes no additional lifecycle events for it. New work requires fresh job
+        /// instances; retry-policy attempts remain within the original admission.
+        /// This does not define persistent deduplication by ID or the separate validation
+        /// of payload roots submitted through cache-backed enqueue overloads.
+        /// </remarks>
+        /// <param name="jobRoot">The root of the graph to submit.</param>
+        /// <param name="ct">Execution cancellation for newly admitted jobs.</param>
+        /// <returns>The queue receiving the submission.</returns>
         IQ Enqueue(IJobRoot jobRoot, CancellationToken ct);
 
         string Name { get; }

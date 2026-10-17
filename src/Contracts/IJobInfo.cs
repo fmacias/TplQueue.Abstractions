@@ -19,6 +19,11 @@ namespace Fmacias.TplQueue.Contracts
         /// <see cref="Guid.Empty"/> means the job has not been enqueued yet and can still
         /// be moved between roots during graph composition.
         /// </summary>
+        /// <remarks>
+        /// Ownership remains assigned after completion. A later admission attempt for
+        /// the same live instance, including by this owner, does not enqueue it again.
+        /// The value does not establish persistent deduplication across hydrated instances.
+        /// </remarks>
         Guid CrossQueueId { get; }
     }
 }

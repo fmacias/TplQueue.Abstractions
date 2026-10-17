@@ -74,6 +74,15 @@ Observe waiting and executing jobs through `IQ.Subscribe`; `IQ.OnJobEventChanged
 
 `WaitAsync` waits for underlying queue work. Cache acknowledgment remains asynchronous, and slow subscribers on the shared observer hub can delay it. CacheQ disposal unsubscribes its observer and can discard pending notifications; completing `WaitAsync` does not guarantee that cache acknowledgment has finished.
 
+## Job admission
+
+`IQ.Enqueue` admits each live job instance once, including when the same queue
+encounters it again as a shared dependency or FIFO predecessor. Completion does
+not make the instance reusable; new runs need fresh jobs and IDs. Retry attempts
+remain within the original admission. This is not persistent deduplication by ID
+or a replacement for CacheQ submission validation. See the
+[contract reference](docs/reference.md#job-admission-and-ownership).
+
 ## Execution-channel observation
 
 The optional IJobExecutionEvent interface adds nullable ExecutionChannel metadata without changing IJobEvent. A non-null value identifies queue-local execution capacity, remains stable across retries while capacity is held, and is captured in terminal events before release. Pre-execution and legacy events remain unassigned. Channels are diagnostic facts, never thread IDs or scheduling controls.

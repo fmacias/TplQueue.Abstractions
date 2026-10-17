@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Fmacias.TplQueue.Snapshots;
+using Microsoft.Extensions.Logging;
 
 namespace Fmacias.TplQueue.Contracts
 {
@@ -31,5 +32,6 @@ namespace Fmacias.TplQueue.Contracts
         /// Creates an observer that writes structured queue event lines through an application-provided logger.
         /// </summary>
         IFileLoggingObserver CreateFileLoggingObserver(ILogger logger, string queueName);
+        JobEventSnapshot CreateJobEventSnapshot(IJobEvent source);
     }
 }
